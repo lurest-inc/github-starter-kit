@@ -8,6 +8,7 @@ GitHub Projects の初期セットアップを GitHub Actions で自動実行す
 |------------|------|---------|
 | Setup GitHub Project | GitHub Project を1件作成する | `workflow_dispatch`（手動実行） |
 | ~~Setup Status Columns~~ | ~~Project の Status カラムをテンプレートで設定する~~ | スクリプト直接実行 |
+| Setup Project Fields | Project にカスタムフィールドを自動作成する | `workflow_dispatch`（手動実行） |
 | Add Items to Project | リポジトリの Issue/PR を Project に一括追加する | `workflow_dispatch`（手動実行） |
 
 ## クイックスタート
@@ -78,6 +79,42 @@ bash scripts/setup-status-columns.sh
 
 > **Note:** ビルトインの Status フィールドのカラムを上書きします。GraphQL API を使用するため、PAT に Projects の Read and write 権限が必要です。
 
+### カスタムフィールドを設定する
+
+1. `Actions` タブを開く
+2. `Setup Project Fields` を選択
+3. `Run workflow` をクリック
+4. パラメータを入力して実行
+
+| パラメータ | 説明 | 必須 | 例 |
+|------------|------|:----:|-----|
+| `project_number` | 対象 Project の Number | ✅ | `1` |
+| `field_definitions` | フィールド定義（JSON 配列） | - | 下記参照 |
+
+`field_definitions` を省略した場合、以下のデフォルトフィールドが作成されます。
+
+| フィールド名 | データ型 | 選択肢 |
+|-------------|---------|--------|
+| Priority | SINGLE_SELECT | P0, P1, P2, P3 |
+| Estimate | SINGLE_SELECT | XS, S, M, L, XL |
+| Category | SINGLE_SELECT | Bug, Feature, Chore, Spike |
+| Due Date | DATE | - |
+
+カスタム定義の例:
+
+```json
+[
+  {"name": "Priority", "dataType": "SINGLE_SELECT", "options": ["P0", "P1", "P2", "P3"]},
+  {"name": "Sprint", "dataType": "TEXT"},
+  {"name": "Story Points", "dataType": "NUMBER"},
+  {"name": "Due Date", "dataType": "DATE"}
+]
+```
+
+**対応データ型:** `TEXT`, `SINGLE_SELECT`, `DATE`, `NUMBER`
+
+> **Note:** 既に同名のフィールドが存在する場合は自動的にスキップされます。
+
 ### Issue/PR を Project に一括追加する
 
 1. `Actions` タブを開く
@@ -102,10 +139,12 @@ bash scripts/setup-status-columns.sh
 .github/workflows/
   ├── setup-github-project.yml    # Project 作成ワークフロー
   │                                 # (setup-status-columns.yml は廃止)
+  ├── setup-project-fields.yml    # カスタムフィールド作成ワークフロー
   └── add-items-to-project.yml    # アイテム一括追加ワークフロー
 scripts/
   ├── setup-github-project.sh     # Project 作成スクリプト
   ├── setup-status-columns.sh     # ステータスカラム設定スクリプト
+  ├── setup-project-fields.sh     # カスタムフィールド作成スクリプト
   └── add-items-to-project.sh     # アイテム一括追加スクリプト
 ```
 
