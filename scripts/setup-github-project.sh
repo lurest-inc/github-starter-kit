@@ -3,10 +3,21 @@ set -euo pipefail
 
 # GitHub Project セットアップスクリプト
 # 環境変数:
-#   GH_TOKEN       - GitHub PAT（Projects 操作権限が必要）
-#   PROJECT_OWNER  - Project を作成する Owner
+#   GH_TOKEN           - GitHub PAT（Projects 操作権限が必要）
+#   PROJECT_OWNER      - Project を作成する Owner
 #   PROJECT_TITLE      - 作成する Project のタイトル
 #   PROJECT_VISIBILITY - Project の公開範囲（PUBLIC / PRIVATE、デフォルト: PRIVATE）
+
+# --- ヘルパー関数 ---
+
+# GitHub Actions ワークフローコマンドインジェクションを防ぐためのサニタイズ関数
+sanitize_for_workflow_command() {
+  local value="$1"
+  value="${value//'%'/'%25'}"
+  value="${value//$'\n'/'%0A'}"
+  value="${value//$'\r'/'%0D'}"
+  echo "${value}"
+}
 
 # --- バリデーション ---
 
@@ -28,20 +39,10 @@ fi
 # PROJECT_VISIBILITY のデフォルト値設定とバリデーション
 PROJECT_VISIBILITY="${PROJECT_VISIBILITY:-PRIVATE}"
 if [[ "${PROJECT_VISIBILITY}" != "PUBLIC" && "${PROJECT_VISIBILITY}" != "PRIVATE" ]]; then
-  echo "::error::PROJECT_VISIBILITY の値が不正です: ${PROJECT_VISIBILITY}（PUBLIC または PRIVATE を指定してください）"
+  SAFE_PROJECT_VISIBILITY=$(sanitize_for_workflow_command "${PROJECT_VISIBILITY}")
+  echo "::error::PROJECT_VISIBILITY の値が不正です: ${SAFE_PROJECT_VISIBILITY}（PUBLIC または PRIVATE を指定してください）"
   exit 1
 fi
-
-# --- ヘルパー関数 ---
-
-# GitHub Actions ワークフローコマンドインジェクションを防ぐためのサニタイズ関数
-sanitize_for_workflow_command() {
-  local value="$1"
-  value="${value//'%'/'%25'}"
-  value="${value//$'\n'/'%0A'}"
-  value="${value//$'\r'/'%0D'}"
-  echo "${value}"
-}
 
 # --- オーナータイプ判定 ---
 
@@ -81,10 +82,10 @@ echo ""
 # --- Project 作成 ---
 
 echo "GitHub Project を作成します..."
-echo "  Owner: ${PROJECT_OWNER}"
-echo "  Title: ${PROJECT_TITLE}"
+echo "  Owner:      ${PROJECT_OWNER}"
+echo "  Title:      ${PROJECT_TITLE}"
+echo "  Type:       ${OWNER_TYPE}"
 echo "  Visibility: ${PROJECT_VISIBILITY}"
-echo "  Type:  ${OWNER_TYPE}"
 
 if ! OUTPUT=$(gh project create --title "${PROJECT_TITLE}" --owner "${PROJECT_OWNER}" --format json 2>&1); then
   SAFE_OUTPUT=$(sanitize_for_workflow_command "${OUTPUT}")
@@ -108,19 +109,31 @@ fi
 echo "::notice::GitHub Project の作成に成功しました。"
 echo "${OUTPUT}" | jq '.' 2>/dev/null || echo "${OUTPUT}"
 
+# --- Project 情報の抽出 ---
+
+if command -v jq &>/dev/null; then
+  if ! PROJECT_NUMBER=$(echo "${OUTPUT}" | jq -r '.number // empty'); then
+    echo "::warning::jq による Project Number の取得に失敗しました。"
+    PROJECT_NUMBER=""
+  fi
+  PROJECT_URL=$(echo "${OUTPUT}" | jq -r '.url // empty')
+else
+  echo "::warning::jq がインストールされていないため、Project 情報の取得をスキップします。"
+  PROJECT_NUMBER=""
+  PROJECT_URL=""
+fi
+
 # --- Visibility 設定 ---
 
-PROJECT_NUMBER_FOR_EDIT=$(echo "${OUTPUT}" | jq -r '.number // empty')
-
-if [[ -n "${PROJECT_NUMBER_FOR_EDIT}" ]]; then
+if [[ -n "${PROJECT_NUMBER}" ]]; then
   echo ""
   echo "Visibility を ${PROJECT_VISIBILITY} に設定します..."
 
-  if ! EDIT_OUTPUT=$(gh project edit "${PROJECT_NUMBER_FOR_EDIT}" --owner "${PROJECT_OWNER}" --visibility "${PROJECT_VISIBILITY}" 2>&1); then
+  if ! EDIT_OUTPUT=$(gh project edit "${PROJECT_NUMBER}" --owner "${PROJECT_OWNER}" --visibility "${PROJECT_VISIBILITY}" 2>&1); then
     SAFE_EDIT_OUTPUT=$(sanitize_for_workflow_command "${EDIT_OUTPUT}")
     echo "::error::Visibility の設定に失敗しました: ${SAFE_EDIT_OUTPUT}"
     echo "::error::Project は作成されましたが、Visibility はデフォルト（PRIVATE）のままです。"
-    echo "手動で設定してください: gh project edit ${PROJECT_NUMBER_FOR_EDIT} --owner ${PROJECT_OWNER} --visibility ${PROJECT_VISIBILITY}"
+    echo "手動で設定してください: gh project edit ${PROJECT_NUMBER} --owner ${PROJECT_OWNER} --visibility ${PROJECT_VISIBILITY}"
     exit 1
   fi
 
@@ -129,31 +142,27 @@ else
   echo "::warning::Project Number を取得できなかったため、Visibility の設定をスキップしました。"
 fi
 
-# Project URL をサマリーに出力
-if command -v jq &>/dev/null; then
-  PROJECT_URL=$(echo "${OUTPUT}" | jq -r '.url // empty')
-  PROJECT_NUMBER=$(echo "${OUTPUT}" | jq -r '.number // empty')
+# --- サマリー出力 ---
 
-  if [[ -n "${PROJECT_URL}" ]]; then
-    echo ""
-    echo "Project URL: ${PROJECT_URL}"
-    echo "Project Number: ${PROJECT_NUMBER}"
+if [[ -n "${PROJECT_URL}" ]]; then
+  echo ""
+  echo "Project URL: ${PROJECT_URL}"
+  echo "Project Number: ${PROJECT_NUMBER}"
 
-    # GitHub Actions のサマリーに出力
-    if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-      {
-        echo "## GitHub Project 作成完了"
-        echo ""
-        echo "| 項目 | 値 |"
-        echo "|------|-----|"
-        echo "| Owner | \`${PROJECT_OWNER}\` |"
-        echo "| Type | ${OWNER_TYPE} |"
-        echo "| Title | ${PROJECT_TITLE} |"
-        echo "| Visibility | ${PROJECT_VISIBILITY} |"
-        echo "| Number | ${PROJECT_NUMBER} |"
-        echo "| URL | ${PROJECT_URL} |"
-      } >> "${GITHUB_STEP_SUMMARY}"
-    fi
+  # GitHub Actions のサマリーに出力
+  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    {
+      echo "## GitHub Project 作成完了"
+      echo ""
+      echo "| 項目 | 値 |"
+      echo "|------|-----|"
+      echo "| Owner | \`${PROJECT_OWNER}\` |"
+      echo "| Title | ${PROJECT_TITLE} |"
+      echo "| Type | ${OWNER_TYPE} |"
+      echo "| Visibility | ${PROJECT_VISIBILITY} |"
+      echo "| Number | ${PROJECT_NUMBER} |"
+      echo "| URL | ${PROJECT_URL} |"
+    } >> "${GITHUB_STEP_SUMMARY}"
   fi
 fi
 
