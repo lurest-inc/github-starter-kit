@@ -5,7 +5,8 @@ set -euo pipefail
 # 環境変数:
 #   GH_TOKEN       - GitHub PAT（Projects 操作権限が必要）
 #   PROJECT_OWNER  - Project を作成する Owner
-#   PROJECT_TITLE  - 作成する Project のタイトル
+#   PROJECT_TITLE      - 作成する Project のタイトル
+#   PROJECT_VISIBILITY - Project の公開範囲（PUBLIC / PRIVATE、デフォルト: PRIVATE）
 
 # --- バリデーション ---
 
@@ -21,6 +22,13 @@ fi
 
 if [[ -z "${PROJECT_TITLE:-}" ]]; then
   echo "::error::PROJECT_TITLE が指定されていません。"
+  exit 1
+fi
+
+# PROJECT_VISIBILITY のデフォルト値設定とバリデーション
+PROJECT_VISIBILITY="${PROJECT_VISIBILITY:-PRIVATE}"
+if [[ "${PROJECT_VISIBILITY}" != "PUBLIC" && "${PROJECT_VISIBILITY}" != "PRIVATE" ]]; then
+  echo "::error::PROJECT_VISIBILITY の値が不正です: ${PROJECT_VISIBILITY}（PUBLIC または PRIVATE を指定してください）"
   exit 1
 fi
 
@@ -75,6 +83,7 @@ echo ""
 echo "GitHub Project を作成します..."
 echo "  Owner: ${PROJECT_OWNER}"
 echo "  Title: ${PROJECT_TITLE}"
+echo "  Visibility: ${PROJECT_VISIBILITY}"
 echo "  Type:  ${OWNER_TYPE}"
 
 if ! OUTPUT=$(gh project create --title "${PROJECT_TITLE}" --owner "${PROJECT_OWNER}" --format json 2>&1); then
@@ -99,6 +108,27 @@ fi
 echo "::notice::GitHub Project の作成に成功しました。"
 echo "${OUTPUT}" | jq '.' 2>/dev/null || echo "${OUTPUT}"
 
+# --- Visibility 設定 ---
+
+PROJECT_NUMBER_FOR_EDIT=$(echo "${OUTPUT}" | jq -r '.number // empty')
+
+if [[ -n "${PROJECT_NUMBER_FOR_EDIT}" ]]; then
+  echo ""
+  echo "Visibility を ${PROJECT_VISIBILITY} に設定します..."
+
+  if ! EDIT_OUTPUT=$(gh project edit "${PROJECT_NUMBER_FOR_EDIT}" --owner "${PROJECT_OWNER}" --visibility "${PROJECT_VISIBILITY}" 2>&1); then
+    SAFE_EDIT_OUTPUT=$(sanitize_for_workflow_command "${EDIT_OUTPUT}")
+    echo "::error::Visibility の設定に失敗しました: ${SAFE_EDIT_OUTPUT}"
+    echo "::error::Project は作成されましたが、Visibility はデフォルト（PRIVATE）のままです。"
+    echo "手動で設定してください: gh project edit ${PROJECT_NUMBER_FOR_EDIT} --owner ${PROJECT_OWNER} --visibility ${PROJECT_VISIBILITY}"
+    exit 1
+  fi
+
+  echo "::notice::Visibility を ${PROJECT_VISIBILITY} に設定しました。"
+else
+  echo "::warning::Project Number を取得できなかったため、Visibility の設定をスキップしました。"
+fi
+
 # Project URL をサマリーに出力
 if command -v jq &>/dev/null; then
   PROJECT_URL=$(echo "${OUTPUT}" | jq -r '.url // empty')
@@ -119,6 +149,7 @@ if command -v jq &>/dev/null; then
         echo "| Owner | \`${PROJECT_OWNER}\` |"
         echo "| Type | ${OWNER_TYPE} |"
         echo "| Title | ${PROJECT_TITLE} |"
+        echo "| Visibility | ${PROJECT_VISIBILITY} |"
         echo "| Number | ${PROJECT_NUMBER} |"
         echo "| URL | ${PROJECT_URL} |"
       } >> "${GITHUB_STEP_SUMMARY}"
