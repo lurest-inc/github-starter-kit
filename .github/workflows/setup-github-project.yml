@@ -1,0 +1,41 @@
+name: Setup GitHub Project
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_owner:
+        description: "Project を作成する Owner（ユーザー名または Organization 名）"
+        required: true
+        type: string
+      project_title:
+        description: "作成する Project のタイトル"
+        required: true
+        type: string
+      owner_type:
+        description: "Owner の種類"
+        required: true
+        type: choice
+        options:
+          - user
+          - organization
+        default: "user"
+
+permissions:
+  contents: read
+
+jobs:
+  create-project:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub Project
+        env:
+          GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+          PROJECT_OWNER: ${{ inputs.project_owner }}
+          PROJECT_TITLE: ${{ inputs.project_title }}
+          OWNER_TYPE: ${{ inputs.owner_type }}
+        run: |
+          chmod +x scripts/setup-github-project.sh
+          bash scripts/setup-github-project.sh
