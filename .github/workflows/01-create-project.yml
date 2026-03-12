@@ -1,0 +1,60 @@
+name: "① GitHub Project 新規作成"
+
+on:
+  workflow_dispatch:
+    inputs:
+      project_title:
+        description: "作成する Project のタイトル"
+        required: true
+        type: string
+      visibility:
+        description: "Project の公開範囲"
+        required: true
+        type: choice
+        default: "PRIVATE"
+        options:
+          - "PRIVATE"
+          - "PUBLIC"
+
+permissions:
+  contents: read
+
+jobs:
+  create-project:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.PROJECT_PAT }}
+      PROJECT_OWNER: ${{ github.repository_owner }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6.0.2
+
+      - name: Project を作成
+        id: create
+        env:
+          PROJECT_TITLE: ${{ inputs.project_title }}
+          PROJECT_VISIBILITY: ${{ inputs.visibility }}
+        run: |
+          chmod +x scripts/setup-github-project.sh
+          bash scripts/setup-github-project.sh
+
+      - name: カスタムフィールドを作成
+        env:
+          PROJECT_NUMBER: ${{ steps.create.outputs.project_number }}
+        run: |
+          chmod +x scripts/setup-project-fields.sh
+          bash scripts/setup-project-fields.sh
+
+      - name: ステータスカラムを設定
+        env:
+          PROJECT_NUMBER: ${{ steps.create.outputs.project_number }}
+        run: |
+          chmod +x scripts/setup-status-columns.sh
+          bash scripts/setup-status-columns.sh
+
+      - name: View を作成
+        env:
+          PROJECT_NUMBER: ${{ steps.create.outputs.project_number }}
+        run: |
+          chmod +x scripts/create-project-views.sh
+          bash scripts/create-project-views.sh
