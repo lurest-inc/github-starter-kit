@@ -80,4 +80,4 @@ flowchart TD
 
 ## 使用ワークフロー
 
-- [③ Issue/PR 一括紐付け](../03-add-items-to-project)
+- [③ Issue/PR 一括紐付け](../workflows/03-add-items-to-project)

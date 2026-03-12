@@ -65,20 +65,6 @@
 
 ```mermaid
 flowchart LR
-    A["workflow_dispatch"] --> B["パラメータ取得"]
-    B --> C["GraphQL API で\nProject アイテム取得"]
-    C --> D["ページネーション\n（100件ずつ）"]
-    D --> D
-    D --> E["アイテム一覧"]
-
-    E --> F{"output_format"}
-    F -- markdown --> G[".md"]
-    F -- csv --> H[".csv"]
-    F -- tsv --> I[".tsv"]
-    F -- json --> J[".json"]
-
-    G & H & I & J --> K["ファイル出力"]
-
-    K --> L["Actions Summary\nにプレビュー表示"]
-    K --> M["Artifact として\nアップロード"]
+    A["workflow_dispatch"] --> B["export-items ジョブ\nProject アイテムを取得し指定形式でエクスポート"]
+    B --> C["Actions Summary に表示\n& Artifact アップロード"]
 ```
