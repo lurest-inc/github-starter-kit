@@ -13,9 +13,46 @@ Project に View を自動作成するスクリプトです。
 
 ## 作成される View
 
-- `Table`（TABLE_LAYOUT）
-- `Board`（BOARD_LAYOUT）
-- `Roadmap`（ROADMAP_LAYOUT）
+デフォルトの `VIEW_DEFINITIONS` で以下の View が作成されます:
+
+- `Table`（`table`）
+- `Board`（`board`）
+- `Roadmap`（`roadmap`）
+
+### VIEW_DEFINITIONS の拡張フォーマット
+
+`VIEW_DEFINITIONS` は以下のパラメータをサポートします:
+
+| パラメータ | 型 | 必須 | 説明 |
+|-----------|---|:----:|------|
+| `name` | string | ✅ | View の名前 |
+| `layout` | string | ✅ | `table` / `board` / `roadmap` |
+| `filter` | string | - | フィルタクエリ（例: `is:issue`, `is:open`） |
+| `visible_fields` | array of integers | - | 表示するフィールドの ID 配列（`roadmap` レイアウトには非対応） |
+
+```json
+[
+  {
+    "name": "Table",
+    "layout": "table",
+    "filter": "is:open",
+    "visible_fields": [123, 456, 789]
+  },
+  {
+    "name": "Board",
+    "layout": "board",
+    "filter": "is:issue"
+  },
+  {
+    "name": "Roadmap",
+    "layout": "roadmap"
+  }
+]
+```
+
+- `filter` と `visible_fields` は任意。未指定時はデフォルト設定で View が作成される
+- `visible_fields` は `roadmap` レイアウトには適用されない（API 仕様）
+- `filter` の構文は [Filtering projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/filtering-projects) を参照
 
 ## 処理フロー
 
@@ -23,7 +60,7 @@ Project に View を自動作成するスクリプトです。
 flowchart TD
     A["開始"] --> B["環境変数バリデーション"]
     B --> C["オーナータイプ判定"]
-    C --> D["GraphQL で既存 View 一覧を取得\n（ページネーション対応）"]
+    C --> D["REST API で既存 View 一覧を取得\n（ページネーション対応）"]
     D --> E{"取得成功?"}
     E -- "No" --> F["エラー出力"]
     F --> G["異常終了"]
@@ -31,7 +68,7 @@ flowchart TD
     E -- "Yes" --> H["View 定義をループ\n（Table / Board / Roadmap）"]
     H --> I{"同名 View\n既に存在?"}
     I -- "Yes" --> J["スキップ"]
-    I -- "No" --> K["GraphQL mutation で\nView を作成"]
+    I -- "No" --> K["REST API で\nView を作成"]
     K --> L{"作成成功?"}
     L -- "Yes" --> M["作成カウント +1"]
     L -- "No" --> N["失敗カウント +1"]
@@ -49,24 +86,30 @@ flowchart TD
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
 | オーナータイプ判定 | `detect_owner_type` で Organization / User を判別 | `gh api users/{owner}` |
-| 既存 View 取得 | GraphQL クエリで Project の全 View（名前・レイアウト）をページネーション付きで取得（100件ずつ） | `gh api graphql` — `projectV2.views(first: 100)` |
+| REST API パス構築 | オーナータイプに応じて `orgs/{org}/projectsV2/{number}/views` または `users/{user}/projectsV2/{number}/views` を構築 | — |
+| 既存 View 取得 | REST API で Project の全 View 名をページネーション付きで取得 | `gh api {path} --paginate` |
 | 重複チェック | 既存 View 名リストと定義済み View 名を `grep -Fqx` で完全一致比較 | — |
-| View 作成 | GraphQL mutation で View を作成。GraphQL 変数（`$projectId`・`$name`・`$layout`）を使用して安全に値を渡す | `gh api graphql` — `createProjectV2View` mutation |
+| View 作成 | REST API で View を作成。`name`・`layout` に加え、任意で `filter`・`visible_fields` を送信 | `gh api {path} --method POST` |
 | サマリー出力 | 作成・スキップ・失敗の件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
 ## API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
-| `projectV2.views` (GraphQL) | 既存 View 一覧の取得 | [ProjectV2](https://docs.github.com/en/graphql/reference/objects#projectv2) |
-| `createProjectV2View` (GraphQL Mutation) | View の作成 | [createProjectV2View](https://docs.github.com/en/graphql/reference/mutations#createprojectv2view) |
-| `ProjectV2ViewLayout` (GraphQL Enum) | View レイアウト種別 | [ProjectV2ViewLayout](https://docs.github.com/en/graphql/reference/enums#projectv2viewlayout) |
+| `GET /orgs/{org}/projectsV2/{project_number}/views` | 既存 View 一覧の取得（Organization） | [REST API - Project views](https://docs.github.com/en/enterprise-cloud@latest/rest/projects/views?apiVersion=2026-03-10) |
+| `GET /users/{user_id}/projectsV2/{project_number}/views` | 既存 View 一覧の取得（User） | [REST API - Project views](https://docs.github.com/en/enterprise-cloud@latest/rest/projects/views?apiVersion=2026-03-10) |
+| `POST /orgs/{org}/projectsV2/{project_number}/views` | View の作成（Organization） | [REST API - Project views](https://docs.github.com/en/enterprise-cloud@latest/rest/projects/views?apiVersion=2026-03-10) |
+| `POST /users/{user_id}/projectsV2/{project_number}/views` | View の作成（User） | [REST API - Project views](https://docs.github.com/en/enterprise-cloud@latest/rest/projects/views?apiVersion=2026-03-10) |
+
+### API バージョン要件
+
+REST API バージョン `2026-03-10` が必要です。スクリプトでは `X-GitHub-Api-Version: 2026-03-10` ヘッダを自動付与します。
 
 ### パラメータ上限
 
 | パラメータ | 現在の値 | 備考 |
 |-----------|---------|------|
-| `views(first: N)` | 100 | View のページサイズ（ページネーション対応） |
+| `--paginate` | — | `gh api` のページネーション機能を使用（自動） |
 
 ## 使用ワークフロー
 
