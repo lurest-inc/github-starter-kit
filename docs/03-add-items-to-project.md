@@ -21,17 +21,3 @@
 | `item_label` | 絞り込みラベル（指定ラベルのみ追加） | - | `bug` |
 
 > **Note:** 既に Project に追加済みのアイテムは自動的にスキップされます。
-
-## ワークフロー構成
-
-```
-03-add-items-to-project.yml
-  └── add-items ジョブ
-      └── scripts/add-items-to-project.sh    # アイテム一括追加
-```
-
-## スクリプト詳細
-
-| スクリプト | 概要 |
-|-----------|------|
-| [add-items-to-project.sh](scripts/add-items-to-project) | 指定リポジトリの Issue/PR を Project に一括追加する。追加済みアイテムは自動スキップ |
