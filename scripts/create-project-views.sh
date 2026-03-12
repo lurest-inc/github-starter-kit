@@ -2,6 +2,8 @@
 set -euo pipefail
 
 # GitHub Project View 作成スクリプト
+# https://mabubu0203.github.io/github-projects-starter-kit/scripts/create-project-views
+#
 # 環境変数:
 #   GH_TOKEN          - GitHub PAT（Projects 操作権限が必要）
 #   PROJECT_OWNER     - Project の所有者
