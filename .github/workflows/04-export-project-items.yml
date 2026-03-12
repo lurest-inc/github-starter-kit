@@ -43,7 +43,7 @@ jobs:
 
       - name: アーティファクトをアップロード
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7.0.0
         with:
           name: project-items-export
           path: export-*
