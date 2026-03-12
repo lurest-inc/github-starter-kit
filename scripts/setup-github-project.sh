@@ -36,6 +36,11 @@ if [[ -z "${PROJECT_TITLE:-}" ]]; then
   exit 1
 fi
 
+if ! command -v jq &>/dev/null; then
+  echo "::error::jq がインストールされていません。Project 情報の抽出に必要です。"
+  exit 1
+fi
+
 # PROJECT_VISIBILITY のデフォルト値設定とバリデーション
 PROJECT_VISIBILITY="${PROJECT_VISIBILITY:-PRIVATE}"
 if [[ "${PROJECT_VISIBILITY}" != "PUBLIC" && "${PROJECT_VISIBILITY}" != "PRIVATE" ]]; then
@@ -111,20 +116,17 @@ echo "${OUTPUT}" | jq '.' 2>/dev/null || echo "${OUTPUT}"
 
 # --- Project 情報の抽出 ---
 
-if command -v jq &>/dev/null; then
-  if ! PROJECT_NUMBER=$(echo "${OUTPUT}" | jq -r '.number // empty'); then
-    echo "::error::jq による Project Number の取得に失敗しました。"
-    exit 1
-  fi
-  PROJECT_URL=$(echo "${OUTPUT}" | jq -r '.url // empty')
-else
-  echo "::error::jq がインストールされていません。Project 情報の取得に必要です。"
+if ! PROJECT_NUMBER=$(echo "${OUTPUT}" | jq -r '.number // empty'); then
+  echo "::error::jq による Project Number の取得に失敗しました。"
   exit 1
 fi
+PROJECT_URL=$(echo "${OUTPUT}" | jq -r '.url // empty')
 
 if [[ -z "${PROJECT_NUMBER}" ]]; then
   echo "::error::Project Number を抽出できませんでした。gh project create の出力を確認してください。"
-  echo "::error::出力: $(echo "${OUTPUT}" | head -5)"
+  OUTPUT_HEAD=$(echo "${OUTPUT}" | head -5)
+  SAFE_OUTPUT_HEAD=$(sanitize_for_workflow_command "${OUTPUT_HEAD}")
+  echo "::error::出力: ${SAFE_OUTPUT_HEAD}"
   exit 1
 fi
 
