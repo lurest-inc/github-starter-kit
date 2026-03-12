@@ -2,6 +2,8 @@
 set -euo pipefail
 
 # GitHub Project アイテム一括追加スクリプト
+# https://mabubu0203.github.io/github-projects-starter-kit/scripts/add-items-to-project
+#
 # 環境変数:
 #   GH_TOKEN       - GitHub PAT（Projects 操作権限が必要）
 #   PROJECT_OWNER  - Project の所有者
