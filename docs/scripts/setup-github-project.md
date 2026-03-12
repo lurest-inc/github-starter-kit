@@ -61,4 +61,4 @@ flowchart TD
 
 ## 使用ワークフロー
 
-- [① GitHub Project 新規作成](../01-create-project)
+- [① GitHub Project 新規作成](../workflows/01-create-project)

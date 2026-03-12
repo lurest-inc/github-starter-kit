@@ -62,4 +62,4 @@ flowchart TD
 
 ## 使用ワークフロー
 
-- [④ Project アイテム エクスポート](../04-export-project-items)
+- [④ Project アイテム エクスポート](../workflows/04-export-project-items)

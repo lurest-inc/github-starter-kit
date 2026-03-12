@@ -84,5 +84,5 @@ sequenceDiagram
 
 ## 使用ワークフロー
 
-- [① GitHub Project 新規作成](../01-create-project)
-- [② GitHub Project 拡張](../02-extend-project)
+- [① GitHub Project 新規作成](../workflows/01-create-project)
+- [② GitHub Project 拡張](../workflows/02-extend-project)

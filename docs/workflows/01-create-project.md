@@ -20,13 +20,7 @@
 
 ```mermaid
 flowchart TD
-    A["workflow_dispatch\n（タイトル・公開範囲）"] --> B["create-project ジョブ"]
-    B --> C["setup-github-project.sh\nProject を作成"]
-    C --> D["project_number を出力"]
-
-    D --> E["extend-project ジョブ\n（_reusable-extend-project.yml）"]
-    E --> F["setup-project-fields.sh\nカスタムフィールドを作成"]
-    F --> G["setup-status-columns.sh\nステータスカラムを設定"]
-    G --> H["create-project-views.sh\nView を作成"]
-    H --> I["完了"]
+    A["workflow_dispatch\n（タイトル・公開範囲）"] --> B["create-project ジョブ\nProject を新規作成し project_number を出力"]
+    B --> C["extend-project ジョブ\nフィールド・ステータス・View を一括セットアップ"]
+    C --> D["完了"]
 ```
