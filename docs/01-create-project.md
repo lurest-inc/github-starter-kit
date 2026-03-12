@@ -16,13 +16,7 @@
 | `project_title` | Project のタイトル | ✅ | `My Project Board` |
 | `visibility` | Project の公開範囲 | ✅ | `PRIVATE`（デフォルト） / `PUBLIC` |
 
-> **Note:** Project の Owner はリポジトリの Owner から自動取得されます。
-> カスタムフィールド・ステータスカラム・View の定義は各スクリプト内に固定されています。カスタマイズする場合はスクリプトを直接編集してください。
-
 ## 処理フロー
-
-<details>
-<summary>フローチャートを表示</summary>
 
 ```mermaid
 flowchart TD
@@ -36,5 +30,3 @@ flowchart TD
     G --> H["create-project-views.sh\nView を作成"]
     H --> I["完了"]
 ```
-
-</details>
