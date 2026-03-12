@@ -1,5 +1,5 @@
 [
-  {"name": "Table", "layout": "table"},
-  {"name": "Board", "layout": "board"},
-  {"name": "Roadmap", "layout": "roadmap"}
+  {"name": "Table", "layout": "table", "filter": "is:open"},
+  {"name": "Board", "layout": "board", "filter": "is:open is:issue"},
+  {"name": "Roadmap", "layout": "roadmap", "filter": "is:open"}
 ]
