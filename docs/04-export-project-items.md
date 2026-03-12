@@ -47,18 +47,3 @@
 
 - **GitHub Actions Summary:** 実行結果のサマリーとプレビューが表示されます
 - **artifact:** エクスポートファイルが artifact としてダウンロード可能です（保持期間: 30日）
-
-## ワークフロー構成
-
-```
-04-export-project-items.yml
-  └── export-items ジョブ
-      ├── scripts/export-project-items.sh    # アイテム取得・エクスポート
-      └── artifact アップロード              # エクスポートファイルを保存
-```
-
-## スクリプト詳細
-
-| スクリプト | 概要 |
-|-----------|------|
-| [export-project-items.sh](scripts/export-project-items) | 指定 Project の Issue/PR 一覧を取得し、指定形式でエクスポートする |
