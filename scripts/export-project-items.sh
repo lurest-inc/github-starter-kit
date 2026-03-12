@@ -109,19 +109,23 @@ GRAPHQL
       return 1
     fi
 
-    # GraphQL エラーチェック
-    local errors
-    errors=$(echo "${result}" | jq -r '.errors // empty' 2>/dev/null || true)
-    if [[ -n "${errors}" ]]; then
+    # GraphQL エラーチェック（他スクリプトと統一）
+    if echo "${result}" | jq -e '.errors and (.errors | length > 0)' >/dev/null 2>&1; then
       local safe_errors
-      safe_errors=$(sanitize_for_workflow_command "${errors}")
+      safe_errors=$(sanitize_for_workflow_command "$(echo "${result}" | jq -c '.errors')")
       echo "::error::GraphQL エラーが発生しました: ${safe_errors}" >&2
       return 1
     fi
 
-    # Project タイトル取得（初回のみ）
+    # Project の存在チェック（初回のみ）
     if [[ "${page}" -eq 1 ]]; then
-      PROJECT_TITLE=$(echo "${result}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.title // \"\"" 2>/dev/null || true)
+      local project_id
+      project_id=$(echo "${result}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.title // empty" 2>/dev/null || true)
+      if [[ -z "${project_id}" ]]; then
+        echo "::error::Project が見つかりません。PROJECT_OWNER（${PROJECT_OWNER}）と PROJECT_NUMBER（${PROJECT_NUMBER}）を確認してください。" >&2
+        return 1
+      fi
+      PROJECT_TITLE="${project_id}"
     fi
 
     # アイテムを正規化して追加

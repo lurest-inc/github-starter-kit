@@ -64,7 +64,7 @@ scripts/
   ├── setup-status-columns.sh      # ステータスカラム設定スクリプト
   ├── create-project-views.sh      # View 作成スクリプト
   ├── add-items-to-project.sh      # アイテム一括追加スクリプト
-  └── export-project-items.sh     # アイテムエクスポートスクリプト
+  └── export-project-items.sh      # アイテムエクスポートスクリプト
 ```
 
 ## リポジトリ
