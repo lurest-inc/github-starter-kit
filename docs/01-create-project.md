@@ -16,9 +16,6 @@
 | `project_title` | Project のタイトル | ✅ | `My Project Board` |
 | `visibility` | Project の公開範囲 | ✅ | `PRIVATE`（デフォルト） / `PUBLIC` |
 
-> **Note:** Project の Owner はリポジトリの Owner から自動取得されます。
-> カスタムフィールド・ステータスカラム・View の定義は各スクリプト内に固定されています。カスタマイズする場合はスクリプトを直接編集してください。
-
 ## 処理フロー
 
 ```mermaid
