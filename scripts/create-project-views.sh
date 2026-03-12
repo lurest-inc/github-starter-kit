@@ -9,13 +9,9 @@ set -euo pipefail
 #   PROJECT_OWNER     - Project の所有者
 #   PROJECT_NUMBER    - 対象 Project の Number（数値）
 
-# --- View 定義 ---
+# --- REST API バージョン ---
 
-VIEW_DEFINITIONS='[
-  {"name": "Table", "layout": "TABLE_LAYOUT"},
-  {"name": "Board", "layout": "BOARD_LAYOUT"},
-  {"name": "Roadmap", "layout": "ROADMAP_LAYOUT"}
-]'
+REST_API_VERSION="2026-03-10"
 
 # --- 共通ライブラリ読み込み ---
 
@@ -26,72 +22,48 @@ source "${SCRIPT_DIR}/lib/common.sh"
 
 validate_common_project_env
 
+# --- View 定義の読み込み ---
+
+VIEW_DEFINITIONS_FILE="${SCRIPT_DIR}/config/view-definitions.json"
+if [[ ! -f "${VIEW_DEFINITIONS_FILE}" ]]; then
+  echo "::error::View 定義ファイルが見つかりません: ${VIEW_DEFINITIONS_FILE}"
+  exit 1
+fi
+VIEW_DEFINITIONS=$(cat "${VIEW_DEFINITIONS_FILE}")
+
+# --- REST API パス構築 ---
+
+if [[ "${OWNER_TYPE}" == "Organization" ]]; then
+  VIEWS_API_PATH="orgs/${PROJECT_OWNER}/projectsV2/${PROJECT_NUMBER}/views"
+elif [[ "${OWNER_TYPE}" == "User" ]]; then
+  VIEWS_API_PATH="users/${PROJECT_OWNER}/projectsV2/${PROJECT_NUMBER}/views"
+fi
+
 # --- 既存 View 情報の取得（ページネーション対応） ---
 
 echo ""
 echo "Project #${PROJECT_NUMBER} の既存 View を取得しています..."
 
-PROJECT_ID=""
-ALL_VIEW_NODES="[]"
-HAS_NEXT_PAGE="true"
-END_CURSOR=""
+if ! ALL_VIEW_NODES=$(gh api "${VIEWS_API_PATH}" \
+  -H "X-GitHub-Api-Version: ${REST_API_VERSION}" \
+  --paginate \
+  --jq '.[].name' 2>&1); then
+  SAFE_RESULT=$(sanitize_for_workflow_command "${ALL_VIEW_NODES}")
+  echo "::error::既存 View の取得に失敗しました: ${SAFE_RESULT}"
+  exit 1
+fi
 
-while [[ "${HAS_NEXT_PAGE}" == "true" ]]; do
-  if [[ -z "${END_CURSOR}" ]]; then
-    AFTER_CLAUSE=""
-  else
-    AFTER_CLAUSE=", after: \"${END_CURSOR}\""
-  fi
-
-  VIEW_QUERY=$(cat <<GRAPHQL
-query {
-  ${OWNER_QUERY_FIELD}(login: "${PROJECT_OWNER}") {
-    projectV2(number: ${PROJECT_NUMBER}) {
-      id
-      views(first: 100${AFTER_CLAUSE}) {
-        nodes {
-          id
-          name
-          layout
-        }
-        pageInfo {
-          hasNextPage
-          endCursor
-        }
-      }
-    }
-  }
-}
-GRAPHQL
-)
-
-  VIEW_RESULT=$(run_graphql "${VIEW_QUERY}" "Project 情報の取得")
-
-  # Project ID の取得（初回のみ）
-  if [[ -z "${PROJECT_ID}" ]]; then
-    PROJECT_ID=$(echo "${VIEW_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.id // empty")
-    if [[ -z "${PROJECT_ID}" ]]; then
-      echo "::error::Project ID を取得できませんでした。Project #${PROJECT_NUMBER} が存在するか確認してください。"
-      exit 1
-    fi
-    echo "  Project ID: ${PROJECT_ID}"
-  fi
-
-  # View ノードを蓄積
-  PAGE_NODES=$(echo "${VIEW_RESULT}" | jq -c ".data.${OWNER_QUERY_FIELD}.projectV2.views.nodes")
-  ALL_VIEW_NODES=$(echo "${ALL_VIEW_NODES}" "${PAGE_NODES}" | jq -s '.[0] + .[1]')
-
-  # ページネーション情報
-  HAS_NEXT_PAGE=$(echo "${VIEW_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.views.pageInfo.hasNextPage")
-  END_CURSOR=$(echo "${VIEW_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.views.pageInfo.endCursor // empty")
-done
-
-# 既存 View 名のリストを取得
-EXISTING_VIEWS=$(echo "${ALL_VIEW_NODES}" | jq -r '.[].name // empty' 2>/dev/null)
+EXISTING_VIEWS="${ALL_VIEW_NODES}"
 
 echo ""
 echo "既存の View:"
-echo "${ALL_VIEW_NODES}" | jq -r '.[] | "  - \(.name) (\(.layout))"' 2>/dev/null || echo "  （取得できませんでした）"
+if [[ -n "${EXISTING_VIEWS}" ]]; then
+  echo "${EXISTING_VIEWS}" | while IFS= read -r name; do
+    echo "  - ${name}"
+  done
+else
+  echo "  （なし）"
+fi
 
 # --- View の作成 ---
 
@@ -106,6 +78,8 @@ FAILED_COUNT=0
 for i in $(seq 0 $((VIEW_COUNT - 1))); do
   VIEW_NAME=$(echo "${VIEW_DEFINITIONS}" | jq -r ".[$i].name")
   VIEW_LAYOUT=$(echo "${VIEW_DEFINITIONS}" | jq -r ".[$i].layout")
+  VIEW_FILTER=$(echo "${VIEW_DEFINITIONS}" | jq -r ".[$i].filter // empty")
+  VIEW_VISIBLE_FIELDS=$(echo "${VIEW_DEFINITIONS}" | jq -c ".[$i].visible_fields // empty")
   SAFE_VIEW_NAME=$(sanitize_for_workflow_command "${VIEW_NAME}")
 
   echo ""
@@ -118,43 +92,35 @@ for i in $(seq 0 $((VIEW_COUNT - 1))); do
     continue
   fi
 
-  # GraphQL mutation で View を作成（GraphQL 変数を使用して安全に値を渡す）
-  CREATE_MUTATION='mutation($projectId: ID!, $name: String!, $layout: ProjectV2ViewLayout!) {
-  createProjectV2View(input: {projectId: $projectId, name: $name, layout: $layout}) {
-    projectV2View {
-      id
-      name
-      layout
-    }
-  }
-}'
+  # リクエストボディの構築
+  REQUEST_BODY=$(jq -n --arg name "${VIEW_NAME}" --arg layout "${VIEW_LAYOUT}" \
+    '{name: $name, layout: $layout}')
 
-  if ! CREATE_RESULT=$(gh api graphql \
-    -f query="${CREATE_MUTATION}" \
-    -f projectId="${PROJECT_ID}" \
-    -f name="${VIEW_NAME}" \
-    -f layout="${VIEW_LAYOUT}" 2>&1); then
+  if [[ -n "${VIEW_FILTER}" ]]; then
+    REQUEST_BODY=$(echo "${REQUEST_BODY}" | jq --arg filter "${VIEW_FILTER}" '. + {filter: $filter}')
+  fi
+
+  if [[ -n "${VIEW_VISIBLE_FIELDS}" && "${VIEW_VISIBLE_FIELDS}" != "null" ]]; then
+    REQUEST_BODY=$(echo "${REQUEST_BODY}" | jq --argjson visible_fields "${VIEW_VISIBLE_FIELDS}" '. + {visible_fields: $visible_fields}')
+  fi
+
+  # REST API で View を作成
+  if ! CREATE_RESULT=$(gh api "${VIEWS_API_PATH}" \
+    -H "X-GitHub-Api-Version: ${REST_API_VERSION}" \
+    --method POST \
+    --input - <<< "${REQUEST_BODY}" 2>&1); then
     SAFE_RESULT=$(sanitize_for_workflow_command "${CREATE_RESULT}")
     echo "  ::error::View '${SAFE_VIEW_NAME}' の作成に失敗しました: ${SAFE_RESULT}"
     FAILED_COUNT=$((FAILED_COUNT + 1))
     continue
   fi
 
-  # GraphQL エラーチェック
-  if echo "${CREATE_RESULT}" | jq -e '.errors and (.errors | length > 0)' >/dev/null 2>&1; then
-    SAFE_ERRORS=$(sanitize_for_workflow_command "$(echo "${CREATE_RESULT}" | jq -c '.errors')")
-    echo "  ::error::View '${SAFE_VIEW_NAME}' の作成中に GraphQL エラーが発生しました: ${SAFE_ERRORS}"
-    FAILED_COUNT=$((FAILED_COUNT + 1))
-    continue
-  fi
-
-  CREATED_VIEW_ID=$(echo "${CREATE_RESULT}" | jq -r '.data.createProjectV2View.projectV2View.id // empty')
+  CREATED_VIEW_ID=$(echo "${CREATE_RESULT}" | jq -r '.id // empty')
   echo "  ::notice::View '${SAFE_VIEW_NAME}' を作成しました。(ID: ${CREATED_VIEW_ID})"
   CREATED_COUNT=$((CREATED_COUNT + 1))
 
   # 作成した View 名を既存リストに追加（後続の重複チェック用）
-  EXISTING_VIEWS="${EXISTING_VIEWS}
-${VIEW_NAME}"
+  EXISTING_VIEWS+=$'\n'"${VIEW_NAME}"
 done
 
 # --- サマリー出力 ---
@@ -176,9 +142,9 @@ if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
     echo ""
     echo "### View 一覧"
     echo ""
-    echo "| View 名 | レイアウト |"
-    echo "|---------|-----------|"
-    echo "${VIEW_DEFINITIONS}" | jq -r '.[] | "| \(.name) | \(.layout) |"'
+    echo "| View 名 | レイアウト | フィルタ |"
+    echo "|---------|-----------|---------|"
+    echo "${VIEW_DEFINITIONS}" | jq -r '.[] | "| \(.name) | \(.layout) | \(.filter // "-") |"'
   } >> "${GITHUB_STEP_SUMMARY}"
 fi
 
