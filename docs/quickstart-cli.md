@@ -41,6 +41,8 @@ gh secret set PROJECT_PAT --repo <owner>/github-projects-starter-kit
 
 ## 4. ワークフローを実行する
 
+> **Note:** フォーク直後は GitHub Actions が無効になっています。事前に有効化が必要です。詳しくは [FAQ > Q7. フォーク後に GitHub Actions が動きません](faq#q7-フォーク後に-github-actions-が動きません) を参照してください。
+
 ### ① GitHub Project 新規作成
 
 ```bash
