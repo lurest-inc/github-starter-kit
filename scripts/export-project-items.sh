@@ -107,8 +107,7 @@ GRAPHQL
       'if $after == "" then {login: $login, number: $number} else {login: $login, number: $number, after: $after} end')
 
     local result
-    if ! result=$(run_graphql_json "${query}" "Project アイテムの取得" "${variables_json}" 2>&1); then
-      echo "::error::${result}" >&2
+    if ! result=$(run_graphql_json "${query}" "Project アイテムの取得" "${variables_json}"); then
       return 1
     fi
 

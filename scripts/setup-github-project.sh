@@ -50,8 +50,7 @@ EXISTING_PROJECT=""
 HAS_NEXT_PAGE="true"
 END_CURSOR=""
 
-while [[ "${HAS_NEXT_PAGE}" == "true" ]]; do
-  EXISTING_QUERY_TEMPLATE=$(cat <<'GRAPHQL'
+EXISTING_QUERY_TEMPLATE=$(cat <<'GRAPHQL'
 query($login: String!, $after: String) {
   __OWNER_FIELD__(login: $login) {
     projectsV2(first: 100, after: $after) {
@@ -65,8 +64,9 @@ query($login: String!, $after: String) {
 }
 GRAPHQL
 )
-  EXISTING_QUERY=$(apply_owner_field "${EXISTING_QUERY_TEMPLATE}")
+EXISTING_QUERY=$(apply_owner_field "${EXISTING_QUERY_TEMPLATE}")
 
+while [[ "${HAS_NEXT_PAGE}" == "true" ]]; do
   VARIABLES_JSON=$(jq -n \
     --arg login "${PROJECT_OWNER}" \
     --arg after "${END_CURSOR}" \
