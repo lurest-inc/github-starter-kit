@@ -179,7 +179,7 @@ if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
     echo "| スキップ | ${SKIPPED_COUNT} 件（既存） |"
     echo "| 失敗 | ${FAILED_COUNT} 件 |"
     echo ""
-    echo "### フィールド一覧"
+    echo "### カスタムフィールド一覧"
     echo ""
     echo "| フィールド名 | データ型 | 選択肢 |"
     echo "|-------------|---------|--------|"
