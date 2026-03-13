@@ -71,7 +71,7 @@ runs:
             fi
           fi
 
-          if [[ "${STATUS}" != "success" ]]; then
+          if [[ "${STATUS}" == "failure" ]]; then
             # フォークの場合はフォーク元リポジトリを取得
             UPSTREAM_REPO=$(gh api "repos/${{ github.repository }}" --jq 'select(.fork) | .parent.full_name' 2>/dev/null || true)
             if [[ -n "${UPSTREAM_REPO}" ]]; then
