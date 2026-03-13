@@ -37,8 +37,8 @@ validate_enum "ITEM_TYPE" "${ITEM_TYPE}" "all" "issues" "prs"
 # ステータス自動付与ルール: open → Backlog、closed/merged → Done
 INITIAL_STATUS="Backlog"
 
-INCLUDE_ISSUES=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "issues" ]] && echo "true" || echo "false" )
-INCLUDE_PRS=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "prs" ]] && echo "true" || echo "false" )
+should_include_issues() { [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "issues" ]]; }
+should_include_prs() { [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "prs" ]]; }
 
 # --- Project ID と Status フィールド情報の取得 ---
 
@@ -70,34 +70,38 @@ GRAPHQL
 
 STATUS_FIELD_RESULT=$(run_graphql "${STATUS_FIELD_QUERY}" "Status フィールド情報の取得")
 
-PROJECT_ID=$(echo "${STATUS_FIELD_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.id // empty")
+# Project ID・Status フィールド ID・Option ID を一括抽出
+read -r PROJECT_ID STATUS_FIELD_ID INITIAL_STATUS_OPTION_ID DONE_STATUS_OPTION_ID < <(
+  echo "${STATUS_FIELD_RESULT}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" --arg initial "${INITIAL_STATUS}" '
+    .data.[($owner)].projectV2 as $proj |
+    ($proj.fields.nodes[] | select(.name == "Status")) as $status |
+    [
+      ($proj.id // ""),
+      ($status.id // ""),
+      ($status.options[] | select(.name == $initial) | .id // ""),
+      ($status.options[] | select(.name == "Done") | .id // "")
+    ] | @tsv
+  '
+)
+
 if [[ -z "${PROJECT_ID}" ]]; then
   echo "::error::Project ID を取得できませんでした。Project #${PROJECT_NUMBER} が存在するか確認してください。"
   exit 1
 fi
 echo "  Project ID: ${PROJECT_ID}"
 
-STATUS_FIELD_ID=$(echo "${STATUS_FIELD_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.fields.nodes[] | select(.name == \"Status\") | .id // empty")
 if [[ -z "${STATUS_FIELD_ID}" ]]; then
   echo "::error::Status フィールドが見つかりませんでした。"
   exit 1
 fi
 echo "  Status Field ID: ${STATUS_FIELD_ID}"
 
-# ステータス名から Option ID を取得する関数
-get_status_option_id() {
-  local status_name="$1"
-  echo "${STATUS_FIELD_RESULT}" | jq -r ".data.${OWNER_QUERY_FIELD}.projectV2.fields.nodes[] | select(.name == \"Status\") | .options[] | select(.name == \"${status_name}\") | .id // empty"
-}
-
-INITIAL_STATUS_OPTION_ID=$(get_status_option_id "${INITIAL_STATUS}")
 if [[ -z "${INITIAL_STATUS_OPTION_ID}" ]]; then
   echo "::error::ステータス「${INITIAL_STATUS}」が Project に存在しません。setup-project-status.sh でステータスカラムを設定してください。"
   exit 1
 fi
 echo "  初期ステータス: ${INITIAL_STATUS} (${INITIAL_STATUS_OPTION_ID})"
 
-DONE_STATUS_OPTION_ID=$(get_status_option_id "Done")
 if [[ -z "${DONE_STATUS_OPTION_ID}" ]]; then
   echo "::error::ステータス「Done」が Project に存在しません。setup-project-status.sh でステータスカラムを設定してください。"
   exit 1
@@ -207,111 +211,56 @@ else
   echo "  既存アイテム数: 0"
 fi
 
-# --- Issue 取得・追加 ---
+# --- アイテム取得・追加（共通関数） ---
 
-ISSUE_ADDED=0
-ISSUE_SKIPPED=0
-ISSUE_FAILED=0
+# アイテム（Issue / PR）を取得して Project に追加する
+# 引数: $1=種別ラベル（Issue / PR）, $2=gh サブコマンド（issue / pr）, $3=Done 判定用 state パターン
+# 結果: ADDED / SKIPPED / FAILED カウントを標準出力に TSV で返す
+fetch_and_add_items() {
+  local label="$1"
+  local gh_command="$2"
+  local done_states="$3"
+  local added=0 skipped=0 failed=0
 
-if [[ "${INCLUDE_ISSUES}" == "true" ]]; then
   echo ""
-  echo "Issue を取得しています..."
-  echo "  リポジトリ: ${TARGET_REPO}"
-  echo "  状態: ${ITEM_STATE}"
-  if [[ -n "${ITEM_LABEL}" ]]; then
-    echo "  ラベル: ${ITEM_LABEL}"
+  echo "${label} を取得しています..."
+  if [[ "${label}" == "Issue" ]]; then
+    echo "  リポジトリ: ${TARGET_REPO}"
+    echo "  状態: ${ITEM_STATE}"
+    if [[ -n "${ITEM_LABEL}" ]]; then
+      echo "  ラベル: ${ITEM_LABEL}"
+    fi
   fi
 
-  ISSUE_LIST_ARGS=(--repo "${TARGET_REPO}" --state "${ITEM_STATE}" --limit 500 --json url,state --jq '.[] | [.url, .state] | @tsv')
+  local list_args=(--repo "${TARGET_REPO}" --state "${ITEM_STATE}" --limit 500 --json url,state --jq '.[] | [.url, .state] | @tsv')
   if [[ -n "${ITEM_LABEL}" ]]; then
-    ISSUE_LIST_ARGS+=(--label "${ITEM_LABEL}")
+    list_args+=(--label "${ITEM_LABEL}")
   fi
 
-  if ! ISSUE_ITEMS=$(gh issue list "${ISSUE_LIST_ARGS[@]}" 2>&1); then
-    SAFE_OUTPUT=$(sanitize_for_workflow_command "${ISSUE_ITEMS}")
-    echo "::error::Issue の取得に失敗しました: ${SAFE_OUTPUT}"
+  local items_output
+  if ! items_output=$(gh "${gh_command}" list "${list_args[@]}" 2>&1); then
+    SAFE_OUTPUT=$(sanitize_for_workflow_command "${items_output}")
+    echo "::error::${label} の取得に失敗しました: ${SAFE_OUTPUT}"
     exit 1
   fi
 
-  if [[ -n "${ISSUE_ITEMS}" ]]; then
+  if [[ -n "${items_output}" ]]; then
     while IFS=$'\t' read -r url state; do
       [[ -z "${url}" ]] && continue
 
       if [[ -n "${EXISTING_ITEMS}" ]] && echo "${EXISTING_ITEMS}" | grep -Fxq "${url}"; then
         echo "  スキップ（追加済み）: ${url}"
-        ISSUE_SKIPPED=$((ISSUE_SKIPPED + 1))
+        skipped=$((skipped + 1))
         continue
       fi
 
       if add_result=$(gh project item-add "${PROJECT_NUMBER}" --owner "${PROJECT_OWNER}" --url "${url}" --format json 2>&1); then
         item_id=$(echo "${add_result}" | jq -r '.id // empty')
         echo "  追加: ${url}"
-        ISSUE_ADDED=$((ISSUE_ADDED + 1))
+        added=$((added + 1))
 
-        # ステータスを設定
         if [[ -n "${item_id}" ]]; then
-          if [[ "${state}" == "CLOSED" ]]; then
-            set_item_status "${item_id}" "${DONE_STATUS_OPTION_ID}"
-            echo "    ステータス: Done（closed）"
-          else
-            set_item_status "${item_id}" "${INITIAL_STATUS_OPTION_ID}"
-            echo "    ステータス: ${INITIAL_STATUS}"
-          fi
-        fi
-      else
-        echo "::warning::追加失敗: ${url}"
-        ISSUE_FAILED=$((ISSUE_FAILED + 1))
-      fi
-
-      sleep 1
-    done <<< "${ISSUE_ITEMS}"
-  fi
-
-  echo "  Issue 追加: ${ISSUE_ADDED} 件、スキップ: ${ISSUE_SKIPPED} 件、失敗: ${ISSUE_FAILED} 件"
-else
-  echo ""
-  echo "Issue の追加をスキップします（INCLUDE_ISSUES=false）"
-fi
-
-# --- Pull Request 取得・追加 ---
-
-PR_ADDED=0
-PR_SKIPPED=0
-PR_FAILED=0
-
-if [[ "${INCLUDE_PRS}" == "true" ]]; then
-  echo ""
-  echo "Pull Request を取得しています..."
-
-  PR_LIST_ARGS=(--repo "${TARGET_REPO}" --state "${ITEM_STATE}" --limit 500 --json url,state --jq '.[] | [.url, .state] | @tsv')
-  if [[ -n "${ITEM_LABEL}" ]]; then
-    PR_LIST_ARGS+=(--label "${ITEM_LABEL}")
-  fi
-
-  if ! PR_ITEMS=$(gh pr list "${PR_LIST_ARGS[@]}" 2>&1); then
-    SAFE_OUTPUT=$(sanitize_for_workflow_command "${PR_ITEMS}")
-    echo "::error::Pull Request の取得に失敗しました: ${SAFE_OUTPUT}"
-    exit 1
-  fi
-
-  if [[ -n "${PR_ITEMS}" ]]; then
-    while IFS=$'\t' read -r url state; do
-      [[ -z "${url}" ]] && continue
-
-      if [[ -n "${EXISTING_ITEMS}" ]] && echo "${EXISTING_ITEMS}" | grep -Fxq "${url}"; then
-        echo "  スキップ（追加済み）: ${url}"
-        PR_SKIPPED=$((PR_SKIPPED + 1))
-        continue
-      fi
-
-      if add_result=$(gh project item-add "${PROJECT_NUMBER}" --owner "${PROJECT_OWNER}" --url "${url}" --format json 2>&1); then
-        item_id=$(echo "${add_result}" | jq -r '.id // empty')
-        echo "  追加: ${url}"
-        PR_ADDED=$((PR_ADDED + 1))
-
-        # ステータスを設定（closed = merged or closed、どちらも Done）
-        if [[ -n "${item_id}" ]]; then
-          if [[ "${state}" == "CLOSED" || "${state}" == "MERGED" ]]; then
+          if [[ "${done_states}" == *"${state}"* ]]; then
             set_item_status "${item_id}" "${DONE_STATUS_OPTION_ID}"
             echo "    ステータス: Done（${state}）"
           else
@@ -321,17 +270,41 @@ if [[ "${INCLUDE_PRS}" == "true" ]]; then
         fi
       else
         echo "::warning::追加失敗: ${url}"
-        PR_FAILED=$((PR_FAILED + 1))
+        failed=$((failed + 1))
       fi
 
       sleep 1
-    done <<< "${PR_ITEMS}"
+    done <<< "${items_output}"
   fi
 
-  echo "  PR 追加: ${PR_ADDED} 件、スキップ: ${PR_SKIPPED} 件、失敗: ${PR_FAILED} 件"
+  echo "  ${label} 追加: ${added} 件、スキップ: ${skipped} 件、失敗: ${failed} 件"
+  printf '%d\t%d\t%d\n' "${added}" "${skipped}" "${failed}" >&3
+}
+
+# --- Issue 取得・追加 ---
+
+ISSUE_ADDED=0
+ISSUE_SKIPPED=0
+ISSUE_FAILED=0
+
+if should_include_issues; then
+  read -r ISSUE_ADDED ISSUE_SKIPPED ISSUE_FAILED 3< <(fetch_and_add_items "Issue" "issue" "CLOSED" 3>&1 >&2) 2>&1
 else
   echo ""
-  echo "Pull Request の追加をスキップします（INCLUDE_PRS=false）"
+  echo "Issue の追加をスキップします（ITEM_TYPE=${ITEM_TYPE}）"
+fi
+
+# --- Pull Request 取得・追加 ---
+
+PR_ADDED=0
+PR_SKIPPED=0
+PR_FAILED=0
+
+if should_include_prs; then
+  read -r PR_ADDED PR_SKIPPED PR_FAILED 3< <(fetch_and_add_items "PR" "pr" "CLOSED MERGED" 3>&1 >&2) 2>&1
+else
+  echo ""
+  echo "Pull Request の追加をスキップします（ITEM_TYPE=${ITEM_TYPE}）"
 fi
 
 # --- サマリー ---
