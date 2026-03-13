@@ -119,9 +119,12 @@ graph LR
 | スコープ | 必要なワークフロー |
 |---------|-------------------|
 | `project` | ①②③④ |
+| `read:org` | ①②③④ |
 | `repo`（または `public_repo`） | ③（対象リポジトリが private の場合は `repo`） |
 
 > **Note:** ワークフロー ③（Issue/PR 一括紐付け）では対象リポジトリの Issue/PR を読み取るため、リポジトリの参照権限が追加で必要です。
+>
+> **Note:** Classic token で `read:org` が不足していると、`gh project item-add` 実行時に `unknown owner type` エラーが発生します。ユーザー・組織を問わず、Project を操作するには `read:org` スコープが必要です。
 
 ---
 
