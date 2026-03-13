@@ -16,9 +16,11 @@ flowchart LR
 
 リポジトリページ右上の「Fork」ボタンをクリックします。
 
+> **参考画像:** リポジトリページ右上に「Fork」ボタンが表示されています。
+>
 > <img src="images/quickstart-fork-button.png" alt="Fork ボタンの位置" width="30%">
-
-<img src="images/quickstart-fork-page.png" alt="リポジトリページの例" width="80%">
+>
+> <img src="images/quickstart-fork-page.png" alt="Fork ボタンが表示されたリポジトリページ" width="80%">
 
 ## 2. PAT を作成する
 
