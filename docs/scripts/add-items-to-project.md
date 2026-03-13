@@ -63,8 +63,8 @@ flowchart TD
 | オーナータイプ判定 | `detect_owner_type` で Organization / User を判別 | `gh api users/{owner}` |
 | Status フィールド取得 | GraphQL で Project ID・Status フィールド ID・各ステータスの Option ID を取得 | `gh api graphql` — `projectV2.fields` |
 | 既存アイテム取得 | GraphQL クエリで Project に紐づく全アイテムの URL をページネーション付きで取得。重複防止に使用 | `gh api graphql` — `projectV2.items(first: 100)` |
-| Issue 取得 | `ITEM_STATE`・`ITEM_LABEL` で絞り込んで Issue 一覧を取得（最大 500 件） | `gh issue list --repo --state --limit 500 --json url` |
-| PR 取得 | Issue と同様のフィルタで PR 一覧を取得 | `gh pr list --repo --state --limit 500 --json url` |
+| Issue 取得 | `ITEM_STATE`・`ITEM_LABEL` で絞り込んで Issue 一覧を取得（最大 500 件） | `gh issue list --repo --state --limit 500 --json url,state` |
+| PR 取得 | Issue と同様のフィルタで PR 一覧を取得 | `gh pr list --repo --state --limit 500 --json url,state` |
 | 重複チェック | 既存アイテム URL リストと各 Issue/PR の URL を `grep -Fxq` で完全一致比較 | — |
 | アイテム追加 | 重複していない各 Issue/PR を Project に追加（1件ごとに 1秒の sleep を挟みレート制限を回避） | `gh project item-add {number} --owner --url --format json` |
 | ステータス設定 | 追加したアイテムにステータスを付与。open → `INITIAL_STATUS`（デフォルト: Backlog）、closed/merged → Done | `gh api graphql` — `updateProjectV2ItemFieldValue` |
