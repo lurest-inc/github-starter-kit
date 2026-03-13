@@ -68,27 +68,6 @@ flowchart TD
 |-----------|---------|------|
 | `fields(first: N)` | 50 | Status フィールド検索用（ビルトイン＋カスタムフィールドを取得） |
 
-## Q&A
-
-### カンバンのフローはどうなっていますか？
-
-```mermaid
-graph LR
-    Backlog["⚪ Backlog\n(GRAY)"]
-    Todo["🔵 Todo\n(BLUE)"]
-    InProgress["🟡 In Progress\n(YELLOW)"]
-    InReview["🟠 In Review\n(ORANGE)"]
-    Done["🟢 Done\n(GREEN)"]
-
-    Backlog --> Todo --> InProgress --> InReview --> Done
-    InReview -- "差し戻し" --> InProgress
-```
-
-### 手戻り時はどう運用しますか？
-
-- **レビュー差し戻し**: In Review → In Progress に戻す
-- **Done後のバグ発覚**: 同Issueを戻さず、新しいバグIssueを起票する
-
 ## 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)
