@@ -283,7 +283,8 @@ fetch_and_add_items() {
           fi
         fi
       else
-        echo "::warning::追加失敗: ${url}" >&2
+        SAFE_OUTPUT=$(sanitize_for_workflow_command "${add_result}")
+        echo "::warning::追加失敗: ${url} — ${SAFE_OUTPUT}" >&2
         failed=$((failed + 1))
       fi
 
