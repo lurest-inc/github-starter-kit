@@ -17,7 +17,7 @@ flowchart LR
 リポジトリページ右上の「Fork」ボタンをクリックします。
 
 <details>
-<summary>スクリーンショットを表示</summary>
+<summary>Fork ボタンのスクリーンショットを表示</summary>
 
 > **参考画像:** リポジトリページ右上に「Fork」ボタンが表示されています。
 >
@@ -32,7 +32,7 @@ flowchart LR
 GitHub の [Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens) から PAT を作成します。
 
 <details>
-<summary>スクリーンショットを表示</summary>
+<summary>PAT 作成画面のスクリーンショットを表示</summary>
 
 > **参考画像:** Settings > Developer settings > Personal access tokens 画面
 >
