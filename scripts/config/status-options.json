@@ -1,5 +1,5 @@
 [
-  {"name": "Backlog", "color": "GREY", "description": "バックログ"},
+  {"name": "Backlog", "color": "GRAY", "description": "バックログ"},
   {"name": "Todo", "color": "BLUE", "description": "着手予定"},
   {"name": "In Progress", "color": "YELLOW", "description": "作業中"},
   {"name": "In Review", "color": "ORANGE", "description": "レビュー中"},
