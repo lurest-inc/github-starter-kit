@@ -9,8 +9,7 @@ set -euo pipefail
 #   PROJECT_OWNER  - Project の所有者
 #   PROJECT_NUMBER - 対象 Project の Number
 #   TARGET_REPO    - 対象リポジトリ（owner/repo 形式）
-#   INCLUDE_ISSUES - Issue を追加対象にする（true/false、デフォルト: true）
-#   INCLUDE_PRS    - PR を追加対象にする（true/false、デフォルト: true）
+#   ITEM_TYPE      - 対象アイテムの種別（all/issues/prs、デフォルト: all）
 #   ITEM_STATE     - 取得するアイテムの状態（open/closed/all、デフォルト: open）
 #   ITEM_LABEL     - 絞り込みラベル（指定ラベルの Issue/PR のみ追加、省略可）
 
@@ -29,15 +28,14 @@ if [[ ! "${TARGET_REPO}" =~ ^[^/]+/[^/]+$ ]]; then
   exit 1
 fi
 
-INCLUDE_ISSUES="${INCLUDE_ISSUES:-true}"
-INCLUDE_PRS="${INCLUDE_PRS:-true}"
+ITEM_TYPE="${ITEM_TYPE:-all}"
 ITEM_STATE="${ITEM_STATE:-open}"
 ITEM_LABEL="${ITEM_LABEL:-}"
 
-if [[ "${INCLUDE_ISSUES}" != "true" && "${INCLUDE_PRS}" != "true" ]]; then
-  echo "::error::INCLUDE_ISSUES と INCLUDE_PRS の少なくとも一方を true にしてください。"
-  exit 1
-fi
+validate_enum "ITEM_TYPE" "${ITEM_TYPE}" "all" "issues" "prs"
+
+INCLUDE_ISSUES=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "issues" ]] && echo "true" || echo "false" )
+INCLUDE_PRS=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "prs" ]] && echo "true" || echo "false" )
 
 # --- ヘルパー関数 ---
 

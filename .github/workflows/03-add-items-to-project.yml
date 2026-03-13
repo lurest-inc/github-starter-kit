@@ -11,16 +11,15 @@ on:
         description: "対象リポジトリ（owner/repo 形式、1回の実行で1リポジトリ）"
         required: true
         type: string
-      include_issues:
-        description: "Issue を追加対象にする"
+      item_type:
+        description: "対象アイテムの種別"
         required: true
-        type: boolean
-        default: true
-      include_prs:
-        description: "Pull Request を追加対象にする"
-        required: true
-        type: boolean
-        default: true
+        type: choice
+        options:
+          - all
+          - issues
+          - prs
+        default: "all"
       item_state:
         description: "取得するアイテムの状態"
         required: true
@@ -54,8 +53,7 @@ jobs:
       - name: Issue/PR を Project に追加
         env:
           TARGET_REPO: ${{ inputs.target_repo }}
-          INCLUDE_ISSUES: ${{ inputs.include_issues }}
-          INCLUDE_PRS: ${{ inputs.include_prs }}
+          ITEM_TYPE: ${{ inputs.item_type }}
           ITEM_STATE: ${{ inputs.item_state }}
           ITEM_LABEL: ${{ inputs.item_label }}
         run: |

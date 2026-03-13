@@ -15,8 +15,7 @@
 |------------|------|:----:|--------|-----|
 | `project_number` | 対象 Project の Number | ✅ | `number` | `1` |
 | `output_format` | 出力形式 | ✅ | `choice` | `markdown`（デフォルト） |
-| `include_issues` | Issue を対象にする | ✅ | `boolean` | `true`（デフォルト） |
-| `include_prs` | Pull Request を対象にする | ✅ | `boolean` | `true`（デフォルト） |
+| `item_type` | 対象アイテムの種別 | ✅ | `choice` | `all`（デフォルト） |
 | `item_state` | 取得するアイテムの状態 | ✅ | `choice` | `all`（デフォルト） |
 
 ### 出力形式
@@ -69,6 +68,6 @@
 
 ```mermaid
 flowchart TD
-    A["workflow_dispatch\n（project_number・output_format・include_issues・include_prs・item_state）"] --> B["export-items ジョブ\nProject アイテムを取得しフィルタ・指定形式でエクスポート"]
+    A["workflow_dispatch\n（project_number・output_format・item_type・item_state）"] --> B["export-items ジョブ\nProject アイテムを取得しフィルタ・指定形式でエクスポート"]
     B --> C["Artifact アップロード"]
 ```

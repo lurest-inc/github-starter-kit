@@ -15,8 +15,7 @@
 |------------|------|:----:|--------|-----|
 | `project_number` | 対象 Project の Number | ✅ | `number` | `1` |
 | `target_repo` | 対象リポジトリ（owner/repo 形式） | ✅ | `string` | `myorg/myrepo` |
-| `include_issues` | Issue を追加対象にする | ✅ | `boolean` | `true`（デフォルト） |
-| `include_prs` | Pull Request を追加対象にする | ✅ | `boolean` | `true`（デフォルト） |
+| `item_type` | 対象アイテムの種別 | ✅ | `choice` | `all`（デフォルト） |
 | `item_state` | 取得するアイテムの状態 | ✅ | `choice` | `open`（デフォルト） |
 | `item_label` | 絞り込みラベル（指定ラベルのみ追加） | - | `string` | `bug` |
 
