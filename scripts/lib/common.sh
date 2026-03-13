@@ -143,14 +143,22 @@ run_graphql() {
 run_graphql_json() {
   local query="$1"
   local context="${2:-GraphQL API の呼び出し}"
-  local variables="${3:-{\}}"
+  local variables='{}'
+  if [[ -n "${3:-}" ]]; then
+    variables="$3"
+  fi
 
   local request_body
-  request_body=$(jq -n --arg query "${query}" --argjson variables "${variables}" \
-    '{query: $query, variables: $variables}')
+  if ! request_body=$(jq -n --arg query "${query}" --argjson variables "${variables}" \
+    '{query: $query, variables: $variables}' 2>&1); then
+    local safe_error
+    safe_error=$(sanitize_for_workflow_command "${request_body}")
+    echo "::error::${context}のリクエスト構築に失敗しました: ${safe_error}" >&2
+    exit 1
+  fi
 
   local result
-  if ! result=$(echo "${request_body}" | gh api graphql --input - 2>&1); then
+  if ! result=$(printf '%s' "${request_body}" | gh api graphql --input - 2>&1); then
     local safe_result
     safe_result=$(sanitize_for_workflow_command "${result}")
     echo "::error::${context}に失敗しました: ${safe_result}" >&2
