@@ -29,5 +29,7 @@
 flowchart TD
     A["workflow_dispatch\n（タイトル・公開範囲）"] --> B["create-project ジョブ\nProject を新規作成し project_number を出力"]
     B --> C["extend-project ジョブ\nフィールド・ステータス・View を一括セットアップ"]
-    C --> D["完了\nproject_number を出力"]
+    C --> D{"結果判定"}
+    D -- "成功" --> E["workflow-summary-success ジョブ\n成功サマリーを出力"]
+    D -- "失敗" --> F["workflow-summary-failure ジョブ\n失敗サマリーを出力"]
 ```

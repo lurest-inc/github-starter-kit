@@ -21,5 +21,7 @@
 ```mermaid
 flowchart TD
     A["workflow_dispatch\n（project_number）"] --> B["extend-project ジョブ\n既存 Project にフィールド・ステータス・View を追加"]
-    B --> C["完了"]
+    B --> C{"結果判定"}
+    C -- "成功" --> D["workflow-summary-success ジョブ\n成功サマリーを出力"]
+    C -- "失敗" --> E["workflow-summary-failure ジョブ\n失敗サマリーを出力"]
 ```

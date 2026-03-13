@@ -35,12 +35,16 @@ flowchart TD
 ## 構成ファイル
 
 ```
-.github/workflows/
-  ├── 01-create-project.yml        # ① Project 新規作成ワークフロー
-  ├── 02-extend-project.yml        # ② Project 拡張ワークフロー
-  ├── _reusable-extend-project.yml # Project 拡張（再利用可能ワークフロー）
-  ├── 03-add-items-to-project.yml  # ③ Issue/PR 一括紐付けワークフロー
-  └── 04-export-project-items.yml  # ④ Project アイテム エクスポートワークフロー
+.github/
+  ├── actions/
+  │   └── workflow-summary/
+  │       └── action.yml             # ワークフローサマリー出力アクション
+  └── workflows/
+      ├── 01-create-project.yml        # ① Project 新規作成ワークフロー
+      ├── 02-extend-project.yml        # ② Project 拡張ワークフロー
+      ├── _reusable-extend-project.yml # Project 拡張（再利用可能ワークフロー）
+      ├── 03-add-items-to-project.yml  # ③ Issue/PR 一括紐付けワークフロー
+      └── 04-export-project-items.yml  # ④ Project アイテム エクスポートワークフロー
 scripts/
   ├── config/
   │   ├── field-definitions.json   # カスタムフィールド定義
@@ -64,37 +68,53 @@ scripts/
 01-create-project.yml
   ├── create-project ジョブ
   │   └── scripts/setup-github-project.sh   # Project 作成
-  └── extend-project ジョブ（_reusable-extend-project.yml）
-      ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
-      ├── scripts/setup-project-status.sh    # ステータスカラム設定
-      └── scripts/setup-project-views.sh    # View 作成
+  ├── extend-project ジョブ（_reusable-extend-project.yml）
+  │   ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
+  │   ├── scripts/setup-project-status.sh    # ステータスカラム設定
+  │   └── scripts/setup-project-views.sh    # View 作成
+  ├── workflow-summary-failure ジョブ（失敗時）
+  │   └── .github/actions/workflow-summary   # 失敗サマリー出力
+  └── workflow-summary-success ジョブ（成功時）
+      └── .github/actions/workflow-summary   # 成功サマリー出力
 ```
 
 ### ② GitHub Project 拡張
 
 ```
 02-extend-project.yml
-  └── extend-project ジョブ（_reusable-extend-project.yml）
-      ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
-      ├── scripts/setup-project-status.sh    # ステータスカラム設定
-      └── scripts/setup-project-views.sh    # View 作成
+  ├── extend-project ジョブ（_reusable-extend-project.yml）
+  │   ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
+  │   ├── scripts/setup-project-status.sh    # ステータスカラム設定
+  │   └── scripts/setup-project-views.sh    # View 作成
+  ├── workflow-summary-failure ジョブ（失敗時）
+  │   └── .github/actions/workflow-summary   # 失敗サマリー出力
+  └── workflow-summary-success ジョブ（成功時）
+      └── .github/actions/workflow-summary   # 成功サマリー出力
 ```
 
 ### ③ Issue/PR 一括紐付け
 
 ```
 03-add-items-to-project.yml
-  └── add-items ジョブ
-      └── scripts/add-items-to-project.sh    # アイテム一括追加
+  ├── add-items ジョブ
+  │   └── scripts/add-items-to-project.sh    # アイテム一括追加
+  ├── workflow-summary-failure ジョブ（失敗時）
+  │   └── .github/actions/workflow-summary   # 失敗サマリー出力
+  └── workflow-summary-success ジョブ（成功時）
+      └── .github/actions/workflow-summary   # 成功サマリー出力
 ```
 
 ### ④ Project アイテム エクスポート
 
 ```
 04-export-project-items.yml
-  └── export-items ジョブ
-      ├── scripts/export-project-items.sh    # アイテム取得・エクスポート
-      └── artifact アップロード                # エクスポートファイルを保存
+  ├── export-items ジョブ
+  │   ├── scripts/export-project-items.sh    # アイテム取得・エクスポート
+  │   └── artifact アップロード                # エクスポートファイルを保存
+  ├── workflow-summary-failure ジョブ（失敗時）
+  │   └── .github/actions/workflow-summary   # 失敗サマリー出力
+  └── workflow-summary-success ジョブ（成功時）
+      └── .github/actions/workflow-summary   # 成功サマリー出力
 ```
 
 ## スクリプト詳細
