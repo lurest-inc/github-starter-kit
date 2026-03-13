@@ -70,4 +70,14 @@ runs:
               echo "| (解析不可) | ${JOB_RESULTS} |"
             fi
           fi
+
+          if [[ "${STATUS}" != "success" ]]; then
+            REPO_URL="${{ github.server_url }}/${{ github.repository }}"
+            echo ""
+            echo "### 次のアクション"
+            echo ""
+            echo "問題が解決しない場合は、以下から報告してください："
+            echo "- [Issue を作成する](${REPO_URL}/issues/new)"
+            echo "- [Discussion を作成する](${REPO_URL}/discussions/new)"
+          fi
         } >> "$GITHUB_STEP_SUMMARY"
