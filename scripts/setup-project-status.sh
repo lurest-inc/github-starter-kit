@@ -60,10 +60,10 @@ GRAPHQL
 FIELD_RESULT=$(run_graphql "${FIELD_QUERY}" "Project 情報の取得")
 
 # Project ID と Status フィールド ID を一括取得
-read -r PROJECT_ID STATUS_FIELD_ID < <(
+IFS=$'\t' read -r PROJECT_ID STATUS_FIELD_ID < <(
   echo "${FIELD_RESULT}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" '
     .data.[($owner)].projectV2 as $proj |
-    [($proj.id // ""), ($proj.fields.nodes[] | select(.name == "Status") | .id // "")] | @tsv
+    [($proj.id // ""), ([$proj.fields.nodes[] | select(.name == "Status") | .id] | first // "")] | @tsv
   '
 )
 if [[ -z "${PROJECT_ID}" ]]; then

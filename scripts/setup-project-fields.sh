@@ -95,7 +95,7 @@ SKIPPED_COUNT=0
 FAILED_COUNT=0
 
 for i in $(seq 0 $((FIELD_COUNT - 1))); do
-  read -r FIELD_NAME FIELD_DATA_TYPE < <(echo "${FIELD_DEFINITIONS}" | jq -r ".[$i] | [.name, .dataType] | @tsv")
+  IFS=$'\t' read -r FIELD_NAME FIELD_DATA_TYPE < <(echo "${FIELD_DEFINITIONS}" | jq -r ".[$i] | [.name, .dataType] | @tsv")
   SAFE_FIELD_NAME=$(sanitize_for_workflow_command "${FIELD_NAME}")
 
   echo ""

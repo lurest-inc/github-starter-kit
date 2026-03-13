@@ -71,15 +71,15 @@ GRAPHQL
 STATUS_FIELD_RESULT=$(run_graphql "${STATUS_FIELD_QUERY}" "Status フィールド情報の取得")
 
 # Project ID・Status フィールド ID・Option ID を一括抽出
-read -r PROJECT_ID STATUS_FIELD_ID INITIAL_STATUS_OPTION_ID DONE_STATUS_OPTION_ID < <(
+IFS=$'\t' read -r PROJECT_ID STATUS_FIELD_ID INITIAL_STATUS_OPTION_ID DONE_STATUS_OPTION_ID < <(
   echo "${STATUS_FIELD_RESULT}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" --arg initial "${INITIAL_STATUS}" '
     .data.[($owner)].projectV2 as $proj |
-    ($proj.fields.nodes[] | select(.name == "Status")) as $status |
+    ($proj.fields.nodes[] | select(.name == "Status") // null) as $status |
     [
       ($proj.id // ""),
-      ($status.id // ""),
-      ($status.options[] | select(.name == $initial) | .id // ""),
-      ($status.options[] | select(.name == "Done") | .id // "")
+      ($status.id // "" // ""),
+      ([$status.options[]? | select(.name == $initial) | .id] | first // ""),
+      ([$status.options[]? | select(.name == "Done") | .id] | first // "")
     ] | @tsv
   '
 )
@@ -215,20 +215,20 @@ fi
 
 # アイテム（Issue / PR）を取得して Project に追加する
 # 引数: $1=種別ラベル（Issue / PR）, $2=gh サブコマンド（issue / pr）, $3=Done 判定用 state パターン
-# 結果: ADDED / SKIPPED / FAILED カウントを標準出力に TSV で返す
+# 出力: ログは stderr、カウント（ADDED SKIPPED FAILED）は stdout に TSV で返す
 fetch_and_add_items() {
   local label="$1"
   local gh_command="$2"
   local done_states="$3"
   local added=0 skipped=0 failed=0
 
-  echo ""
-  echo "${label} を取得しています..."
+  echo "" >&2
+  echo "${label} を取得しています..." >&2
   if [[ "${label}" == "Issue" ]]; then
-    echo "  リポジトリ: ${TARGET_REPO}"
-    echo "  状態: ${ITEM_STATE}"
+    echo "  リポジトリ: ${TARGET_REPO}" >&2
+    echo "  状態: ${ITEM_STATE}" >&2
     if [[ -n "${ITEM_LABEL}" ]]; then
-      echo "  ラベル: ${ITEM_LABEL}"
+      echo "  ラベル: ${ITEM_LABEL}" >&2
     fi
   fi
 
@@ -240,7 +240,7 @@ fetch_and_add_items() {
   local items_output
   if ! items_output=$(gh "${gh_command}" list "${list_args[@]}" 2>&1); then
     SAFE_OUTPUT=$(sanitize_for_workflow_command "${items_output}")
-    echo "::error::${label} の取得に失敗しました: ${SAFE_OUTPUT}"
+    echo "::error::${label} の取得に失敗しました: ${SAFE_OUTPUT}" >&2
     exit 1
   fi
 
@@ -249,27 +249,27 @@ fetch_and_add_items() {
       [[ -z "${url}" ]] && continue
 
       if [[ -n "${EXISTING_ITEMS}" ]] && echo "${EXISTING_ITEMS}" | grep -Fxq "${url}"; then
-        echo "  スキップ（追加済み）: ${url}"
+        echo "  スキップ（追加済み）: ${url}" >&2
         skipped=$((skipped + 1))
         continue
       fi
 
       if add_result=$(gh project item-add "${PROJECT_NUMBER}" --owner "${PROJECT_OWNER}" --url "${url}" --format json 2>&1); then
         item_id=$(echo "${add_result}" | jq -r '.id // empty')
-        echo "  追加: ${url}"
+        echo "  追加: ${url}" >&2
         added=$((added + 1))
 
         if [[ -n "${item_id}" ]]; then
           if [[ "${done_states}" == *"${state}"* ]]; then
             set_item_status "${item_id}" "${DONE_STATUS_OPTION_ID}"
-            echo "    ステータス: Done（${state}）"
+            echo "    ステータス: Done（${state}）" >&2
           else
             set_item_status "${item_id}" "${INITIAL_STATUS_OPTION_ID}"
-            echo "    ステータス: ${INITIAL_STATUS}"
+            echo "    ステータス: ${INITIAL_STATUS}" >&2
           fi
         fi
       else
-        echo "::warning::追加失敗: ${url}"
+        echo "::warning::追加失敗: ${url}" >&2
         failed=$((failed + 1))
       fi
 
@@ -277,8 +277,8 @@ fetch_and_add_items() {
     done <<< "${items_output}"
   fi
 
-  echo "  ${label} 追加: ${added} 件、スキップ: ${skipped} 件、失敗: ${failed} 件"
-  printf '%d\t%d\t%d\n' "${added}" "${skipped}" "${failed}" >&3
+  echo "  ${label} 追加: ${added} 件、スキップ: ${skipped} 件、失敗: ${failed} 件" >&2
+  printf '%d\t%d\t%d\n' "${added}" "${skipped}" "${failed}"
 }
 
 # --- Issue 取得・追加 ---
@@ -288,7 +288,7 @@ ISSUE_SKIPPED=0
 ISSUE_FAILED=0
 
 if should_include_issues; then
-  read -r ISSUE_ADDED ISSUE_SKIPPED ISSUE_FAILED 3< <(fetch_and_add_items "Issue" "issue" "CLOSED" 3>&1 >&2) 2>&1
+  IFS=$'\t' read -r ISSUE_ADDED ISSUE_SKIPPED ISSUE_FAILED < <(fetch_and_add_items "Issue" "issue" "CLOSED")
 else
   echo ""
   echo "Issue の追加をスキップします（ITEM_TYPE=${ITEM_TYPE}）"
@@ -301,7 +301,7 @@ PR_SKIPPED=0
 PR_FAILED=0
 
 if should_include_prs; then
-  read -r PR_ADDED PR_SKIPPED PR_FAILED 3< <(fetch_and_add_items "PR" "pr" "CLOSED MERGED" 3>&1 >&2) 2>&1
+  IFS=$'\t' read -r PR_ADDED PR_SKIPPED PR_FAILED < <(fetch_and_add_items "PR" "pr" "CLOSED MERGED")
 else
   echo ""
   echo "Pull Request の追加をスキップします（ITEM_TYPE=${ITEM_TYPE}）"
