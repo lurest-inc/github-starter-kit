@@ -9,8 +9,7 @@ set -euo pipefail
 #   PROJECT_OWNER  - Project の所有者
 #   PROJECT_NUMBER - 対象 Project の Number
 #   OUTPUT_FORMAT  - 出力形式（markdown / csv / tsv / json、デフォルト: markdown）
-#   INCLUDE_ISSUES - Issue を対象にする（true / false、デフォルト: true）
-#   INCLUDE_PRS    - Pull Request を対象にする（true / false、デフォルト: true）
+#   ITEM_TYPE      - 対象アイテムの種別（all / issues / prs、デフォルト: all）
 #   ITEM_STATE     - 取得するアイテムの状態（open / closed / all、デフォルト: all）
 
 # --- 共通ライブラリ読み込み ---
@@ -25,12 +24,13 @@ validate_common_project_env
 OUTPUT_FORMAT="${OUTPUT_FORMAT:-markdown}"
 validate_enum "OUTPUT_FORMAT" "${OUTPUT_FORMAT}" "markdown" "csv" "tsv" "json"
 
-INCLUDE_ISSUES="${INCLUDE_ISSUES:-true}"
-INCLUDE_PRS="${INCLUDE_PRS:-true}"
+ITEM_TYPE="${ITEM_TYPE:-all}"
 ITEM_STATE="${ITEM_STATE:-all}"
-validate_enum "INCLUDE_ISSUES" "${INCLUDE_ISSUES}" "true" "false"
-validate_enum "INCLUDE_PRS" "${INCLUDE_PRS}" "true" "false"
+validate_enum "ITEM_TYPE" "${ITEM_TYPE}" "all" "issues" "prs"
 validate_enum "ITEM_STATE" "${ITEM_STATE}" "open" "closed" "all"
+
+INCLUDE_ISSUES=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "issues" ]] && echo "true" || echo "false" )
+INCLUDE_PRS=$( [[ "${ITEM_TYPE}" == "all" || "${ITEM_TYPE}" == "prs" ]] && echo "true" || echo "false" )
 
 # --- ヘルパー関数 ---
 
@@ -296,7 +296,7 @@ echo "ファイル出力: ${OUTPUT_FILE}"
 
 print_summary "Project" "${PROJECT_TITLE} (#${PROJECT_NUMBER})" \
   "形式" "${OUTPUT_FORMAT}" \
-  "フィルタ(type)" "Issue=${INCLUDE_ISSUES}, PR=${INCLUDE_PRS}" \
+  "フィルタ(type)" "${ITEM_TYPE}" \
   "フィルタ(state)" "${ITEM_STATE}" \
   "Issue" "${ISSUE_COUNT} 件" \
   "PR" "${PR_COUNT} 件" "合計" "${TOTAL_COUNT} 件" "出力先" "${OUTPUT_FILE}"
