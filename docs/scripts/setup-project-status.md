@@ -51,7 +51,7 @@ flowchart TD
 |---------|---------|-------------------|
 | オーナータイプ判定 | `detect_owner_type` で Organization / User を判別 | `gh api users/{owner}` |
 | ステータス定義ファイル読み込み | `scripts/config/status-options.json` からステータスカラム定義を読み込み | `cat` |
-| Status フィールド取得 | GraphQL クエリで Project ID と Status フィールド ID を一括取得し、現在のカラム一覧を表示 | `gh api graphql` — `projectV2.fields(first: 50)` |
+| Status フィールド取得 | GraphQL クエリで Project ID と Status フィールド ID を一括取得し、現在のカラム一覧を表示 | `gh api graphql` — `projectV2.fields(first: 100)` |
 | カラム更新 | `singleSelectOptions` に Backlog（GRAY）・Todo（BLUE）・In Progress（YELLOW）・In Review（ORANGE）・Done（GREEN）を指定して一括更新 | `gh api graphql` — `updateProjectV2Field` mutation |
 | サマリー出力 | カラム構成（`Backlog → Todo → In Progress → In Review → Done`）をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
@@ -70,7 +70,7 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 
 | パラメータ | 現在の値 | 備考 |
 |-----------|---------|------|
-| `fields(first: N)` | 50 | Status フィールド検索用（ビルトイン＋カスタムフィールドを取得） |
+| `fields(first: N)` | 100 | Status フィールド検索用（ビルトイン＋カスタムフィールドを取得） |
 
 ## 使用ワークフロー
 

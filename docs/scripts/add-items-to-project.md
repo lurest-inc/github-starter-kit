@@ -57,7 +57,7 @@ flowchart TD
 | オーナータイプ判定 | `detect_owner_type` で Organization / User を判別 | `gh api users/{owner}` |
 | Status フィールド取得 | GraphQL で Project ID・Status フィールド ID・各ステータスの Option ID を一括抽出 | `gh api graphql` — `projectV2.fields` |
 | 既存アイテム取得 | GraphQL クエリで Project に紐づく全アイテムの URL をページネーション付きで取得。重複防止に使用 | `gh api graphql` — `projectV2.items(first: 100)` |
-| アイテム取得・追加 | `fetch_and_add_items` 関数で Issue / PR を共通処理。`ITEM_STATE`・`ITEM_LABEL` で絞り込んで一覧を取得し、重複チェック・追加・ステータス設定を実行（最大 500 件、1件ごとに 1秒の sleep） | `gh issue list` / `gh pr list`・`gh project item-add`・`updateProjectV2ItemFieldValue` |
+| アイテム取得・追加 | `fetch_and_add_items` 関数で Issue / PR を共通処理。`ITEM_STATE`・`ITEM_LABEL` で絞り込んで一覧を取得し、重複チェック・追加・ステータス設定を実行（Issue / PR 各種別ごとに最大 100 件、1件ごとに 1秒の sleep） | `gh issue list` / `gh pr list`・`gh project item-add`・`updateProjectV2ItemFieldValue` |
 | ステータス設定 | 追加したアイテムにステータスを自動付与。open → Backlog、closed/merged → Done | `gh api graphql` — `updateProjectV2ItemFieldValue` |
 | サマリー出力 | Issue・PR それぞれの追加・スキップ・失敗件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
@@ -81,7 +81,7 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 | パラメータ | 現在の値 | 備考 |
 |-----------|---------|------|
 | `items(first: N)` | 100 | 既存アイテム取得のページサイズ |
-| `--limit` | 500 | `gh issue list` / `gh pr list` の最大取得件数 |
+| `--limit` | 100 | `gh issue list` / `gh pr list` の最大取得件数 |
 | `sleep` | 1秒 | アイテム追加間のレート制限回避待機時間 |
 
 ## 使用ワークフロー
