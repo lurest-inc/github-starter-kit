@@ -55,7 +55,7 @@ scripts/
   ├── setup-github-project.sh      # Project 作成スクリプト
   ├── setup-project-fields.sh      # カスタムフィールド作成スクリプト
   ├── setup-project-status.sh      # ステータスカラム設定スクリプト
-  ├── setup-project-views.sh      # View 作成スクリプト
+  ├── setup-project-views.sh       # View 作成スクリプト
   ├── add-items-to-project.sh      # アイテム一括追加スクリプト
   └── export-project-items.sh      # アイテムエクスポートスクリプト
 ```
@@ -67,11 +67,11 @@ scripts/
 ```
 01-create-project.yml
   ├── create-project ジョブ
-  │   └── scripts/setup-github-project.sh   # Project 作成
+  │   └── scripts/setup-github-project.sh    # Project 作成
   ├── extend-project ジョブ（_reusable-extend-project.yml）
   │   ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
   │   ├── scripts/setup-project-status.sh    # ステータスカラム設定
-  │   └── scripts/setup-project-views.sh    # View 作成
+  │   └── scripts/setup-project-views.sh     # View 作成
   ├── workflow-summary-failure ジョブ（失敗時）
   │   └── .github/actions/workflow-summary   # 失敗サマリー出力
   └── workflow-summary-success ジョブ（成功時）
@@ -85,7 +85,7 @@ scripts/
   ├── extend-project ジョブ（_reusable-extend-project.yml）
   │   ├── scripts/setup-project-fields.sh    # カスタムフィールド作成
   │   ├── scripts/setup-project-status.sh    # ステータスカラム設定
-  │   └── scripts/setup-project-views.sh    # View 作成
+  │   └── scripts/setup-project-views.sh     # View 作成
   ├── workflow-summary-failure ジョブ（失敗時）
   │   └── .github/actions/workflow-summary   # 失敗サマリー出力
   └── workflow-summary-success ジョブ（成功時）
