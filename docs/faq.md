@@ -10,7 +10,7 @@ GitHub Project の URL 末尾の数字が `project_number` です。
 
 | 所有者タイプ | URL 形式 |
 |------------|----------|
-| ユーザー | `https://github.com/users/{owner}/projects/{number}` |
+| 個人アカウント | `https://github.com/users/{owner}/projects/{number}` |
 | 組織（Organization） | `https://github.com/orgs/{owner}/projects/{number}` |
 
 **例:** `https://github.com/users/octocat/projects/3` → `project_number` は **3**
@@ -103,18 +103,23 @@ graph LR
 
 ## Q5. PAT にはどの権限が必要ですか？
 
-ワークフローごとに必要な権限が異なります。
+ワークフローごとに必要な権限が異なります。アカウントタイプとトークンタイプの組み合わせに応じて、以下の該当パターンを確認してください。
 
-**Fine-grained token の場合:**
+<details>
+<summary>個人アカウント × Fine-grained token（ここをクリック→）</summary>
 
 | カテゴリ | 権限 | 必要なワークフロー |
 |---------|------|-------------------|
-| Organization permissions > Projects | Read and write | ①②③④ |
-| Account permissions > Projects | Read and write | ①②③④（個人アカウント） |
+| Account permissions > Projects | Read and write | ①②③④ |
 | Repository permissions > Issues | Read | ③ |
 | Repository permissions > Pull requests | Read | ③ |
 
-**Classic token の場合:**
+> **Note:** ワークフロー ③（Issue/PR 一括紐付け）では対象リポジトリの Issue/PR を読み取るため、リポジトリの参照権限が追加で必要です。
+
+</details>
+
+<details>
+<summary>個人アカウント × Classic token（ここをクリック→）</summary>
 
 | スコープ | 必要なワークフロー |
 |---------|-------------------|
@@ -122,9 +127,35 @@ graph LR
 | `read:org` | ①②③④ |
 | `repo`（または `public_repo`） | ③（対象リポジトリが private の場合は `repo`） |
 
+> **Note:** Classic token で `read:org` が不足していると、`gh project item-add` 実行時に `unknown owner type` エラーが発生します。個人アカウント・組織を問わず、Project を操作するには `read:org` スコープが必要です。
+
+</details>
+
+<details>
+<summary>組織 × Fine-grained token（ここをクリック→）</summary>
+
+| カテゴリ | 権限 | 必要なワークフロー |
+|---------|------|-------------------|
+| Organization permissions > Projects | Read and write | ①②③④ |
+| Repository permissions > Issues | Read | ③ |
+| Repository permissions > Pull requests | Read | ③ |
+
 > **Note:** ワークフロー ③（Issue/PR 一括紐付け）では対象リポジトリの Issue/PR を読み取るため、リポジトリの参照権限が追加で必要です。
->
-> **Note:** Classic token で `read:org` が不足していると、`gh project item-add` 実行時に `unknown owner type` エラーが発生します。ユーザー・組織を問わず、Project を操作するには `read:org` スコープが必要です。
+
+</details>
+
+<details>
+<summary>組織 × Classic token（ここをクリック→）</summary>
+
+| スコープ | 必要なワークフロー |
+|---------|-------------------|
+| `project` | ①②③④ |
+| `read:org` | ①②③④ |
+| `repo`（または `public_repo`） | ③（対象リポジトリが private の場合は `repo`） |
+
+> **Note:** Classic token で `read:org` が不足していると、`gh project item-add` 実行時に `unknown owner type` エラーが発生します。個人アカウント・組織を問わず、Project を操作するには `read:org` スコープが必要です。
+
+</details>
 
 ---
 
@@ -139,7 +170,7 @@ graph LR
 ただし、以下のケースでは Classic token の使用を検討してください。
 
 - 複数の組織をまたいでリポジトリを操作する必要がある場合
-- ユーザー所有リポジトリと組織所有リポジトリを 1 つのトークンで横断する必要がある場合
+- 個人アカウント所有リポジトリと組織所有リポジトリを 1 つのトークンで横断する必要がある場合
 
 > **参考:** Classic token が必要なケースの詳細は [Q7](#q7-fine-grained-token-の制約事項はありますか) を参照してください。
 
@@ -149,8 +180,8 @@ graph LR
 
 Fine-grained token には以下の制約があります。
 
-- **組織の複数指定不可**: Fine-grained token はリソースオーナーとして 1 つの組織（またはユーザー）しか指定できない。複数組織のリポジトリを対象にする場合は、組織ごとに PAT を作成するか Classic token を使用する
-- **ユーザーと組織の横断不可**: ユーザー所有リポジトリと組織所有リポジトリを 1 つの Fine-grained token で横断できない
+- **組織の複数指定不可**: Fine-grained token はリソースオーナーとして 1 つの組織（または個人アカウント）しか指定できない。複数組織のリポジトリを対象にする場合は、組織ごとに PAT を作成するか Classic token を使用する
+- **個人アカウントと組織の横断不可**: 個人アカウント所有リポジトリと組織所有リポジトリを 1 つの Fine-grained token で横断できない
 
 > **注意:** 上記制約により、ワークフロー ③ で異なる組織のリポジトリを `target_repo` に指定する場合は、Classic token の使用を推奨します。
 
