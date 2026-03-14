@@ -108,11 +108,16 @@ graph LR
 <details>
 <summary>個人用アカウント × Fine-grained token（ここをクリック→）</summary>
 
-| カテゴリ | 権限 | 必要なワークフロー |
-|---------|------|-------------------|
-| Account permissions > Projects | Read and write | ①②③④ |
-| Repository permissions > Issues | Read | ③ |
-| Repository permissions > Pull requests | Read | ③ |
+<table>
+<thead>
+<tr><th>カテゴリ</th><th>権限</th><th>必要なワークフロー</th></tr>
+</thead>
+<tbody>
+<tr><td>Account permissions &gt; Projects</td><td>Read and write</td><td>①②③④</td></tr>
+<tr><td>Repository permissions &gt; Issues</td><td>Read</td><td>③</td></tr>
+<tr><td>Repository permissions &gt; Pull requests</td><td>Read</td><td>③</td></tr>
+</tbody>
+</table>
 
 > **Note:** ワークフロー ③（Issue/PR 一括紐付け）では対象リポジトリの Issue/PR を読み取るため、リポジトリの参照権限が追加で必要です。
 
@@ -121,11 +126,16 @@ graph LR
 <details>
 <summary>個人用アカウント × Classic token（ここをクリック→）</summary>
 
-| スコープ | 必要なワークフロー |
-|---------|-------------------|
-| `project` | ①②③④ |
-| `read:org` | ①②③④ |
-| `repo`（または `public_repo`） | ③（対象リポジトリが private の場合は `repo`） |
+<table>
+<thead>
+<tr><th>スコープ</th><th>必要なワークフロー</th></tr>
+</thead>
+<tbody>
+<tr><td><code>project</code></td><td>①②③④</td></tr>
+<tr><td><code>read:org</code></td><td>①②③④</td></tr>
+<tr><td><code>repo</code>（または <code>public_repo</code>）</td><td>③（対象リポジトリが private の場合は <code>repo</code>）</td></tr>
+</tbody>
+</table>
 
 > **Note:** Classic token では、個人用アカウント・Organization を問わず `read:org` スコープが必要です。Organization オーナーの場合、`read:org` が不足していると `gh project` サブコマンド実行時に `unknown owner type` エラーが発生します。
 >
@@ -136,11 +146,16 @@ graph LR
 <details>
 <summary>Organization × Fine-grained token（ここをクリック→）</summary>
 
-| カテゴリ | 権限 | 必要なワークフロー |
-|---------|------|-------------------|
-| Organization permissions > Projects | Read and write | ①②③④ |
-| Repository permissions > Issues | Read | ③ |
-| Repository permissions > Pull requests | Read | ③ |
+<table>
+<thead>
+<tr><th>カテゴリ</th><th>権限</th><th>必要なワークフロー</th></tr>
+</thead>
+<tbody>
+<tr><td>Organization permissions &gt; Projects</td><td>Read and write</td><td>①②③④</td></tr>
+<tr><td>Repository permissions &gt; Issues</td><td>Read</td><td>③</td></tr>
+<tr><td>Repository permissions &gt; Pull requests</td><td>Read</td><td>③</td></tr>
+</tbody>
+</table>
 
 > **Note:** ワークフロー ③（Issue/PR 一括紐付け）では対象リポジトリの Issue/PR を読み取るため、リポジトリの参照権限が追加で必要です。
 
@@ -149,11 +164,16 @@ graph LR
 <details>
 <summary>Organization × Classic token（ここをクリック→）</summary>
 
-| スコープ | 必要なワークフロー |
-|---------|-------------------|
-| `project` | ①②③④ |
-| `read:org` | ①②③④ |
-| `repo`（または `public_repo`） | ③（対象リポジトリが private の場合は `repo`） |
+<table>
+<thead>
+<tr><th>スコープ</th><th>必要なワークフロー</th></tr>
+</thead>
+<tbody>
+<tr><td><code>project</code></td><td>①②③④</td></tr>
+<tr><td><code>read:org</code></td><td>①②③④</td></tr>
+<tr><td><code>repo</code>（または <code>public_repo</code>）</td><td>③（対象リポジトリが private の場合は <code>repo</code>）</td></tr>
+</tbody>
+</table>
 
 > **Note:** Classic token では、個人用アカウント・Organization を問わず `read:org` スコープが必要です。Organization オーナーの場合、`read:org` が不足していると `gh project` サブコマンド実行時に `unknown owner type` エラーが発生します。
 
