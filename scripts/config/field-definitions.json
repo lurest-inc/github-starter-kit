@@ -1,5 +1,9 @@
 [
   {
+    "name": "見積もり工数(h)",
+    "dataType": "NUMBER"
+  },
+  {
     "name": "開始予定",
     "dataType": "DATE"
   },
@@ -8,11 +12,23 @@
     "dataType": "DATE"
   },
   {
+    "name": "実績工数(h)",
+    "dataType": "NUMBER"
+  },
+  {
     "name": "開始実績",
     "dataType": "DATE"
   },
   {
     "name": "終了実績",
     "dataType": "DATE"
+  },
+  {
+    "name": "終了期日",
+    "dataType": "DATE"
+  },
+  {
+    "name": "依頼元",
+    "dataType": "Text"
   }
 ]
