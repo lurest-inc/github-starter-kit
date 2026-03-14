@@ -16,7 +16,7 @@ GitHub Project の URL 末尾の数字が `project_number` です。
 **例:** `https://github.com/users/octocat/projects/3` → `project_number` は **3**
 
 <details>
-<summary><code>project_number</code> の確認例（スクリーンショット）を表示</summary>
+<summary><code>project_number</code> の確認例（スクリーンショット）を表示（ここをクリック→）</summary>
 
 > **参考画像:** Organization の Projects 一覧画面では、各プロジェクト名の下に `#番号` が表示されます。
 >
@@ -41,7 +41,7 @@ gh project list
 **例:** `https://github.com/octocat/my-app` → `target_repo` は **octocat/my-app**
 
 <details>
-<summary><code>target_repo</code> の確認例（スクリーンショット）を表示</summary>
+<summary><code>target_repo</code> の確認例（スクリーンショット）を表示（ここをクリック→）</summary>
 
 > **参考画像:** リポジトリページのヘッダーに `owner/repo` 形式で表示されています。
 >
