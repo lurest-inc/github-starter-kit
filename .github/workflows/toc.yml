@@ -1,0 +1,38 @@
+# ---------------------------------------------------------
+# PAT（Personal Access Token）の種類について
+# ---------------------------------------------------------
+# secrets.PROJECT_PAT には GitHub の Personal Access Token を設定します。
+# GitHub には以下の2種類の PAT があります:
+#
+# 1. Fine-grained personal access tokens（きめ細かい個人用アクセストークン）
+#    - リポジトリ単位でスコープを制限可能
+#    - 有効期限の設定が必須
+#    - 推奨される方式
+#    - 必要な権限: Contents（Read and write）, Pull requests（Read and write）
+#
+# 2. Personal access tokens (classic)（クラシック個人用アクセストークン）
+#    - リポジトリ横断でスコープを設定
+#    - 有効期限の設定は任意
+#    - 必要なスコープ: repo
+#
+# 現在、secrets.PROJECT_PAT に有効な値が設定されていないため、
+# このワークフローは disabled 状態としています。
+# 有効な PAT を設定後、ワークフローを有効化してください。
+# ---------------------------------------------------------
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, closed]
+
+name: TOC Generator
+
+jobs:
+  generateTOC:
+    if: false # disabled: secrets.PROJECT_PAT に有効な値を設定後、この行を削除して有効化してください
+    name: TOC Generator
+    runs-on: ubuntu-latest
+    steps:
+      - uses: technote-space/toc-generator@v4.3.1
+        with:
+          GITHUB_TOKEN: ${{ secrets.PROJECT_PAT }}
+          TARGET_PATHS: README.md,docs/**/*.md,.github/**/*.md
+          CREATE_PR: true
