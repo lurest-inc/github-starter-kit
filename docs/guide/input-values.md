@@ -1,4 +1,4 @@
-# 入力値ガイド
+# 📝 入力値ガイド
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -7,7 +7,7 @@
 
 ---
 
-## `project_number` の確認方法
+## 🔢 `project_number` の確認方法
 
 GitHub Project の URL 末尾の数字が `project_number` です。
 
@@ -39,7 +39,7 @@ gh project list
 
 ---
 
-## `target_repo` の確認方法
+## 📂 `target_repo` の確認方法
 
 リポジトリページの URL から `owner/repo` 形式で指定します。
 
@@ -66,7 +66,7 @@ gh repo list
 
 ---
 
-## Issue や Pull Request の確認方法
+## 🎫 Issue や Pull Request の確認方法
 
 リポジトリページ上部のタブから確認できます。
 

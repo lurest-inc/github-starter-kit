@@ -1,4 +1,4 @@
-# setup-github-project.sh
+# 📜 setup-github-project.sh
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,7 +6,7 @@
 GitHub Projects V2 の `Project` を新規作成するスクリプトです。
 Owner の種別（`Organization` / `User`）を自動判定し、適切な GraphQL ミューテーションで `Project` を作成します。
 
-## 環境変数
+## 🔧 環境変数
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
@@ -15,7 +15,7 @@ Owner の種別（`Organization` / `User`）を自動判定し、適切な Graph
 | `PROJECT_TITLE` | 作成する `Project` のタイトル | ✅ |
 | `PROJECT_VISIBILITY` | `Project` の公開範囲（`PUBLIC` / `PRIVATE`） | ❌（デフォルト: `PRIVATE`） |
 
-## 処理フロー
+## 📊 処理フロー
 
 ```mermaid
 flowchart TD
@@ -49,7 +49,7 @@ flowchart TD
     W --> X["完了"]
 ```
 
-## 処理詳細
+## 📝 処理詳細
 
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
@@ -62,7 +62,7 @@ flowchart TD
 | Visibility 検証 | レスポンス JSON の `public` が期待値と一致するか確認 | `jq '.public'` |
 | サマリー出力 | `GITHUB_OUTPUT` へ後続ステップ連携用の値を設定、`GITHUB_STEP_SUMMARY` にテーブル出力 | — |
 
-## API リファレンス
+## 📚 API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
@@ -81,6 +81,6 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 |-----------|---------|------|
 | `projectsV2(first: N)` | 100 | 既存 `Project` 重複チェック用のページサイズ |
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)

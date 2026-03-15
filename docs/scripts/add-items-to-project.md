@@ -1,4 +1,4 @@
-# add-items-to-project.sh
+# 📜 add-items-to-project.sh
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,7 +6,7 @@
 リポジトリの `Issue`/`PR` を `Project` に一括追加するスクリプトです。
 既に `Project` に追加済みのアイテムは自動的にスキップされます。
 
-## 環境変数
+## 🔧 環境変数
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
@@ -18,7 +18,7 @@
 | `ITEM_STATE` | 取得するアイテムの状態（`open`/`closed`/`all`） | ❌（デフォルト: `open`） |
 | `ITEM_LABEL` | 絞り込みラベル | ❌ |
 
-## 処理フロー
+## 📊 処理フロー
 
 ```mermaid
 flowchart TD
@@ -53,7 +53,7 @@ flowchart TD
     end
 ```
 
-## 処理詳細
+## 📝 処理詳細
 
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
@@ -64,7 +64,7 @@ flowchart TD
 | ステータス設定 | 追加したアイテムにステータスを自動付与。open → Backlog、closed/merged → Done | `gh api graphql` — `updateProjectV2ItemFieldValue` |
 | サマリー出力 | `Issue`・`PR` それぞれの追加・スキップ・失敗件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
-## API リファレンス
+## 📚 API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
@@ -87,6 +87,6 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 | `--limit` | 100 | `gh issue list` / `gh pr list` の最大取得件数 |
 | `sleep` | 1秒 | アイテム追加間のレート制限回避待機時間 |
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [③ Issue/PR 一括紐付け](../workflows/03-add-items-to-project)

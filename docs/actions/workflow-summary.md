@@ -1,4 +1,4 @@
-# workflow-summary アクション
+# 📊 workflow-summary アクション
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,14 +6,14 @@
 ワークフローの実行結果（成功・失敗）に応じたサマリーレポートを GitHub Actions の Job Summary に出力する複合アクションです。
 全4ワークフローの終了時ジョブで共通的に使用されています。
 
-## 概要
+## 📋 概要
 
 - 成功・失敗に応じたアイコン付きサマリーテーブルを出力
 - 各ジョブの結果を JSON からパースして表示
 - フォークリポジトリの検出と upstream 同期案内（失敗時）
 - 失敗時の Issue / Discussion 起票リンクの表示
 
-## Inputs
+## ⚙️ Inputs
 
 | Input | 説明 | 必須 | デフォルト |
 |-------|------|:----:|-----------|
@@ -22,7 +22,7 @@
 | `project-owner` | Project の所有者 | - | `''` |
 | `project-number` | 対象 Project の Number | - | `''` |
 
-## 出力内容
+## 📤 出力内容
 
 ### 共通項目（成功・失敗共通）
 
@@ -47,7 +47,7 @@
 - **フォーク検出:** リポジトリがフォークの場合、upstream との同期案内メッセージを表示
 - **次のアクション:** Issue / Discussion の起票リンクを表示（フォーク時はフォーク元リポジトリへのリンク）
 
-## 使用例
+## 💡 使用例
 
 ### ① 新規作成ワークフロー（project-number なし・複数ジョブ）
 
@@ -91,7 +91,7 @@
       {"extend-project": "${{ needs.extend-project.result }}"}
 ```
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)
 - [② GitHub Project 拡張](../workflows/02-extend-project)
