@@ -1,4 +1,4 @@
-# setup-project-fields.sh
+# 📜 setup-project-fields.sh
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,7 +6,7 @@
 `Project` にカスタムフィールドを自動作成するスクリプトです。
 既に同名のフィールドが存在する場合は自動的にスキップされます。
 
-## 環境変数
+## 🔧 環境変数
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
@@ -14,7 +14,7 @@
 | `PROJECT_OWNER` | `Project` の所有者 | ✅ |
 | `PROJECT_NUMBER` | 対象 `Project` の Number（数値） | ✅ |
 
-## 作成されるフィールド
+## 📋 作成されるフィールド
 
 フィールド定義は `scripts/config/field-definitions.json` に外部化されています。
 デフォルトでは以下のフィールドが作成されます:
@@ -30,7 +30,7 @@
 | 終了期日 | DATE | - |
 | 依頼元 | TEXT | - |
 
-## フィールド構成図
+## 🗺️ フィールド構成図
 
 ```mermaid
 graph TD
@@ -44,7 +44,7 @@ graph TD
     Project --> Requester["依頼元\n(TEXT)"]
 ```
 
-## 処理フロー
+## 📊 処理フロー
 
 ```mermaid
 flowchart TD
@@ -72,7 +72,7 @@ flowchart TD
     R -- "No" --> S["完了"]
 ```
 
-## 処理詳細
+## 📝 処理詳細
 
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
@@ -83,7 +83,7 @@ flowchart TD
 | フィールド作成 | データ型に応じてフィールドを作成（`SINGLE_SELECT` の場合は `singleSelectOptions` で選択肢を付与） | `gh api graphql` — `createProjectV2Field` mutation |
 | サマリー出力 | 作成・スキップ・失敗の件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
-## API リファレンス
+## 📚 API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
@@ -100,7 +100,7 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 |-----------|---------|------|
 | `fields(first: N)` | 100 | GitHub GraphQL API の `first` パラメータ上限 |
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)
 - [② GitHub Project 拡張](../workflows/02-extend-project)

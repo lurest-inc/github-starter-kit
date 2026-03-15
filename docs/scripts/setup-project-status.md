@@ -1,4 +1,4 @@
-# setup-project-status.sh
+# 📜 setup-project-status.sh
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,7 +6,7 @@
 `Project` の `Status` フィールドにカラムを設定するスクリプトです。
 既存の `Status` フィールドに対して、定義済みのカラムを追加・更新します。
 
-## 環境変数
+## 🔧 環境変数
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
@@ -14,7 +14,7 @@
 | `PROJECT_OWNER` | `Project` の所有者 | ✅ |
 | `PROJECT_NUMBER` | 対象 `Project` の Number（数値） | ✅ |
 
-## 設定されるステータスカラム
+## 📋 設定されるステータスカラム
 
 ステータスカラム定義は `scripts/config/status-options.json` に外部化されています。
 デフォルトでは以下のカラムが設定されます:
@@ -27,7 +27,7 @@
 | In Review | ORANGE | レビュー中 | PRレビュー待ち・レビュー中のタスク |
 | Done | GREEN | 完了 | 作業完了したタスク |
 
-## 処理フロー
+## 📊 処理フロー
 
 ```mermaid
 flowchart TD
@@ -48,7 +48,7 @@ flowchart TD
     L --> M["完了"]
 ```
 
-## 処理詳細
+## 📝 処理詳細
 
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
@@ -58,7 +58,7 @@ flowchart TD
 | カラム更新 | `singleSelectOptions` に Backlog（GRAY）・Todo（BLUE）・In Progress（YELLOW）・In Review（ORANGE）・Done（GREEN）を指定して一括更新 | `gh api graphql` — `updateProjectV2Field` mutation |
 | サマリー出力 | カラム構成（`Backlog → Todo → In Progress → In Review → Done`）をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
-## API リファレンス
+## 📚 API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
@@ -75,7 +75,7 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 |-----------|---------|------|
 | `fields(first: N)` | 100 | `Status` フィールド検索用（ビルトイン＋カスタムフィールドを取得） |
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)
 - [② GitHub Project 拡張](../workflows/02-extend-project)

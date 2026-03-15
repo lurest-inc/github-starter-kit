@@ -1,4 +1,4 @@
-# トラブルシューティング
+# 🔍 トラブルシューティング
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -7,7 +7,7 @@
 
 ---
 
-## フォーク後に GitHub Actions が動かない
+## ⚠️ フォーク後に GitHub Actions が動かない
 
 フォークしたリポジトリでは、セキュリティ上の理由により **GitHub Actions がデフォルトで無効** になっています。以下の手順で有効化してください。
 
@@ -29,7 +29,7 @@ gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
 
 ---
 
-## 権限エラーが発生する
+## 🔐 権限エラーが発生する
 
 ワークフロー実行時に権限関連のエラーが出る場合は、以下を確認してください。
 
@@ -50,7 +50,7 @@ gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
 
 ---
 
-## ワークフローが見つからない
+## 🔎 ワークフローが見つからない
 
 Actions タブにワークフローが表示されない場合は、以下を確認してください。
 

@@ -1,4 +1,4 @@
-# setup-project-views.sh
+# 📜 setup-project-views.sh
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -6,7 +6,7 @@
 `Project` に `View` を自動作成するスクリプトです。
 既に同名の `View` が存在する場合は自動的にスキップされます。
 
-## 環境変数
+## 🔧 環境変数
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
@@ -14,7 +14,7 @@
 | `PROJECT_OWNER` | `Project` の所有者 | ✅ |
 | `PROJECT_NUMBER` | 対象 `Project` の Number（数値） | ✅ |
 
-## 作成される View
+## 📋 作成される View
 
 `View` 定義は `scripts/config/view-definitions.json` に外部化されています。
 デフォルトでは以下の `View` が作成されます:
@@ -59,7 +59,7 @@
 - `visible_fields` は `roadmap` レイアウトには適用されない（API 仕様）
 - `filter` の構文は [Filtering projects](https://docs.github.com/en/issues/planning-and-tracking-with-projects/customizing-views-in-your-project/filtering-projects) を参照
 
-## 処理フロー
+## 📊 処理フロー
 
 ```mermaid
 flowchart TD
@@ -87,7 +87,7 @@ flowchart TD
     R -- "No" --> S["完了"]
 ```
 
-## 処理詳細
+## 📝 処理詳細
 
 | ステップ | 処理内容 | 使用コマンド / API |
 |---------|---------|-------------------|
@@ -99,7 +99,7 @@ flowchart TD
 | `View` 作成 | REST API で `View` を作成。`name`・`layout` に加え、任意で `filter`・`visible_fields` を送信 | `gh api {path} --method POST` |
 | サマリー出力 | 作成・スキップ・失敗の件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | — |
 
-## API リファレンス
+## 📚 API リファレンス
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
@@ -117,7 +117,7 @@ REST API バージョン `2022-11-28` を使用します。共通ライブラリ
 |-----------|---------|------|
 | `views(first: N)` | 100 | GraphQL API の 1 ページあたりの取得件数（`pageInfo` でページネーション対応） |
 
-## 使用ワークフロー
+## 🔄 使用ワークフロー
 
 - [① GitHub Project 新規作成](../workflows/01-create-project)
 - [② GitHub Project 拡張](../workflows/02-extend-project)

@@ -1,4 +1,4 @@
-# クイックスタート（コマンド版）
+# ⌨️ クイックスタート（コマンド版）
 
 <!-- START doctoc -->
 <!-- END doctoc -->
@@ -15,19 +15,19 @@ flowchart LR
     D --> E["5. ワークフロー実行"]
 ```
 
-## 前提条件
+## ✅ 前提条件
 
 - [GitHub CLI (`gh`)](https://cli.github.com/) がインストール済みであること
 - `gh auth login` で認証済みであること
 
-## 1. リポジトリを fork する
+## 1. 🍴 リポジトリを fork する
 
 ```bash
 gh repo fork mabubu0203/github-projects-starter-kit --clone
 cd github-projects-starter-kit
 ```
 
-## 2. PAT を作成する
+## 2. 🔑 PAT を作成する
 
 > **Note:** `PAT` の作成は GitHub API / CLI では実行できないため、Web UI から作成してください。
 
@@ -35,7 +35,7 @@ GitHub の [Settings > Developer settings > Personal access tokens](https://gith
 
 必要な権限の詳細は [認証・トークンガイド](guide/auth-tokens) を参照してください。Fine-grained token の制約事項については [Fine-grained token の制約事項](guide/auth-tokens#fine-grained-token-の制約事項) も合わせてご確認ください。
 
-## 3. Secrets を設定する
+## 3. 🔒 Secrets を設定する
 
 ```bash
 gh secret set PROJECT_PAT --repo <owner>/github-projects-starter-kit
@@ -43,7 +43,7 @@ gh secret set PROJECT_PAT --repo <owner>/github-projects-starter-kit
 
 実行するとプロンプトが表示されるので、作成した `PAT` を入力してください。
 
-## 4. GitHub Actions を有効化する
+## 4. ⚡ GitHub Actions を有効化する
 
 フォークしたリポジトリでは GitHub Actions がデフォルトで無効になっています。
 
@@ -56,7 +56,7 @@ gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
 
 > **Note:** 詳しくは [トラブルシューティング > フォーク後に GitHub Actions が動かない](troubleshooting#フォーク後に-github-actions-が動かない) を参照してください。
 
-## 5. ワークフローを実行する
+## 5. ▶️ ワークフローを実行する
 
 ### ① GitHub Project 新規作成
 
@@ -93,7 +93,7 @@ gh workflow run 04-export-project-items.yml \
   --field item_state="all"
 ```
 
-## ワークフロー実行状況の確認
+## 👀 ワークフロー実行状況の確認
 
 ```bash
 # 実行一覧を表示
