@@ -17,6 +17,10 @@ source "${SCRIPT_DIR}/lib/common.sh"
 
 require_env "GH_TOKEN" "Secrets に PROJECT_PAT を設定してください。"
 require_env "TARGET_REPO"
+if [[ ! "${TARGET_REPO}" =~ ^[^/]+/[^/]+$ ]]; then
+  echo "::error::TARGET_REPO は owner/repo 形式で指定してください（例: myorg/myrepo）。"
+  exit 1
+fi
 require_command "gh" "GitHub CLI (gh) が必要です。PATH を確認してください。"
 require_command "jq" "JSON の解析に必要です。"
 
@@ -61,6 +65,13 @@ fi
 LABEL_COUNT=$(echo "${LABEL_DEFINITIONS}" | jq 'length')
 echo "  ${LABEL_COUNT} 件のラベル定義を読み込みました。"
 
+if [[ "${LABEL_COUNT}" -eq 0 ]]; then
+  echo ""
+  echo "ラベル定義が空のため、処理をスキップします。"
+  print_summary "リポジトリ" "${TARGET_REPO}" "作成" "0 件" "スキップ" "0 件" "失敗" "0 件"
+  exit 0
+fi
+
 # --- ラベルの一括作成 ---
 
 echo ""
@@ -86,12 +97,13 @@ for i in $(seq 0 $((LABEL_COUNT - 1))); do
     CREATED=$((CREATED + 1))
   else
     # 既存ラベルかどうかを確認
-    if gh label list --repo "${TARGET_REPO}" --json name --jq ".[].name" 2>/dev/null | grep -qx "${LABEL_NAME}"; then
+    if gh label list --repo "${TARGET_REPO}" --limit 9999 --json name --jq ".[].name" 2>/dev/null | grep -Fqx "${LABEL_NAME}"; then
       echo "    → 既存ラベルのためスキップしました。"
       SKIPPED=$((SKIPPED + 1))
     else
       echo "    → 作成に失敗しました。"
-      echo "::error::ラベル '${LABEL_NAME}' の作成に失敗しました。"
+      SAFE_LABEL_NAME=$(sanitize_for_workflow_command "${LABEL_NAME}")
+      echo "::error::ラベル '${SAFE_LABEL_NAME}' の作成に失敗しました。"
       FAILED=$((FAILED + 1))
     fi
   fi
