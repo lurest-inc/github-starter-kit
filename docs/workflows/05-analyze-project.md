@@ -163,7 +163,7 @@
 
 #### Artifact
 
-`report-{number}-summary.{json|md|csv|tsv}` が artifact としてダウンロード可能です（保持期間: 90 日）。出力形式は `output_format` パラメータで選択できます。
+`report-{number}-summary.{json|md|csv|tsv}` が artifact としてダウンロード可能です（保持期間: 7 日）。出力形式は `output_format` パラメータで選択できます。
 
 ---
 
@@ -211,7 +211,7 @@
 
 #### Artifact
 
-`report-{number}-effort.{json|md|csv|tsv}` が artifact としてダウンロード可能です（保持期間: 90 日）。出力形式は `output_format` パラメータで選択できます。
+`report-{number}-effort.{json|md|csv|tsv}` が artifact としてダウンロード可能です（保持期間: 7 日）。出力形式は `output_format` パラメータで選択できます。
 
 ---
 
