@@ -75,7 +75,7 @@ flowchart TD
 | アイテム取得・正規化 | 共通ライブラリの `fetch_all_project_items` で Project の全アイテムをページネーション付きで取得（100件/ページ、最大 50 ページ）。`DraftIssue` を除外し、Issue・PR の基本情報に加え、Status・実績工数(h) のフィールド値を含む統一フォーマットに正規化 | `fetch_all_project_items` — `projectV2.items(first: 100)` |
 | type フィルタリング | `ITEM_TYPE` に応じて Issue / PR を絞り込み | `filter_items_by_type` |
 | state フィルタリング | `ITEM_STATE` に応じて open / closed を絞り込み | `filter_items_by_state` |
-| Done アイテム抽出 | Status が `Done` のアイテムを抽出し、集計期間内（`updated_at` ベース）のものに絞り込み | `jq` |
+| Done アイテム抽出 | Status が `Done` のアイテムを抽出し、集計期間内（ProjectV2Item の `updatedAt` ベース）のものに絞り込み | `jq` |
 | 集計期間の計算 | ISO 週ベースで `VELOCITY_WEEKS` 週間の開始日・終了日を `jq` で算出（macOS/Linux 互換） | `jq` |
 | 週別集計 | 各週にマッチする Done アイテムの完了数・完了工数を集計 | `jq` |
 | 担当者別集計 | 担当者ごとの完了数・完了工数合計を算出。複数担当者のアイテムは各担当者に計上。未アサインのアイテムは「(未アサイン)」として集計 | `jq` |

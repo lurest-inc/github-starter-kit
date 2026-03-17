@@ -23,6 +23,8 @@ source "${SCRIPT_DIR}/lib/common.sh"
 ITEM_TYPE="${ITEM_TYPE:-all}"
 ITEM_STATE="${ITEM_STATE:-all}"
 VELOCITY_WEEKS="${VELOCITY_WEEKS:-8}"
+# 先頭ゼロを除去（例: "08" → "8"）し、jq の --argjson で安全に扱えるようにする
+VELOCITY_WEEKS="$((10#${VELOCITY_WEEKS}))"
 
 # --- バリデーション ---
 
@@ -54,6 +56,7 @@ query($login: String!, $number: Int!, $after: String) {
           endCursor
         }
         nodes {
+          updatedAt
           fieldValues(first: 20) {
             nodes {
               ... on ProjectV2ItemFieldSingleSelectValue {
@@ -73,7 +76,6 @@ query($login: String!, $number: Int!, $after: String) {
               title
               url
               state
-              updatedAt
               repository { nameWithOwner }
               assignees(first: 100) { nodes { login } }
             }
@@ -83,7 +85,6 @@ query($login: String!, $number: Int!, $after: String) {
               title
               url
               state
-              updatedAt
               repository { nameWithOwner }
               assignees(first: 100) { nodes { login } }
             }
@@ -107,7 +108,7 @@ VELOCITY_NORMALIZE_FILTER='[.data.[($owner)].projectV2.items.nodes[]
       state:         .content.state,
       repository:    .content.repository.nameWithOwner,
       assignees:     [.content.assignees.nodes[].login],
-      updated_at:    .content.updatedAt,
+      updated_at:    .updatedAt,
       status:        ([.fieldValues.nodes[] | select(.field.name == "Status") | .name] | first // null),
       actual_hours:  ([.fieldValues.nodes[] | select(.field.name == "実績工数(h)") | .number] | first // null)
     }]'
