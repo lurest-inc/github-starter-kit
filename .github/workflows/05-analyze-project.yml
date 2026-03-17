@@ -78,7 +78,7 @@ jobs:
           name: summary-report-${{ inputs.project_number }}
           path: report-*-summary.*
           if-no-files-found: ignore
-          retention-days: 90
+          retention-days: 7
 
   generate-effort-report:
     if: >-
@@ -107,7 +107,7 @@ jobs:
           name: effort-report-${{ inputs.project_number }}
           path: report-*-effort.*
           if-no-files-found: ignore
-          retention-days: 90
+          retention-days: 7
 
   detect-stale-items:
     if: >-
