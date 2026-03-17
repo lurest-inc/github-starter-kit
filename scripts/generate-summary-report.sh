@@ -183,7 +183,7 @@ read -r OPEN_COUNT CLOSED_COUNT MERGED_COUNT < <(echo "${ITEMS}" | jq -r '[
 
 # ステータス別集計
 STATUS_SUMMARY=$(echo "${ITEMS}" | jq --argjson total "${TOTAL_COUNT}" '
-  group_by(.status // "(未設定)")
+  sort_by(.status // "(未設定)") | group_by(.status // "(未設定)")
   | map({
       status: .[0].status // "(未設定)",
       count: length,
@@ -202,7 +202,7 @@ STATUS_SUMMARY=$(echo "${ITEMS}" | jq --argjson total "${TOTAL_COUNT}" '
 # 担当者別集計
 ASSIGNEE_SUMMARY=$(echo "${ITEMS}" | jq '
   [.[] | . as $item | (if (.assignees | length) == 0 then ["(未アサイン)"] else .assignees end)[] | {assignee: ., status: $item.status}]
-  | group_by(.assignee)
+  | sort_by(.assignee) | group_by(.assignee)
   | map({
       assignee: .[0].assignee,
       total: length,
@@ -214,11 +214,11 @@ ASSIGNEE_SUMMARY=$(echo "${ITEMS}" | jq '
 
 # ラベル別集計
 LABEL_SUMMARY=$(echo "${ITEMS}" | jq '
-  [.[] | . as $item | (if (.labels | length) == 0 then ["(ラベルなし)"] else .labels end)[] | {label: ., number: $item.number}]
-  | group_by(.label)
+  [.[] | . as $item | (if (.labels | length) == 0 then ["(ラベルなし)"] else .labels end)[] | {label: ., url: $item.url}]
+  | sort_by(.label) | group_by(.label)
   | map({
       label: .[0].label,
-      count: (map(.number) | unique | length)
+      count: (map(.url) | unique | length)
     })
   | sort_by(-.count)
 ')
@@ -229,7 +229,7 @@ HAS_EFFORT=$(echo "${ITEMS}" | jq '[.[] | select(.estimated_hours != null or .ac
 EFFORT_SUMMARY=""
 if [[ "${HAS_EFFORT}" == "true" ]]; then
   EFFORT_SUMMARY=$(echo "${ITEMS}" | jq '
-    group_by(.status // "(未設定)")
+    sort_by(.status // "(未設定)") | group_by(.status // "(未設定)")
     | map({
         status: .[0].status // "(未設定)",
         estimated_hours: ([.[] | .estimated_hours // 0] | add),
