@@ -454,15 +454,15 @@ flowchart TD
 .github/workflows/05-analyze-project.yml
   ├── validate-inputs ジョブ
   │   └── retention_days の範囲検証（1〜7）
-  ├── generate-summary-report ジョブ（summary 選択時）
+  ├── generate-summary-report ジョブ（all or summary 選択時）
   │   └── scripts/generate-summary-report.sh       # サマリーレポート生成
-  ├── generate-effort-report ジョブ（effort 選択時）
+  ├── generate-effort-report ジョブ（all or effort 選択時）
   │   └── scripts/generate-effort-report.sh        # 工数集計レポート生成
-  ├── generate-velocity-report ジョブ（velocity 選択時）
+  ├── generate-velocity-report ジョブ（all or velocity 選択時）
   │   └── scripts/generate-velocity-report.sh      # ベロシティレポート生成
-  ├── detect-stale-items ジョブ（stale 選択時）
+  ├── detect-stale-items ジョブ（all or stale 選択時）
   │   └── scripts/detect-stale-items.sh            # 滞留アイテム検知
-  ├── export-items ジョブ（export 選択時）
+  ├── export-items ジョブ（all or export 選択時）
   │   └── scripts/export-project-items.sh          # アイテムエクスポート
   ├── workflow-summary-failure ジョブ（失敗時）
   │   └── .github/actions/workflow-summary         # 失敗サマリー出力
