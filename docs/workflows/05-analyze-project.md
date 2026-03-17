@@ -24,10 +24,10 @@
 | パラメータ | 説明 | 必須 | タイプ | デフォルト | 例 |
 |------------|------|:----:|--------|-----------|-----|
 | `project_number` | 対象 `Project` の Number | ✅ | `number` | — | `1` |
-| `report_types` | 実行する機能 | — | `choice` | `all` | `stale` |
-| `output_format` | 出力形式 | — | `choice` | `json` | `markdown` |
-| `item_type` | 対象アイテムの種別 | — | `choice` | `all` | `issues` |
-| `item_state` | 対象アイテムの状態 | — | `choice` | `all` | `open` |
+| `report_types` | 実行する機能 | ✅ | `choice` | `all` | `stale` |
+| `output_format` | 出力形式 | ✅ | `choice` | `json` | `markdown` |
+| `item_type` | 対象アイテムの種別 | ✅ | `choice` | `all` | `issues` |
+| `item_state` | 対象アイテムの状態 | ✅ | `choice` | `all` | `open` |
 | `retention_days` | アーティファクトの保持日数（1〜7） | ✅ | `number` | `7` | `3` |
 
 ### `report_types` の選択肢
