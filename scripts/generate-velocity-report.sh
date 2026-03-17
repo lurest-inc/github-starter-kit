@@ -128,7 +128,7 @@ EXECUTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
 # 集計期間の開始日を計算（現在の ISO 週の月曜日から VELOCITY_WEEKS 週前）
 # macOS と Linux の date 互換性のため jq で計算
-read -r PERIOD_START PERIOD_END < <(jq -n \
+read -r PERIOD_START PERIOD_END < <(jq -rn \
   --argjson weeks "${VELOCITY_WEEKS}" '
   (now | floor) as $now |
   # 現在の曜日（月=0, 日=6）
