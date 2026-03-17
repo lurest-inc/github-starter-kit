@@ -2,6 +2,7 @@
 
 [![Pages Deploy](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment)
 [![TOC Generator](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml)
+[![release-please](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![Platform: macOS/Windows](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-blue.svg)
 
