@@ -112,6 +112,78 @@ if [[ -z "${DONE_STATUS_OPTION_ID}" ]]; then
 fi
 echo "  Done ステータス: Done (${DONE_STATUS_OPTION_ID})"
 
+# --- リポジトリとプロジェクトのリンク ---
+
+echo ""
+echo "リポジトリとプロジェクトのリンクを確認しています..."
+
+# リポジトリの node_id を取得
+REPO_NODE_ID=$(gh api "repos/${TARGET_REPO}" \
+  -H "X-GitHub-Api-Version: ${REST_API_VERSION}" \
+  --jq '.node_id' 2>&1) || {
+  safe_output=$(sanitize_for_workflow_command "${REPO_NODE_ID}")
+  echo "::error::リポジトリ情報の取得に失敗しました: ${safe_output}"
+  exit 1
+}
+
+if [[ -z "${REPO_NODE_ID}" || "${REPO_NODE_ID}" == "null" ]]; then
+  echo "::error::リポジトリの node_id を取得できませんでした。TARGET_REPO=${TARGET_REPO} が正しいか確認してください。"
+  exit 1
+fi
+echo "  Repository Node ID: ${REPO_NODE_ID}"
+
+# リンクを試行し、既にリンク済みの場合はスキップ扱いにする
+# 事前クエリでのリンク状態確認はページネーションの考慮が必要なため、
+# 直接 mutation を実行して結果で判定する方式を採用
+LINK_MUTATION=$(cat <<'GRAPHQL'
+mutation($projectId: ID!, $repositoryId: ID!) {
+  linkProjectV2ToRepository(input: {
+    projectId: $projectId,
+    repositoryId: $repositoryId
+  }) {
+    repository {
+      id
+    }
+  }
+}
+GRAPHQL
+)
+
+LINK_VARIABLES_JSON=$(jq -n \
+  --arg projectId "${PROJECT_ID}" \
+  --arg repositoryId "${REPO_NODE_ID}" \
+  '{projectId: $projectId, repositoryId: $repositoryId}')
+
+LINK_REQUEST_BODY=$(jq -n \
+  --arg query "${LINK_MUTATION}" \
+  --argjson variables "${LINK_VARIABLES_JSON}" \
+  '{query: $query, variables: $variables}')
+
+LINK_STATUS=""
+LINK_RESULT=$(printf '%s' "${LINK_REQUEST_BODY}" | gh api graphql --input - 2>&1) && {
+  # mutation 成功（新規リンク作成）
+  if echo "${LINK_RESULT}" | jq -e '.errors and (.errors | length > 0)' >/dev/null 2>&1; then
+    # レスポンス内に GraphQL エラーがある場合（既にリンク済みなど）
+    LINK_ERROR_MSG=$(echo "${LINK_RESULT}" | jq -r '.errors[0].message // empty')
+    echo "  リポジトリは既にプロジェクトにリンク済みです。スキップします。"
+    LINK_STATUS="スキップ（リンク済み）"
+  else
+    echo "  リンク完了: ${TARGET_REPO} → Project #${PROJECT_NUMBER}"
+    LINK_STATUS="リンク作成"
+  fi
+} || {
+  # gh api コマンド自体が非ゼロで終了した場合
+  # 既にリンク済みの場合のエラーはスキップ扱いにする
+  if echo "${LINK_RESULT}" | grep -qi "already linked\|already exists"; then
+    echo "  リポジトリは既にプロジェクトにリンク済みです。スキップします。"
+    LINK_STATUS="スキップ（リンク済み）"
+  else
+    safe_output=$(sanitize_for_workflow_command "${LINK_RESULT}")
+    echo "::error::リポジトリとプロジェクトのリンクに失敗しました: ${safe_output}"
+    exit 1
+  fi
+}
+
 # --- ヘルパー関数 ---
 
 # アイテムにステータスを設定する
@@ -329,6 +401,7 @@ TOTAL_FAILED=$((ISSUE_FAILED + PR_FAILED))
 
 print_summary \
   "Target Repo" "${TARGET_REPO}" \
+  "リンク" "${LINK_STATUS}" \
   "Issue" "追加: ${ISSUE_ADDED}, スキップ: ${ISSUE_SKIPPED}, 失敗: ${ISSUE_FAILED}" \
   "PR" "追加: ${PR_ADDED}, スキップ: ${PR_SKIPPED}, 失敗: ${PR_FAILED}" \
   "合計" "追加: ${TOTAL_ADDED}, スキップ: ${TOTAL_SKIPPED}, 失敗: ${TOTAL_FAILED}"
@@ -340,6 +413,7 @@ if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
     echo "| 項目 | 値 |"
     echo "|------|-----|"
     echo "| Target Repo | \`${TARGET_REPO}\` |"
+    echo "| Repo Link | ${LINK_STATUS} |"
     echo "| State Filter | ${ITEM_STATE} |"
     echo "| Status | open → Backlog / closed・merged → Done |"
     if [[ -n "${ITEM_LABEL}" ]]; then
