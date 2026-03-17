@@ -1,10 +1,19 @@
 # GitHub Projects Starter Kit
 
-[![Pages Deploy](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment)
-[![TOC Generator](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml)
-[![release-please](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 ![Platform: macOS/Windows](https://img.shields.io/badge/Platform-macOS%20%7C%20Windows-blue.svg)
+![GitHub Top Language](https://img.shields.io/github/languages/top/mabubu0203/github-projects-starter-kit)
+[![GitHub Release](https://img.shields.io/github/v/release/mabubu0203/github-projects-starter-kit)](https://github.com/mabubu0203/github-projects-starter-kit/releases)
+[![GitHub Release Date](https://img.shields.io/github/release-date/mabubu0203/github-projects-starter-kit)](https://github.com/mabubu0203/github-projects-starter-kit/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+  
+[![GitHub Stars](https://img.shields.io/github/stars/mabubu0203/github-projects-starter-kit)](https://github.com/mabubu0203/github-projects-starter-kit/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/mabubu0203/github-projects-starter-kit)](https://github.com/mabubu0203/github-projects-starter-kit/forks)
+[![GitHub Last Commit](https://img.shields.io/github/last-commit/mabubu0203/github-projects-starter-kit)](https://github.com/mabubu0203/github-projects-starter-kit/commits)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen)](https://github.com/mabubu0203/github-projects-starter-kit/pulls)
+  
+[![TOC Generator](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/toc.yml)
+[![Pages Deploy](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/pages/pages-build-deployment)
+[![release-please](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml/badge.svg)](https://github.com/mabubu0203/github-projects-starter-kit/actions/workflows/release-please.yml)
 
 GitHub Projects の初期セットアップを GitHub Actions で自動実行するためのスターターキットです。
 本リポジトリを fork し、GitHub Actions を手動実行することで、GitHub Project の作成から分析までを一貫して行えます。
