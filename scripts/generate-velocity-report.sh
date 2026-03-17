@@ -11,7 +11,6 @@ set -euo pipefail
 #   ITEM_TYPE       - 対象アイテムの種別（all / issues / prs、デフォルト: all）
 #   ITEM_STATE      - 対象アイテムの状態（open / closed / all、デフォルト: all）
 #   OUTPUT_FORMAT   - 出力形式（json / markdown / csv / tsv、デフォルト: json）
-#   VELOCITY_WEEKS  - 集計対象の週数（デフォルト: 8）
 
 # --- 共通ライブラリ読み込み ---
 
