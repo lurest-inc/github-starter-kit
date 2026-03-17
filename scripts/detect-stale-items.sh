@@ -9,6 +9,7 @@ set -euo pipefail
 #   PROJECT_OWNER  - Project の所有者
 #   PROJECT_NUMBER - 対象 Project の Number
 #   ITEM_TYPE      - 対象アイテムの種別（all / issues / prs、デフォルト: all）
+#   OUTPUT_FORMAT  - 出力形式（json / markdown / csv / tsv、デフォルト: json）
 
 # --- 共通ライブラリ読み込み ---
 
@@ -27,6 +28,8 @@ ITEM_TYPE="${ITEM_TYPE:-all}"
 
 validate_common_project_env
 validate_enum "ITEM_TYPE" "${ITEM_TYPE}" "all" "issues" "prs"
+OUTPUT_FORMAT="${OUTPUT_FORMAT:-json}"
+validate_enum "OUTPUT_FORMAT" "${OUTPUT_FORMAT}" "markdown" "csv" "tsv" "json"
 
 # --- ヘルパー関数 ---
 
@@ -244,58 +247,136 @@ read -r IN_REVIEW_COUNT IN_PROGRESS_COUNT TODO_COUNT < <(echo "${STALE_ITEMS}" |
   ] | @tsv
 ')
 
-# --- Artifact 用 JSON 出力 ---
+# --- フォーマッター関数 ---
+
+format_stale_markdown() {
+  local stale_items="$1"
+  local stale_count
+  stale_count=$(echo "${stale_items}" | jq 'length')
+
+  local md_row_filter="${JQ_MD_ESCAPE}"'
+    "| [#\(.number)](\(.url)) | \(.title | md_escape) | \(.repository) | \(if .assignees == "" then "-" else (.assignees | md_escape) end) | \(.updated_at | split("T")[0]) | \(.days_stale) |"'
+
+  {
+    echo "# 滞留アイテムレポート"
+    echo ""
+    echo "- **Project:** ${PROJECT_TITLE} (#${PROJECT_NUMBER})"
+    echo "- **実行日時:** ${EXECUTED_AT}"
+    echo "- **検知件数:** ${stale_count} 件"
+    echo ""
+
+    if [[ "${stale_count}" -eq 0 ]]; then
+      echo "> 滞留アイテムはありません。"
+    else
+      if [[ "${IN_REVIEW_COUNT}" -gt 0 ]]; then
+        echo "## In Review（${STALE_DAYS_IN_REVIEW} 日以上）: ${IN_REVIEW_COUNT} 件"
+        echo ""
+        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
+        echo "|---|---------|-----------|---------|---------|---------|"
+        echo "${stale_items}" | jq -r "[.[] | select(.status == \"In Review\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
+        echo ""
+      fi
+
+      if [[ "${IN_PROGRESS_COUNT}" -gt 0 ]]; then
+        echo "## In Progress（${STALE_DAYS_IN_PROGRESS} 日以上）: ${IN_PROGRESS_COUNT} 件"
+        echo ""
+        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
+        echo "|---|---------|-----------|---------|---------|---------|"
+        echo "${stale_items}" | jq -r "[.[] | select(.status == \"In Progress\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
+        echo ""
+      fi
+
+      if [[ "${TODO_COUNT}" -gt 0 ]]; then
+        echo "## Todo（${STALE_DAYS_TODO} 日以上）: ${TODO_COUNT} 件"
+        echo ""
+        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
+        echo "|---|---------|-----------|---------|---------|---------|"
+        echo "${stale_items}" | jq -r "[.[] | select(.status == \"Todo\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
+        echo ""
+      fi
+    fi
+  }
+}
+
+format_stale_csv() {
+  local stale_items="$1"
+  echo "type,number,title,url,status,repository,assignees,updated_at,days_stale,threshold"
+  echo "${stale_items}" | jq -r '.[] | [.type, .number, .title, .url, .status, .repository, .assignees, .updated_at, .days_stale, .threshold] | @csv'
+}
+
+format_stale_tsv() {
+  local stale_items="$1"
+  echo -e "type\tnumber\ttitle\turl\tstatus\trepository\tassignees\tupdated_at\tdays_stale\tthreshold"
+  echo "${stale_items}" | jq -r '.[] | [.type, (.number | tostring), .title, .url, .status, .repository, .assignees, .updated_at, (.days_stale | tostring), (.threshold | tostring)] | @tsv'
+}
+
+# --- レポート出力 ---
 
 echo ""
 echo "レポートを生成しています..."
 
 EXECUTED_AT=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
 
-# Artifact 用 JSON を生成
-REPORT_JSON=$(echo "${STALE_ITEMS}" | jq \
-  --arg project_title "${PROJECT_TITLE}" \
-  --argjson project_number "${PROJECT_NUMBER}" \
-  --arg executed_at "${EXECUTED_AT}" \
-  --argjson todo_days "${STALE_DAYS_TODO}" \
-  --argjson in_progress_days "${STALE_DAYS_IN_PROGRESS}" \
-  --argjson in_review_days "${STALE_DAYS_IN_REVIEW}" '
-  {
-    project: {
-      title: $project_title,
-      number: $project_number
-    },
-    executed_at: $executed_at,
-    thresholds: {
-      "Todo": $todo_days,
-      "In Progress": $in_progress_days,
-      "In Review": $in_review_days
-    },
-    summary: {
-      total_stale: length,
-      by_status: {
-        "In Review": ([.[] | select(.status == "In Review")] | length),
-        "In Progress": ([.[] | select(.status == "In Progress")] | length),
-        "Todo": ([.[] | select(.status == "Todo")] | length)
-      }
-    },
-    stale_items: [.[] | {
-      type,
-      number,
-      title,
-      url,
-      status,
-      repository,
-      assignees: (.assignees | split(", ") | map(select(. != ""))),
-      labels,
-      updated_at,
-      days_stale
-    }]
-  }
-')
+FILE_EXT=$(get_file_extension "${OUTPUT_FORMAT}")
+OUTPUT_FILE="stale-items-report.${FILE_EXT}"
 
-OUTPUT_FILE="stale-items-report.json"
-echo "${REPORT_JSON}" > "${OUTPUT_FILE}"
-echo "  JSON 出力: ${OUTPUT_FILE}"
+case "${OUTPUT_FORMAT}" in
+  json)
+    # Artifact 用 JSON を生成
+    REPORT_JSON=$(echo "${STALE_ITEMS}" | jq \
+      --arg project_title "${PROJECT_TITLE}" \
+      --argjson project_number "${PROJECT_NUMBER}" \
+      --arg executed_at "${EXECUTED_AT}" \
+      --argjson todo_days "${STALE_DAYS_TODO}" \
+      --argjson in_progress_days "${STALE_DAYS_IN_PROGRESS}" \
+      --argjson in_review_days "${STALE_DAYS_IN_REVIEW}" '
+      {
+        project: {
+          title: $project_title,
+          number: $project_number
+        },
+        executed_at: $executed_at,
+        thresholds: {
+          "Todo": $todo_days,
+          "In Progress": $in_progress_days,
+          "In Review": $in_review_days
+        },
+        summary: {
+          total_stale: length,
+          by_status: {
+            "In Review": ([.[] | select(.status == "In Review")] | length),
+            "In Progress": ([.[] | select(.status == "In Progress")] | length),
+            "Todo": ([.[] | select(.status == "Todo")] | length)
+          }
+        },
+        stale_items: [.[] | {
+          type,
+          number,
+          title,
+          url,
+          status,
+          repository,
+          assignees: (.assignees | split(", ") | map(select(. != ""))),
+          labels,
+          updated_at,
+          days_stale
+        }]
+      }
+    ')
+    echo "${REPORT_JSON}" > "${OUTPUT_FILE}"
+    ;;
+  markdown)
+    format_stale_markdown "${STALE_ITEMS}" > "${OUTPUT_FILE}"
+    ;;
+  csv)
+    format_stale_csv "${STALE_ITEMS}" > "${OUTPUT_FILE}"
+    ;;
+  tsv)
+    format_stale_tsv "${STALE_ITEMS}" > "${OUTPUT_FILE}"
+    ;;
+esac
+
+echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 
 # --- Workflow Summary 出力 ---
 
@@ -350,6 +431,7 @@ fi
 # --- コンソールサマリー ---
 
 print_summary "Project" "${PROJECT_TITLE} (#${PROJECT_NUMBER})" \
+  "形式" "${OUTPUT_FORMAT}" \
   "フィルタ(type)" "${ITEM_TYPE}" \
   "検知件数" "${STALE_COUNT} 件" \
   "In Review" "${IN_REVIEW_COUNT} 件（${STALE_DAYS_IN_REVIEW} 日以上）" \
