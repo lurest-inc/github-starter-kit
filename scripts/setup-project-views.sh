@@ -108,8 +108,13 @@ echo "View を作成します..."
 
 # ループ前に View 定義を1回の jq で事前解析する
 # 各行: name\tlayout\tfilter\tvisible_fields(JSON)
+VIEW_COUNT=$(echo "${VIEW_DEFINITIONS}" | jq -r 'length')
+if [[ "${VIEW_COUNT}" -eq 0 ]]; then
+  echo "  View 定義が空のため、処理をスキップします。"
+  print_summary "作成" "0 件" "スキップ" "0 件（既存）" "失敗" "0 件"
+  exit 0
+fi
 PARSED_VIEWS=$(echo "${VIEW_DEFINITIONS}" | jq -r '.[] | [.name, .layout, (.filter // ""), (if .visible_fields then (.visible_fields | tojson) else "" end)] | @tsv')
-VIEW_COUNT=$(echo "${PARSED_VIEWS}" | wc -l | tr -d ' ')
 CREATED_COUNT=0
 SKIPPED_COUNT=0
 FAILED_COUNT=0

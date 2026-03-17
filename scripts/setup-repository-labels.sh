@@ -83,7 +83,8 @@ if existing_output=$(gh label list --repo "${TARGET_REPO}" --limit 9999 --json n
   EXISTING_LABEL_COUNT=$(echo "${EXISTING_LABELS}" | grep -c . || true)
   echo "  既存ラベル数: ${EXISTING_LABEL_COUNT}"
 else
-  echo "::warning::既存ラベルの取得に失敗しました。重複チェックをスキップします。"
+  echo "::error::既存ラベルの取得に失敗しました: ${existing_output}"
+  exit 1
 fi
 
 # --- ラベルの一括作成 ---
