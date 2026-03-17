@@ -1,5 +1,5 @@
 {
-  "changelog-notes-type": "github",
+  "changelog-notes-type": "default",
   "include-component-in-tag": false,
   "bump-minor-pre-major": true,
   "bump-patch-for-minor-pre-major": true,
