@@ -175,14 +175,7 @@ echo "  合計: ${TOTAL_BEFORE_FILTER} 件（フィルタ前）"
 
 # --- type フィルタリング ---
 
-ITEMS=$(echo "${ITEMS}" | jq \
-  --argjson includeIssues "$(should_include_issues && echo true || echo false)" \
-  --argjson includePRs "$(should_include_prs && echo true || echo false)" '
-  map(select(
-    ($includeIssues or .type != "Issue")
-    and ($includePRs or .type != "PullRequest")
-  ))
-')
+ITEMS=$(echo "${ITEMS}" | filter_items_by_type)
 
 TOTAL_COUNT=$(echo "${ITEMS}" | jq 'length')
 echo "  合計: ${TOTAL_COUNT} 件（フィルタ後）"

@@ -183,14 +183,7 @@ echo ""
 echo "フィルタリングを実行しています..."
 
 # type フィルタを適用
-ITEMS=$(echo "${ITEMS}" | jq \
-  --argjson includeIssues "$(should_include_issues && echo true || echo false)" \
-  --argjson includePRs "$(should_include_prs && echo true || echo false)" '
-  map(select(
-    ($includeIssues or .type != "Issue")
-    and ($includePRs or .type != "PullRequest")
-  ))
-')
+ITEMS=$(echo "${ITEMS}" | filter_items_by_type)
 
 # 除外ステータス（Done, Backlog）および除外ラベルを適用
 EXCLUDE_LABELS_JSON=$(build_exclude_labels_json "${EXCLUDE_LABELS}")
