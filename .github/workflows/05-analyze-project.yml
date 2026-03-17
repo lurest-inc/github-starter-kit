@@ -9,7 +9,7 @@ on:
         type: number
       report_types:
         description: "実行するレポート/機能タイプ（all: 全機能, stale: 滞留検知, summary: サマリー, effort: 工数集計, export: アイテムエクスポート）"
-        required: false
+        required: true
         type: choice
         default: "all"
         options:
@@ -20,7 +20,7 @@ on:
           - export
       output_format:
         description: "出力形式"
-        required: false
+        required: true
         type: choice
         default: "json"
         options:
@@ -30,7 +30,7 @@ on:
           - tsv
       item_type:
         description: "対象アイテムの種別"
-        required: false
+        required: true
         type: choice
         default: "all"
         options:
@@ -39,7 +39,7 @@ on:
           - prs
       item_state:
         description: "対象アイテムの状態（open / closed / all）"
-        required: false
+        required: true
         type: choice
         default: "all"
         options:
