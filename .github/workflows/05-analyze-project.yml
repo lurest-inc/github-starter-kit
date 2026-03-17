@@ -84,9 +84,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: サマリーレポート生成
-        run: |
-          chmod +x scripts/generate-summary-report.sh
-          bash scripts/generate-summary-report.sh
+        run: bash scripts/generate-summary-report.sh
 
       - name: アーティファクトをアップロード
         if: always()
@@ -114,9 +112,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: 工数集計レポート生成
-        run: |
-          chmod +x scripts/generate-effort-report.sh
-          bash scripts/generate-effort-report.sh
+        run: bash scripts/generate-effort-report.sh
 
       - name: アーティファクトをアップロード
         if: always()
@@ -144,9 +140,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: 滞留アイテム検知
-        run: |
-          chmod +x scripts/detect-stale-items.sh
-          bash scripts/detect-stale-items.sh
+        run: bash scripts/detect-stale-items.sh
 
       - name: アーティファクトをアップロード
         if: always()
@@ -174,9 +168,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: ベロシティレポート生成
-        run: |
-          chmod +x scripts/generate-velocity-report.sh
-          bash scripts/generate-velocity-report.sh
+        run: bash scripts/generate-velocity-report.sh
 
       - name: アーティファクトをアップロード
         if: always()
@@ -204,9 +196,7 @@ jobs:
         uses: actions/checkout@v6.0.2
 
       - name: Project アイテムをエクスポート
-        run: |
-          chmod +x scripts/export-project-items.sh
-          bash scripts/export-project-items.sh
+        run: bash scripts/export-project-items.sh
 
       - name: アーティファクトをアップロード
         if: always()
