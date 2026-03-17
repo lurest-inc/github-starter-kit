@@ -251,8 +251,6 @@ read -r IN_REVIEW_COUNT IN_PROGRESS_COUNT TODO_COUNT < <(echo "${STALE_ITEMS}" |
 
 format_stale_markdown() {
   local stale_items="$1"
-  local stale_count
-  stale_count=$(echo "${stale_items}" | jq 'length')
 
   local md_row_filter="${JQ_MD_ESCAPE}"'
     "| [#\(.number)](\(.url)) | \(.title | md_escape) | \(.repository) | \(if .assignees == "" then "-" else (.assignees | md_escape) end) | \(.updated_at | split("T")[0]) | \(.days_stale) |"'
@@ -262,10 +260,10 @@ format_stale_markdown() {
     echo ""
     echo "- **Project:** ${PROJECT_TITLE} (#${PROJECT_NUMBER})"
     echo "- **実行日時:** ${EXECUTED_AT}"
-    echo "- **検知件数:** ${stale_count} 件"
+    echo "- **検知件数:** ${STALE_COUNT} 件"
     echo ""
 
-    if [[ "${stale_count}" -eq 0 ]]; then
+    if [[ "${STALE_COUNT}" -eq 0 ]]; then
       echo "> 滞留アイテムはありません。"
     else
       if [[ "${IN_REVIEW_COUNT}" -gt 0 ]]; then
@@ -381,51 +379,7 @@ echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 # --- Workflow Summary 出力 ---
 
 if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-  {
-    echo "# 滞留アイテムレポート"
-    echo ""
-    echo "- **Project:** ${PROJECT_TITLE} (#${PROJECT_NUMBER})"
-    echo "- **実行日時:** ${EXECUTED_AT}"
-    echo "- **検知件数:** ${STALE_COUNT} 件"
-    echo ""
-
-    md_row_filter="${JQ_MD_ESCAPE}"'
-      "| [#\(.number)](\(.url)) | \(.title | md_escape) | \(.repository) | \(if .assignees == "" then "-" else (.assignees | md_escape) end) | \(.updated_at | split("T")[0]) | \(.days_stale) |"'
-
-    if [[ "${STALE_COUNT}" -eq 0 ]]; then
-      echo "> 滞留アイテムはありません。"
-    else
-      # In Review
-      if [[ "${IN_REVIEW_COUNT}" -gt 0 ]]; then
-        echo "## In Review（${STALE_DAYS_IN_REVIEW} 日以上）: ${IN_REVIEW_COUNT} 件"
-        echo ""
-        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
-        echo "|---|---------|-----------|---------|---------|---------|"
-        echo "${STALE_ITEMS}" | jq -r "[.[] | select(.status == \"In Review\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
-        echo ""
-      fi
-
-      # In Progress
-      if [[ "${IN_PROGRESS_COUNT}" -gt 0 ]]; then
-        echo "## In Progress（${STALE_DAYS_IN_PROGRESS} 日以上）: ${IN_PROGRESS_COUNT} 件"
-        echo ""
-        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
-        echo "|---|---------|-----------|---------|---------|---------|"
-        echo "${STALE_ITEMS}" | jq -r "[.[] | select(.status == \"In Progress\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
-        echo ""
-      fi
-
-      # Todo
-      if [[ "${TODO_COUNT}" -gt 0 ]]; then
-        echo "## Todo（${STALE_DAYS_TODO} 日以上）: ${TODO_COUNT} 件"
-        echo ""
-        echo "| # | タイトル | リポジトリ | アサイン | 最終更新 | 経過日数 |"
-        echo "|---|---------|-----------|---------|---------|---------|"
-        echo "${STALE_ITEMS}" | jq -r "[.[] | select(.status == \"Todo\")] | sort_by(-.days_stale)[] | ${md_row_filter}"
-        echo ""
-      fi
-    fi
-  } >> "${GITHUB_STEP_SUMMARY}"
+  format_stale_markdown "${STALE_ITEMS}" >> "${GITHUB_STEP_SUMMARY}"
 fi
 
 # --- コンソールサマリー ---

@@ -464,74 +464,7 @@ echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 # --- Workflow Summary 出力 ---
 
 if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-  {
-    echo "# 📊 プロジェクトサマリーレポート"
-    echo ""
-    echo "- **Project:** ${PROJECT_TITLE} (#${PROJECT_NUMBER})"
-    echo "- **実行日時:** ${EXECUTED_AT}"
-    echo "- **総アイテム数:** ${TOTAL_COUNT} 件（Issue: ${ISSUE_COUNT}, PR: ${PR_COUNT}）"
-    echo ""
-    echo "---"
-    echo ""
-
-    # ステータス別
-    echo "## ステータス別"
-    echo ""
-    echo "| ステータス | 件数 | 割合 |"
-    echo "|---|---|---|"
-    echo "${STATUS_SUMMARY}" | jq -r '.[] | "| \(.status) | \(.count) | \(.percentage)% |"'
-    echo ""
-
-    # Mermaid 円グラフ（件数が 0 より大きいステータスのみ）
-    HAS_NONZERO=$(echo "${STATUS_SUMMARY}" | jq '[.[] | select(.count > 0)] | length')
-    if [[ "${HAS_NONZERO}" -gt 0 ]]; then
-      echo '```mermaid'
-      echo 'pie title ステータス別アイテム分布'
-      echo "${STATUS_SUMMARY}" | jq -r '.[] | select(.count > 0) | "    \"\(.status)\" : \(.count)"'
-      echo '```'
-      echo ""
-    fi
-
-    # 担当者別
-    echo "## 担当者別"
-    echo ""
-    echo "| 担当者 | 件数 | In Progress | In Review |"
-    echo "|---|---|---|---|"
-    echo "${ASSIGNEE_SUMMARY}" | jq -r '.[] | "| \(.assignee) | \(.total) | \(.in_progress) | \(.in_review) |"'
-    echo ""
-
-    # ラベル別
-    echo "## ラベル別"
-    echo ""
-    echo "| ラベル | 件数 |"
-    echo "|---|---|"
-    echo "${LABEL_SUMMARY}" | jq -r '.[] | "| \(.label) | \(.count) |"'
-    echo ""
-
-    # 工数サマリー（カスタムフィールドがある場合のみ）
-    if [[ "${HAS_EFFORT}" == "true" ]]; then
-      echo "## 工数サマリー"
-      echo ""
-      echo "| ステータス | 見積もり工数(h) | 実績工数(h) |"
-      echo "|---|---|---|"
-      echo "${EFFORT_SUMMARY}" | jq -r '.[] | "| \(.status) | \(.estimated_hours) | \(.actual_hours) |"'
-      echo "| **合計** | **${TOTAL_ESTIMATED}** | **${TOTAL_ACTUAL}** |"
-      echo ""
-    fi
-
-    # 期日超過アイテム（カスタムフィールドがある場合のみ）
-    if [[ "${HAS_DUE_DATE}" == "true" && "${OVERDUE_COUNT}" -gt 0 ]]; then
-      MD_ROW_FILTER="${JQ_MD_ESCAPE}"'
-        "| [#\(.number)](\(.url)) | \(.title | md_escape) | \(.status // \"-\") | \(if (.assignees | length) > 0 then (.assignees | join(\", \")) else \"-\" end) | \(.due_date) | \(.days_overdue) |"'
-
-      echo "## 期日超過アイテム: ${OVERDUE_COUNT} 件"
-      echo ""
-      echo "| # | タイトル | ステータス | 担当者 | 終了期日 | 超過日数 |"
-      echo "|---|---------|-----------|--------|---------|---------|"
-      echo "${OVERDUE_ITEMS}" | jq -r ".[] | ${MD_ROW_FILTER}"
-      echo ""
-    fi
-  } >> "${GITHUB_STEP_SUMMARY}"
+  format_summary_markdown >> "${GITHUB_STEP_SUMMARY}"
 fi
 
 # --- コンソールサマリー ---
