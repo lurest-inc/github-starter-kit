@@ -4,7 +4,8 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<details>
+<summary>Table of Contents</summary>
 
 - [私たちの誓い](#%E7%A7%81%E3%81%9F%E3%81%A1%E3%81%AE%E8%AA%93%E3%81%84)
 - [私たちの基準](#%E7%A7%81%E3%81%9F%E3%81%A1%E3%81%AE%E5%9F%BA%E6%BA%96)
@@ -13,6 +14,7 @@
 - [執行](#%E5%9F%B7%E8%A1%8C)
 - [帰属](#%E5%B8%B0%E5%B1%9E)
 
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 私たちの誓い

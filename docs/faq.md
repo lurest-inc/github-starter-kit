@@ -6,7 +6,8 @@
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**
+<details>
+<summary>Table of Contents</summary>
 
 - [💡 Q1. フォーク後に GitHub Actions が動きません](#-q1-%E3%83%95%E3%82%A9%E3%83%BC%E3%82%AF%E5%BE%8C%E3%81%AB-github-actions-%E3%81%8C%E5%8B%95%E3%81%8D%E3%81%BE%E3%81%9B%E3%82%93)
 - [💡 Q2. 権限エラーでワークフローが失敗します](#-q2-%E6%A8%A9%E9%99%90%E3%82%A8%E3%83%A9%E3%83%BC%E3%81%A7%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%81%8C%E5%A4%B1%E6%95%97%E3%81%97%E3%81%BE%E3%81%99)
@@ -15,6 +16,7 @@
 - [💡 Q5. エクスポートしたファイルはどこからダウンロードできますか？](#-q5-%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88%E3%81%97%E3%81%9F%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%81%AF%E3%81%A9%E3%81%93%E3%81%8B%E3%82%89%E3%83%80%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%89%E3%81%A7%E3%81%8D%E3%81%BE%E3%81%99%E3%81%8B)
 - [💡 Q6. 同じ Issue/PR を複数回追加してしまいませんか？](#-q6-%E5%90%8C%E3%81%98-issuepr-%E3%82%92%E8%A4%87%E6%95%B0%E5%9B%9E%E8%BF%BD%E5%8A%A0%E3%81%97%E3%81%A6%E3%81%97%E3%81%BE%E3%81%84%E3%81%BE%E3%81%9B%E3%82%93%E3%81%8B)
 
+</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---
