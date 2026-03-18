@@ -30,7 +30,7 @@ flowchart LR
     A["1. Fork"] --> B["2. PAT 作成"]
     B --> C["3. Secrets 設定"]
     C --> D["4. Actions 有効化"]
-    D --> E["5. ワークフロー実行"]
+    D --> E["5. Workflow 実行"]
 ```
 
 ## ✅ 前提条件
@@ -38,7 +38,7 @@ flowchart LR
 - [GitHub CLI (`gh`)](https://cli.github.com/) がインストール済みであること
 - `gh auth login` で認証済みであること
 
-## 1. 🍴 リポジトリを fork する
+## 1. 🍴 Repository を Fork する
 
 ```bash
 gh repo fork mabubu0203/github-projects-starter-kit --clone
@@ -47,9 +47,9 @@ cd github-projects-starter-kit
 
 ## 2. 🔑 PAT を作成する
 
-> **Note:** `PAT` の作成は GitHub API / CLI では実行できないため、Web UI から作成してください。
+> **Note:** PAT の作成は GitHub API / CLI では実行できないため、Web UI から作成してください。
 
-GitHub の [Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens) から `PAT` を作成します。
+GitHub の [Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens) から PAT を作成します。
 
 必要な権限の詳細は [認証・トークンガイド](guide/auth-tokens) を参照してください。`Fine-grained token` の制約事項については [`Fine-grained token` の制約事項](guide/auth-tokens#fine-grained-token-の制約事項) も合わせてご確認ください。
 
@@ -59,11 +59,11 @@ GitHub の [Settings > Developer settings > Personal access tokens](https://gith
 gh secret set PROJECT_PAT --repo <owner>/github-projects-starter-kit
 ```
 
-実行するとプロンプトが表示されるので、作成した `PAT` を入力してください。
+実行するとプロンプトが表示されるので、作成した PAT を入力してください。
 
 ## 4. ⚡ GitHub Actions を有効化する
 
-フォークしたリポジトリでは `GitHub Actions` がデフォルトで無効になっています。
+Fork した Repository では `GitHub Actions` がデフォルトで無効になっています。
 
 ```bash
 gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
@@ -72,9 +72,9 @@ gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
   --field allowed_actions="all"
 ```
 
-> **Note:** 詳しくは [トラブルシューティング > フォーク後に GitHub Actions が動かない](troubleshooting#フォーク後に-github-actions-が動かない) を参照してください。
+> **Note:** 詳しくは [トラブルシューティング > Fork 後に GitHub Actions が動かない](troubleshooting#fork-後に-github-actions-が動かない) を参照してください。
 
-## 5. ▶️ ワークフローを実行する
+## 5. ▶️ Workflow を実行する
 
 ### ① GitHub Project 新規作成
 
@@ -91,7 +91,7 @@ gh workflow run 02-extend-project.yml \
   --field project_number="<PROJECT_NUMBER>"
 ```
 
-### ③ Issue ラベル一括追加
+### ③ Issue Label 一括追加
 
 ```bash
 gh workflow run 03-setup-repository-labels.yml \
@@ -108,7 +108,7 @@ gh workflow run 04-add-items-to-project.yml \
   --field item_state="open"
 ```
 
-## 👀 ワークフロー実行状況の確認
+## 👀 Workflow 実行状況の確認
 
 ```bash
 # 実行一覧を表示
@@ -118,9 +118,9 @@ gh run list
 gh run watch
 ```
 
-各ワークフローの詳細は個別ページをご参照ください。
+各 Workflow の詳細は個別ページをご参照ください。
 
 - [① GitHub Project 新規作成](workflows/01-create-project)
 - [② GitHub Project 拡張](workflows/02-extend-project)
-- [③ Issue ラベル一括追加](workflows/03-setup-repository-labels)
+- [③ Issue Label 一括追加](workflows/03-setup-repository-labels)
 - [④ Issue/PR 一括紐付け](workflows/04-add-items-to-project)

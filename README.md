@@ -38,23 +38,23 @@
 
 ## 🚀 このキットでできること
 
-- **GitHub Project の新規作成・拡張**: カスタムフィールド・ステータス・ビューを一括セットアップ
-- **Issue ラベルの一括管理**: Repository へのラベル定義を一括作成
+- **GitHub Project の新規作成・拡張**: Field・Status・View を一括セットアップ
+- **Issue ラベルの一括管理**: Repository への Label 定義を一括作成
 - **Issue/PR の一括紐付け**: Repository の Issue や PR を Project に一括追加
 - **プロジェクト分析・レポート生成**:
-  - アイテムのエクスポート（JSON/Markdown/CSV/TSV）
-  - 滞留アイテムの検知（ステータス別閾値で判定）
-  - サマリーレポート（ステータス別・担当者別・ラベル別集計）
+  - Item のエクスポート（JSON/Markdown/CSV/TSV）
+  - 滞留 Item の検知（Status 別閾値で判定）
+  - サマリーレポート（Status 別・担当者別・Label 別集計）
   - 工数レポート（見積もり・実績の集計と乖離分析）
-  - ベロシティレポート（直近 8 週間の完了アイテム推移）
+  - ベロシティレポート（直近 8 週間の完了 Item 推移）
 
 ## ✅ セットアップ後にできること
 
 | Workflow | 概要 |
 |---|---|
-| ① GitHub Project 新規作成 | Project を作成し、フィールド・ステータス・ビューを一括セットアップ |
-| ② GitHub Project 拡張 | 既存 Project にフィールド・ステータス・ビューを追加 |
-| ③ Issue ラベル一括追加 | 指定 Repository にラベルを一括作成 |
+| ① GitHub Project 新規作成 | Project を作成し、Field・Status・View を一括セットアップ |
+| ② GitHub Project 拡張 | 既存 Project に、Field・Status・View を追加 |
+| ③ Issue Label 一括追加 | 指定 Repository に Issue Label を一括作成 |
 | ④ Issue/PR 一括紐付け | Issue や PR を Project に一括追加（種別・状態・ラベルでフィルタ可能） |
 | ⑤ 統合プロジェクト分析 | エクスポート・滞留検知・各種レポートを生成（ Artifact としてダウンロード可能） |
 

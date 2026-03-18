@@ -1,7 +1,7 @@
 # 📜 setup-repository-labels.sh
 
-指定リポジトリに対して、設定ファイルで定義した Issue ラベルを一括作成するスクリプトです。
-既存ラベルと同名のラベルが存在する場合はスキップします。
+指定 Repository に対して、設定ファイルで定義した Issue Label を一括作成するスクリプトです。
+既存 Label と同名の Label が存在する場合はスキップします。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
@@ -9,7 +9,7 @@
 <details><summary>（ここをクリック）目次</summary><ul>
 <li><a href="#-%E7%92%B0%E5%A2%83%E5%A4%89%E6%95%B0">🔧 環境変数</a></li>
 
-<li><a href="#-%E3%83%A9%E3%83%99%E3%83%AB%E5%AE%9A%E7%BE%A9%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">📋 ラベル定義ファイル</a></li>
+<li><a href="#-label%E5%AE%9A%E7%BE%A9%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB">📋 Label定義ファイル</a></li>
 
 <li><a href="#-%E5%87%A6%E7%90%86%E3%83%95%E3%83%AD%E3%83%BC">📊 処理フロー</a></li>
 
@@ -17,7 +17,7 @@
 
 <li><a href="#-api-%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">📚 API リファレンス</a></li>
 
-<li><a href="#-%E4%BD%BF%E7%94%A8%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC">🔄 使用ワークフロー</a></li>
+<li><a href="#-%E4%BD%BF%E7%94%A8workflow">🔄 使用Workflow</a></li>
 </ul></details>
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
@@ -26,21 +26,21 @@
 
 | 環境変数 | 説明 | 必須 |
 |----------|------|:----:|
-| `GH_TOKEN` | GitHub PAT（`repo` または `public_repo` スコープが必要） | ✅ |
-| `TARGET_REPO` | 対象リポジトリ（`owner/repo` 形式） | ✅ |
+| `GH_TOKEN` | GitHub PAT（`repo` または `public_repo` Scopeが必要） | ✅ |
+| `TARGET_REPO` | 対象Repository（`owner/repo` 形式） | ✅ |
 
-## 📋 ラベル定義ファイル
+## 📋 Label定義ファイル
 
-ラベル定義は `scripts/config/repository-label-definitions.json` に外部化します。
+Label定義は `scripts/config/repository-label-definitions.json` に外部化します。
 
 ### スキーマ
 
 ```json
 [
   {
-    "name": "ラベル名",
+    "name": "Label名",
     "color": "6桁HEXカラーコード（# なし）",
-    "description": "ラベルの説明"
+    "description": "Labelの説明"
   }
 ]
 ```
@@ -49,9 +49,9 @@
 
 | フィールド | 型 | 必須 | 説明 | 例 |
 |-----------|------|:----:|------|-----|
-| `name` | `string` | ✅ | ラベル名（GitHub の制約: 最大50文字） | `"bug"` |
+| `name` | `string` | ✅ | Label名（GitHub の制約: 最大50文字） | `"bug"` |
 | `color` | `string` | ✅ | 6桁の HEX カラーコード（`#` なし） | `"d73a4a"` |
-| `description` | `string` | ✅ | ラベルの説明（GitHub の制約: 最大100文字） | `"不具合の報告"` |
+| `description` | `string` | ✅ | Labelの説明（GitHub の制約: 最大100文字） | `"不具合の報告"` |
 
 ### 定義例
 
@@ -138,23 +138,23 @@
 flowchart TD
     A["開始"] --> B["環境変数バリデーション"]
     B --> C["gh / jq コマンド存在チェック"]
-    C --> D["ラベル定義ファイル読み込み\n（config/repository-label-definitions.json）"]
+    C --> D["Label定義ファイル読み込み\n（config/repository-label-definitions.json）"]
     D --> E["JSON バリデーション"]
 
     E --> F{"バリデーション\n成功?"}
     F -- "No" --> G["エラー終了"]
-    F -- "Yes" --> H["既存ラベル一覧を事前取得\n（gh label list）"]
+    F -- "Yes" --> H["既存Label一覧を事前取得\n（gh label list）"]
 
-    H --> I["ラベル定義を jq で\n事前解析（TSV）"]
-    I --> J["ラベル定義をループ処理"]
+    H --> I["Label定義を jq で\n事前解析（TSV）"]
+    I --> J["Label定義をループ処理"]
 
-    J --> K{"既存ラベルに\n含まれる?"}
+    J --> K{"既存Labelに\n含まれる?"}
     K -- "Yes" --> L["スキップ"]
-    K -- "No" --> M["gh label create\nでラベル作成"]
+    K -- "No" --> M["gh label create\nでLabel作成"]
 
     M --> N["結果を記録\n（作成 / 失敗）"]
 
-    L & N --> O{"次のラベル\nあり?"}
+    L & N --> O{"次のLabel\nあり?"}
     O -- "Yes" --> J
     O -- "No" --> P["実行結果サマリー出力"]
     P --> Q["完了"]
@@ -166,13 +166,13 @@ flowchart TD
 |---------|---------|-------------------|
 | 環境変数バリデーション | `require_env` で `GH_TOKEN`, `TARGET_REPO` を検証 | `common.sh` |
 | コマンド存在チェック | `require_command` で `gh`, `jq` の存在を確認 | `common.sh` |
-| ラベル定義ファイル読み込み | `scripts/config/repository-label-definitions.json` を読み込み | `jq` |
+| Label定義ファイル読み込み | `scripts/config/repository-label-definitions.json` を読み込み | `jq` |
 | JSON バリデーション | 必須フィールドの存在チェック、`color` の HEX 形式チェック | `jq` |
-| 既存ラベル取得 | リポジトリの既存ラベル名一覧を事前に取得し、重複チェック用にキャッシュ | `gh label list --json name` |
-| ラベル定義の事前解析 | ループ前に全ラベル定義を1回の `jq` で TSV に変換し、ループ内の `jq` 呼び出しを削減 | `jq -r '.[] \| [...] \| @tsv'` |
-| 重複チェック | 既存ラベル名リストと定義済みラベル名を `grep -Fqx` で完全一致比較 | — |
-| ラベル作成 | 重複していないラベルを `gh label create` で作成 | `gh label create -R` |
-| エラーハンドリング | 作成失敗時はエラーカウントを記録して次のラベルへ続行 | — |
+| 既存Label取得 | Repositoryの既存Label名一覧を事前に取得し、重複チェック用にキャッシュ | `gh label list --json name` |
+| Label定義の事前解析 | ループ前に全Label定義を1回の `jq` で TSV に変換し、ループ内の `jq` 呼び出しを削減 | `jq -r '.[] \| [...] \| @tsv'` |
+| 重複チェック | 既存Label名リストと定義済みLabel名を `grep -Fqx` で完全一致比較 | — |
+| Label作成 | 重複していないLabelを `gh label create` で作成 | `gh label create -R` |
+| エラーハンドリング | 作成失敗時はエラーカウントを記録して次のLabelへ続行 | — |
 | サマリー出力 | 作成/スキップ/失敗の件数をコンソールと `GITHUB_STEP_SUMMARY` に出力 | `print_summary`, `GITHUB_STEP_SUMMARY` |
 
 ### 実行結果サマリーの出力形式
@@ -183,7 +183,7 @@ flowchart TD
 =========================================
   完了サマリー
 =========================================
-  リポジトリ: owner/repo
+  Repository: owner/repo
   作成:     5 件
   スキップ:  2 件
   失敗:     0 件
@@ -202,17 +202,17 @@ flowchart TD
 
 | API / コマンド | 用途 | リファレンス |
 |---------------|------|-------------|
-| `gh label create` | ラベルの作成 | [gh label create](https://cli.github.com/manual/gh_label_create) |
-| `gh label list` | 既存ラベルの一覧取得（デバッグ用） | [gh label list](https://cli.github.com/manual/gh_label_list) |
+| `gh label create` | Labelの作成 | [gh label create](https://cli.github.com/manual/gh_label_create) |
+| `gh label list` | 既存Labelの一覧取得（デバッグ用） | [gh label list](https://cli.github.com/manual/gh_label_list) |
 
-### PAT スコープ要件
+### PAT Scope要件
 
-| スコープ | 用途 | 備考 |
+| Scope | 用途 | 備考 |
 |---------|------|------|
-| `repo` | ラベルの作成 | Classic PAT の場合。プライベートリポジトリ含む全リポジトリへのアクセス |
-| `public_repo` | ラベルの作成 | Classic PAT でパブリックリポジトリのみの場合 |
+| `repo` | Labelの作成 | Classic PAT の場合。プライベートRepository含む全Repositoryへのアクセス |
+| `public_repo` | Labelの作成 | Classic PAT でパブリックRepositoryのみの場合 |
 
-Fine-grained PAT の場合は、対象リポジトリに対する **Issues** の `Read and write` 権限が必要です。
+Fine-grained PAT の場合は、対象Repositoryに対する **Issues** の `Read and write` 権限が必要です。
 
 ### API レート制限
 
@@ -220,9 +220,9 @@ Fine-grained PAT の場合は、対象リポジトリに対する **Issues** の
 |---------|------|------|
 | REST API (Core) | 5,000 リクエスト/時 | 認証済みユーザーの場合 |
 
-`gh label create` は 1 ラベルあたり 1〜2 リクエストを消費します。
-ラベル定義が 100 件以下であればレート制限の影響はありません。
+`gh label create` は 1 Labelあたり 1〜2 リクエストを消費します。
+Label定義が 100 件以下であればレート制限の影響はありません。
 
-## 🔄 使用ワークフロー
+## 🔄 使用Workflow
 
-- [③ Issue ラベル一括追加](../workflows/03-setup-repository-labels)
+- [③ Issue Label一括追加](../workflows/03-setup-repository-labels)
