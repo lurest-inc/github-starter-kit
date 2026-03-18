@@ -436,8 +436,7 @@ format_effort_tsv() {
 echo ""
 echo "レポートを生成しています..."
 
-FILE_EXT=$(get_file_extension "${OUTPUT_FORMAT}")
-OUTPUT_FILE="report-${PROJECT_NUMBER}-effort.${FILE_EXT}"
+OUTPUT_FILE=$(build_output_filename "report" "effort")
 
 case "${OUTPUT_FORMAT}" in
   json)
@@ -496,13 +495,7 @@ echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 
 # --- Workflow Summary 出力 ---
 
-if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-  if [[ "${OUTPUT_FORMAT}" == "markdown" ]]; then
-    cat "${OUTPUT_FILE}" >> "${GITHUB_STEP_SUMMARY}"
-  else
-    format_effort_markdown >> "${GITHUB_STEP_SUMMARY}"
-  fi
-fi
+append_to_workflow_summary "${OUTPUT_FILE}" format_effort_markdown
 
 # --- コンソールサマリー ---
 

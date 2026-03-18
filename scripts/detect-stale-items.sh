@@ -318,13 +318,7 @@ echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 
 # --- Workflow Summary 出力 ---
 
-if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-  if [[ "${OUTPUT_FORMAT}" == "markdown" ]]; then
-    cat "${OUTPUT_FILE}" >> "${GITHUB_STEP_SUMMARY}"
-  else
-    format_stale_markdown "${STALE_ITEMS}" >> "${GITHUB_STEP_SUMMARY}"
-  fi
-fi
+append_to_workflow_summary "${OUTPUT_FILE}" format_stale_markdown "${STALE_ITEMS}"
 
 # --- コンソールサマリー ---
 

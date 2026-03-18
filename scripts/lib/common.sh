@@ -233,8 +233,10 @@ run_graphql_paginated() {
       break
     fi
 
-    _pgn_has_next=$(echo "${_pgn_result}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" "${page_info_jq}.hasNextPage" 2>/dev/null || echo "false")
-    _pgn_cursor=$(echo "${_pgn_result}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" "${page_info_jq}.endCursor // empty" 2>/dev/null || true)
+    IFS=$'\t' read -r _pgn_has_next _pgn_cursor < <(
+      echo "${_pgn_result}" | jq -r --arg owner "${OWNER_QUERY_FIELD}" \
+        "[${page_info_jq}.hasNextPage // false, ${page_info_jq}.endCursor // \"\"] | @tsv" 2>/dev/null || printf '%s\t%s\n' false ""
+    )
   done
 }
 
@@ -312,6 +314,38 @@ get_file_extension() {
     json)     echo "json" ;;
     *)        echo "json" ;;
   esac
+}
+
+# OUTPUT_FORMAT に対応する出力ファイルパスを構築する
+# 使用例: OUTPUT_FILE=$(build_output_filename "report" "effort")
+#         → report-${PROJECT_NUMBER}-effort.json
+build_output_filename() {
+  local prefix="$1"
+  local suffix="$2"
+  local file_ext
+  file_ext=$(get_file_extension "${OUTPUT_FORMAT}")
+  echo "${prefix}-${PROJECT_NUMBER}-${suffix}.${file_ext}"
+}
+
+# レポート結果を Workflow Summary に追記する
+# markdown 形式の場合は出力ファイルをそのまま追記し、
+# それ以外の場合は指定された markdown 生成関数を呼び出して追記する
+# 使用例: append_to_workflow_summary "${OUTPUT_FILE}" format_stale_markdown "${STALE_ITEMS}"
+append_to_workflow_summary() {
+  local output_file="$1"
+  local markdown_func="$2"
+  shift 2
+  local func_args=("$@")
+
+  if [[ -z "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    return
+  fi
+
+  if [[ "${OUTPUT_FORMAT}" == "markdown" ]]; then
+    cat "${output_file}" >> "${GITHUB_STEP_SUMMARY}"
+  else
+    "${markdown_func}" ${func_args[@]+"${func_args[@]}"} >> "${GITHUB_STEP_SUMMARY}"
+  fi
 }
 
 # Project の全 Item をページネーション付きで取得する汎用関数
