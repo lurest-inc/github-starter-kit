@@ -3,16 +3,6 @@
 本スターターキットで構築する `GitHub Projects` の運用ルールについて説明します。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [📊 カンバンのフロー](#-%E3%82%AB%E3%83%B3%E3%83%90%E3%83%B3%E3%81%AE%E3%83%95%E3%83%AD%E3%83%BC)
-- [🔄 手戻り時の運用ルール](#-%E6%89%8B%E6%88%BB%E3%82%8A%E6%99%82%E3%81%AE%E9%81%8B%E7%94%A8%E3%83%AB%E3%83%BC%E3%83%AB)
-- [🏷️ カスタムフィールド](#-%E3%82%AB%E3%82%B9%E3%82%BF%E3%83%A0%E3%83%95%E3%82%A3%E3%83%BC%E3%83%AB%E3%83%89)
-- [👁️ View 構成](#-view-%E6%A7%8B%E6%88%90)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---

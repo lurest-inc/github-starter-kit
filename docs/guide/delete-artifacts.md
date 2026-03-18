@@ -5,15 +5,6 @@
 > **Note:** アーティファクトの公開範囲に関する注意事項は [⑤ 統合プロジェクト分析](../workflows/05-analyze-project.md#️-アーティファクトの公開範囲に関する注意事項) を参照してください。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [⚠️ 注意事項](#-%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
-- [🖥️ GUI で削除する](#-gui-%E3%81%A7%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B)
-- [💻 CLI / API で削除する](#-cli--api-%E3%81%A7%E5%89%8A%E9%99%A4%E3%81%99%E3%82%8B)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---

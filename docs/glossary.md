@@ -3,20 +3,6 @@
 本ドキュメントで使用する GitHub 関連の専門用語をまとめています。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [👥 GitHub 組織・アカウント用語](#-github-%E7%B5%84%E7%B9%94%E3%83%BB%E3%82%A2%E3%82%AB%E3%82%A6%E3%83%B3%E3%83%88%E7%94%A8%E8%AA%9E)
-- [🔑 認証・トークン関連用語](#-%E8%AA%8D%E8%A8%BC%E3%83%BB%E3%83%88%E3%83%BC%E3%82%AF%E3%83%B3%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E)
-- [📋 GitHub Projects 関連用語](#-github-projects-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E)
-- [📦 GitHub Repositories 関連用語](#-github-repositories-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E)
-- [⚡ GitHub Actions 関連用語](#-github-actions-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E)
-- [🔀 Git 基本用語](#-git-%E5%9F%BA%E6%9C%AC%E7%94%A8%E8%AA%9E)
-- [⌨️ CLI 関連用語](#-cli-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E)
-- [📌 その他の用語](#-%E3%81%9D%E3%81%AE%E4%BB%96%E3%81%AE%E7%94%A8%E8%AA%9E)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---

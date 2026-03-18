@@ -11,7 +11,9 @@
 # 設定:
 #   - 対象ファイル: README.md, docs/**/*.md, .github/**/*.md
 #   - 見出しレベル: H2（##）のみ
-#   - 折りたたみ: 有効（<details>タグで表示）
+#   - 出力形式: HTML（<details> + <ul><li>）
+#     GitHub Pages（Jekyll）では <details> 内の Markdown リストが
+#     正しくレンダリングされないため、CUSTOM_MODE で HTML 出力する
 #
 # secrets.PROJECT_PAT には GitHub の Personal Access Token を設定します。
 # 他のワークフローと同じトークンを使用しています。
@@ -42,5 +44,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PROJECT_PAT }}
           TARGET_PATHS: README.md,docs/**/*.md,.github/**/*.md
           MAX_HEADER_LEVEL: 2
-          FOLDING: true
+          CUSTOM_MODE: true
+          CUSTOM_TEMPLATE: '<details><summary>Table of Contents</summary>\n<ul>\n${ITEMS}\n</ul>\n</details>'
+          ITEM_TEMPLATE: '<li><a href="${LINK}">${TEXT}</a></li>'
+          SEPARATOR: '\n'
           CREATE_PR: true
