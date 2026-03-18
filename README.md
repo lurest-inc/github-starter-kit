@@ -57,6 +57,7 @@
 | ③ Issue Label 一括追加 | 指定 Repository に Issue Label を一括作成 |
 | ④ Issue/PR 一括紐付け | Issue や PR を Project に一括追加（種別・状態・ラベルでフィルタ可能） |
 | ⑤ 統合プロジェクト分析 | エクスポート・滞留検知・各種レポートを生成（ Artifact としてダウンロード可能） |
+| ⑥ 特殊Repository一括作成 | GitHub の特殊命名規則Repository（プロフィール README、GitHub Pages 等）を一括作成 |
 
 すべての Workflow は `GitHub Actions` の手動実行（`workflow_dispatch`）で利用できます。
 
