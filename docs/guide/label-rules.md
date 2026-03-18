@@ -6,9 +6,9 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 <details><summary>（ここをクリック）目次</summary><ul>
-<li><a href="#-label%E3%81%AE%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA%E5%88%86%E9%A1%9E">📋 Labelのカテゴリ分類</a></li>
+<li><a href="#-label-%E3%81%AE%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA%E5%88%86%E9%A1%9E">📋 Label のカテゴリ分類</a></li>
 
-<li><a href="#-%E5%90%84label%E3%81%AE%E7%94%A8%E9%80%94%E3%81%A8%E4%BB%98%E4%B8%8E%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">🏷️ 各Labelの用途と付与タイミング</a></li>
+<li><a href="#-%E5%90%84-label%E3%81%AE%E7%94%A8%E9%80%94%E3%81%A8%E4%BB%98%E4%B8%8E%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0">🏷️ 各 Labelの用途と付与タイミング</a></li>
 
 <li><a href="#-%E7%8A%B6%E6%85%8Blabel%E3%81%A8%E3%82%AB%E3%83%B3%E3%83%90%E3%83%B3status%E3%81%AE%E9%96%A2%E4%BF%82">🔄 状態LabelとカンバンStatusの関係</a></li>
 
