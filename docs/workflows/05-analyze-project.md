@@ -3,24 +3,6 @@
 指定した GitHub `Project` のアイテムを走査し、滞留アイテム検知・プロジェクトサマリーレポート・工数集計レポート・ベロシティレポート・アイテムエクスポートを 1 回の実行でまとめて生成します。`report_types` パラメータで実行する機能を選択することも可能です。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [✅ 前提](#-%E5%89%8D%E6%8F%90)
-- [📖 使い方](#-%E4%BD%BF%E3%81%84%E6%96%B9)
-- [⚙️ パラメータ](#-%E3%83%91%E3%83%A9%E3%83%A1%E3%83%BC%E3%82%BF)
-- [🔍 滞留アイテム検知（stale）](#-%E6%BB%9E%E7%95%99%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0%E6%A4%9C%E7%9F%A5stale)
-- [📊 プロジェクトサマリーレポート（summary）](#-%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%82%B5%E3%83%9E%E3%83%AA%E3%83%BC%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88summary)
-- [📊 工数集計レポート（effort）](#-%E5%B7%A5%E6%95%B0%E9%9B%86%E8%A8%88%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88effort)
-- [📈 ベロシティレポート（velocity）](#-%E3%83%99%E3%83%AD%E3%82%B7%E3%83%86%E3%82%A3%E3%83%AC%E3%83%9D%E3%83%BC%E3%83%88velocity)
-- [📤 アイテムエクスポート（export）](#-%E3%82%A2%E3%82%A4%E3%83%86%E3%83%A0%E3%82%A8%E3%82%AF%E3%82%B9%E3%83%9D%E3%83%BC%E3%83%88export)
-- [⚠️ アーティファクトの公開範囲に関する注意事項](#-%E3%82%A2%E3%83%BC%E3%83%86%E3%82%A3%E3%83%95%E3%82%A1%E3%82%AF%E3%83%88%E3%81%AE%E5%85%AC%E9%96%8B%E7%AF%84%E5%9B%B2%E3%81%AB%E9%96%A2%E3%81%99%E3%82%8B%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A0%85)
-- [📊 処理フロー](#-%E5%87%A6%E7%90%86%E3%83%95%E3%83%AD%E3%83%BC)
-- [🔧 ワークフロー仕様](#-%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E4%BB%95%E6%A7%98)
-- [📜 関連スクリプト](#-%E9%96%A2%E9%80%A3%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## ✅ 前提

@@ -3,16 +3,6 @@
 本スターターキットで使用する Issue ラベルの運用ルールについて説明します。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [📋 ラベルのカテゴリ分類](#-%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E3%82%AB%E3%83%86%E3%82%B4%E3%83%AA%E5%88%86%E9%A1%9E)
-- [🏷️ 各ラベルの用途と付与タイミング](#-%E5%90%84%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E7%94%A8%E9%80%94%E3%81%A8%E4%BB%98%E4%B8%8E%E3%82%BF%E3%82%A4%E3%83%9F%E3%83%B3%E3%82%B0)
-- [🔄 状態ラベルとカンバンステータスの関係](#-%E7%8A%B6%E6%85%8B%E3%83%A9%E3%83%99%E3%83%AB%E3%81%A8%E3%82%AB%E3%83%B3%E3%83%90%E3%83%B3%E3%82%B9%E3%83%86%E3%83%BC%E3%82%BF%E3%82%B9%E3%81%AE%E9%96%A2%E4%BF%82)
-- [⚡ 優先度ラベルの運用基準](#-%E5%84%AA%E5%85%88%E5%BA%A6%E3%83%A9%E3%83%99%E3%83%AB%E3%81%AE%E9%81%8B%E7%94%A8%E5%9F%BA%E6%BA%96)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---

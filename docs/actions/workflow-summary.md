@@ -4,17 +4,6 @@
 全4ワークフローの終了時ジョブで共通的に使用されています。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [📋 概要](#-%E6%A6%82%E8%A6%81)
-- [⚙️ Inputs](#-inputs)
-- [📤 出力内容](#-%E5%87%BA%E5%8A%9B%E5%86%85%E5%AE%B9)
-- [💡 使用例](#-%E4%BD%BF%E7%94%A8%E4%BE%8B)
-- [🔄 使用ワークフロー](#-%E4%BD%BF%E7%94%A8%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 📋 概要

@@ -1,14 +1,6 @@
 # セキュリティポリシー
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [脆弱性の報告](#%E8%84%86%E5%BC%B1%E6%80%A7%E3%81%AE%E5%A0%B1%E5%91%8A)
-- [対象バージョン](#%E5%AF%BE%E8%B1%A1%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 脆弱性の報告

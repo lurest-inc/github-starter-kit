@@ -3,16 +3,6 @@
 ワークフローの内部構成やスクリプトの詳細など、開発者向けの技術情報をまとめています。
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-<details>
-<summary>Table of Contents</summary>
-
-- [🗺️ ワークフロー全体像](#-%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E5%85%A8%E4%BD%93%E5%83%8F)
-- [📁 構成ファイル](#-%E6%A7%8B%E6%88%90%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB)
-- [⚙️ 各ワークフローの構成](#-%E5%90%84%E3%83%AF%E3%83%BC%E3%82%AF%E3%83%95%E3%83%AD%E3%83%BC%E3%81%AE%E6%A7%8B%E6%88%90)
-- [📜 スクリプト詳細](#-%E3%82%B9%E3%82%AF%E3%83%AA%E3%83%97%E3%83%88%E8%A9%B3%E7%B4%B0)
-
-</details>
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ## 🗺️ ワークフロー全体像
