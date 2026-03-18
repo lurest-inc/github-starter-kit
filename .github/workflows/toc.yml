@@ -20,6 +20,10 @@ on:
   push:
     branches:
       - main
+    paths:
+      - README.md
+      - docs/**/*.md
+      - .github/**/*.md
 
 name: TOC Generator
 
