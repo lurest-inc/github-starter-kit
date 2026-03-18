@@ -1,5 +1,154 @@
 # Changelog
 
+## [1.1.0](https://github.com/mabubu0203/github-projects-starter-kit/compare/v1.0.0...v1.1.0) (2026-03-18)
+
+
+### 新機能
+
+* ワークフロー④にリポジトリとプロジェクトのリンク機能を追加 ([bd2f82a](https://github.com/mabubu0203/github-projects-starter-kit/commit/bd2f82ab82163ea55218c4405ae8f816f5137cf7))
+* ワークフロー④にリポジトリとプロジェクトのリンク機能を追加 ([f91fa52](https://github.com/mabubu0203/github-projects-starter-kit/commit/f91fa52b1d27ea42b1adffcdf494ebbb24d5dc34)), closes [#297](https://github.com/mabubu0203/github-projects-starter-kit/issues/297)
+* 特殊命名規則リポジトリの一括作成 Workflow・スクリプトを追加 ([ec8008e](https://github.com/mabubu0203/github-projects-starter-kit/commit/ec8008e4a46cc96549e8b4e9e772241bd3c34c43))
+* 特殊命名規則リポジトリの一括作成 Workflow・スクリプトを追加 ([1acbcd4](https://github.com/mabubu0203/github-projects-starter-kit/commit/1acbcd41d02a425b542a7a620adfa601afca5e8d)), closes [#316](https://github.com/mabubu0203/github-projects-starter-kit/issues/316)
+
+
+### バグ修正
+
+* actions/checkoutステップからPAT検証のif条件を削除 ([bcb8d66](https://github.com/mabubu0203/github-projects-starter-kit/commit/bcb8d66e637ac55d907bc746f31853d9e51632c1))
+* **ci:** CUSTOM_MODE の \n リテラル出力とTOCタイトルを修正 ([91a8908](https://github.com/mabubu0203/github-projects-starter-kit/commit/91a8908d07d82b70a7feaab141bf9539448ba7ca)), closes [#328](https://github.com/mabubu0203/github-projects-starter-kit/issues/328)
+* **docs:** 既存目次のリテラル \n 除去とsummaryテキスト日本語化 ([ef401ff](https://github.com/mabubu0203/github-projects-starter-kit/commit/ef401fffd7496e3b608d7ae20202fc0eb521f4fd))
+* jq に -r フラグを追加して日付パースエラーを修正 ([1199242](https://github.com/mabubu0203/github-projects-starter-kit/commit/1199242dc8508661445be3f5893845b928a0e349))
+* jq に -r フラグを追加して日付パースエラーを修正 ([f1e2ea3](https://github.com/mabubu0203/github-projects-starter-kit/commit/f1e2ea3c22e9ddb2ff853a755add2568029acd0d)), closes [#301](https://github.com/mabubu0203/github-projects-starter-kit/issues/301)
+* jq の // 演算子をオブジェクト構築内で括弧によりグルーピング ([125d86d](https://github.com/mabubu0203/github-projects-starter-kit/commit/125d86d4ecd9e5bc5d75d445160714e4f46f266a))
+* jq の // 演算子をオブジェクト構築内で括弧によりグルーピング ([b5a029d](https://github.com/mabubu0203/github-projects-starter-kit/commit/b5a029d65f8aee769a5cbef3b0744543ed0cf7c5)), closes [#300](https://github.com/mabubu0203/github-projects-starter-kit/issues/300)
+* jq の // 演算子をオブジェクト構築内で括弧によりグルーピング ([3a37e8b](https://github.com/mabubu0203/github-projects-starter-kit/commit/3a37e8bce76f0e7785ca13fc5c3d053d9acdca15))
+* jq の // 演算子をオブジェクト構築内で括弧によりグルーピング ([86fd245](https://github.com/mabubu0203/github-projects-starter-kit/commit/86fd245c8c7053856389b3bcf6c5aa07c3500bee)), closes [#299](https://github.com/mabubu0203/github-projects-starter-kit/issues/299)
+* jq フォールバックのタブ文字を printf で明示化 ([4180011](https://github.com/mabubu0203/github-projects-starter-kit/commit/4180011fff9828b8046a8ca4cafe2763645ac8d9))
+* PR レビュー指摘を反映 ([cd2ceaa](https://github.com/mabubu0203/github-projects-starter-kit/commit/cd2ceaa0e21f001bc77d18db56c8b43f781ec9ab))
+* PR レビュー指摘を反映（jq インジェクション対策・エラーハンドリング・表記揺れ修正） ([adf3020](https://github.com/mabubu0203/github-projects-starter-kit/commit/adf3020b47b7dcf2f55546f789e2795f8faf422e))
+* PR レビュー指摘を反映（表記揺れ修正・リンク修正） ([2014b1a](https://github.com/mabubu0203/github-projects-starter-kit/commit/2014b1aaf5a5dd93b41dee4b37144ead0696f6c6))
+* PR レビュー指摘を反映（見出し表現修正・使用例追加） ([98c0487](https://github.com/mabubu0203/github-projects-starter-kit/commit/98c04874d8a40222e5ea81bd131b9c16023a9f45))
+* TOC Generator の CUSTOM_MODE 出力で \n がリテラル表示される問題を修正 ([84f6af5](https://github.com/mabubu0203/github-projects-starter-kit/commit/84f6af562c9fca049f12453d4da7b27e48aaaf9d))
+* TOC の &lt;details&gt;&lt;summary&gt; 形式を復元 ([5a84768](https://github.com/mabubu0203/github-projects-starter-kit/commit/5a8476833576ca61d070f5638dcfdc322f258a96))
+* toc.ymlのヘッダーコメントも「ステップをスキップ」に修正 ([ae5c61c](https://github.com/mabubu0203/github-projects-starter-kit/commit/ae5c61c46992bd88082c7f287a95f1a725c777bb))
+* workflow-summary.md の使用例見出し「②④⑤」を実態に合わせて修正 ([3058289](https://github.com/mabubu0203/github-projects-starter-kit/commit/3058289739cdc9653b1d0c24f3543ea831f008ce))
+* workflow-summary.md の使用例見出しを実態に合わせて修正 ([c3020c8](https://github.com/mabubu0203/github-projects-starter-kit/commit/c3020c81096cd6e34aedc34817fe05e2fd3309bf)), closes [#352](https://github.com/mabubu0203/github-projects-starter-kit/issues/352)
+* ヘッダーコメントを実態に合わせ「ステップをスキップ」に修正 ([23d8821](https://github.com/mabubu0203/github-projects-starter-kit/commit/23d88213b5b2e93814bef8bf6b56a90632ba999a))
+* リポジトリリンク判定を mutation 実行結果ベースに変更 ([0ab6775](https://github.com/mabubu0203/github-projects-starter-kit/commit/0ab6775c375f6ed5b2821465d0a5d1b3f4bce5b2))
+
+
+### ドキュメント
+
+* 「アイテム」→「Item」の用語統一 ([effb3e3](https://github.com/mabubu0203/github-projects-starter-kit/commit/effb3e3af8e3ec7a0b5743ac5563f270f45ac140))
+* 「カスタムフィールド」を「Field」に統一 ([904c921](https://github.com/mabubu0203/github-projects-starter-kit/commit/904c92167b676bdcfa0883d23bc98de3ffb379e3)), closes [#336](https://github.com/mabubu0203/github-projects-starter-kit/issues/336)
+* 「プロジェクト」→「Project」の用語統一（docs・scripts） ([8e83c16](https://github.com/mabubu0203/github-projects-starter-kit/commit/8e83c164c0630eb12573a2021b6618f4d8e856a4))
+* 「リポジトリ」→「Repository」の用語統一 ([afb918c](https://github.com/mabubu0203/github-projects-starter-kit/commit/afb918ca32d48f61bcf541ea22c935ad78b9fdc4))
+* 「リポジトリ」を「Repository」に統一 ([86be046](https://github.com/mabubu0203/github-projects-starter-kit/commit/86be0465d29a32edde7c7ff614d9aca4e444c198))
+* 05 のジョブ構成で all 選択時の実行条件を明記 ([8eb528b](https://github.com/mabubu0203/github-projects-starter-kit/commit/8eb528b248196109cee4a6ef53f24fe9e30c7ab4))
+* 05-analyze-project.md の「プロジェクト」を「Project」に統一 ([9675896](https://github.com/mabubu0203/github-projects-starter-kit/commit/9675896a792de9a0d06d406da16fd75202633d08)), closes [#338](https://github.com/mabubu0203/github-projects-starter-kit/issues/338)
+* actions/guide/scripts配下の表記ゆれを是正 ([a3518e0](https://github.com/mabubu0203/github-projects-starter-kit/commit/a3518e0b455989658b8e13cbd752e9ee84236f85))
+* auth-tokens.md に Workflow ③ の権限要件を追記 ([d142e32](https://github.com/mabubu0203/github-projects-starter-kit/commit/d142e32bd69c97efff1ca998211c2fc07de6a287))
+* auth-tokens.md に Workflow ③（特殊 Repository 一括作成）の権限要件を追記 ([f2de95e](https://github.com/mabubu0203/github-projects-starter-kit/commit/f2de95e00b2c72e71b6bcea823a3653586ac2e37)), closes [#351](https://github.com/mabubu0203/github-projects-starter-kit/issues/351)
+* docs の「リポジトリ」を「Repository」に統一 ([34338ee](https://github.com/mabubu0203/github-projects-starter-kit/commit/34338ee9c69295570bcdd958ccc9d7fb7fe1f1cf))
+* GitHub Pages のトップページにバッジを追加 ([c8a4ea0](https://github.com/mabubu0203/github-projects-starter-kit/commit/c8a4ea0c1925b5a8571bed17807eea05e3e39fe8))
+* GitHub Pages のトップページにバッジを追加 ([2b50837](https://github.com/mabubu0203/github-projects-starter-kit/commit/2b508376dcba57e83cbb74e2e546a847cc2cda11)), closes [#311](https://github.com/mabubu0203/github-projects-starter-kit/issues/311)
+* glossary.md基準でdocs/配下の表記ゆれを是正 ([fa227bc](https://github.com/mabubu0203/github-projects-starter-kit/commit/fa227bc640ddf649386cd244175c4e1098cc4369))
+* glossary.md基準でdocs/配下の表記ゆれを是正 ([e6861cd](https://github.com/mabubu0203/github-projects-starter-kit/commit/e6861cd892ccf98e6d71b7ea1807437808b7f550)), closes [#325](https://github.com/mabubu0203/github-projects-starter-kit/issues/325)
+* PRs Welcome バッジを削除し、Issues/Discussions Welcome バッジを追加 ([3ec4c5b](https://github.com/mabubu0203/github-projects-starter-kit/commit/3ec4c5b08164993f2fc9223fcdeac6df85f2b2ff))
+* PRs Welcome バッジを削除し、Issues/Discussions Welcome バッジを追加 ([43202ca](https://github.com/mabubu0203/github-projects-starter-kit/commit/43202ca6541da3707e355256da0454a29dd6f949)), closes [#313](https://github.com/mabubu0203/github-projects-starter-kit/issues/313)
+* PRレビュー指摘に基づく表記揺れの追加修正 ([f9c4544](https://github.com/mabubu0203/github-projects-starter-kit/commit/f9c454430d030c562be04967dabb98808e46275c))
+* README に Languages Top と Release Date バッジを追加 ([737c1ab](https://github.com/mabubu0203/github-projects-starter-kit/commit/737c1ab81c3236c8c386fa33ff1202177db3f67d))
+* README に Stars/Forks/Last Commit/PRs Welcome バッジを追加 ([ae37c08](https://github.com/mabubu0203/github-projects-starter-kit/commit/ae37c08dd98b1f75ebad8fcda19de06ea9522170))
+* README にリリースバージョンバッジを追加 ([ad0d83d](https://github.com/mabubu0203/github-projects-starter-kit/commit/ad0d83d270490cc2094bdfdf21545866eebc4712))
+* README にリリースバージョンバッジを追加 ([8f5a835](https://github.com/mabubu0203/github-projects-starter-kit/commit/8f5a8352f1e770c2d2475d3a3789c7e2fac45b2b)), closes [#309](https://github.com/mabubu0203/github-projects-starter-kit/issues/309)
+* README のタイトルとバッジ間に改行を追加 ([7b66697](https://github.com/mabubu0203/github-projects-starter-kit/commit/7b666978a0fad1790d7d2068ca98542d1047ba4e))
+* README のバッジグループ間の区切りを調整 ([bd76ead](https://github.com/mabubu0203/github-projects-starter-kit/commit/bd76eada4f437cf8933a7c55808744abcd4f344a))
+* README のバッジ順序を整理 ([d9cd964](https://github.com/mabubu0203/github-projects-starter-kit/commit/d9cd964fd5f1ef6f37923935587b057555a18e7d))
+* README.mdの表記統一と用語集にMITライセンスを追加 ([48f285d](https://github.com/mabubu0203/github-projects-starter-kit/commit/48f285dabb30d8186d94417d70b7c910efbf70bd))
+* scripts のコメント・echo 出力の「アイテム」を「Item」に統一 ([e46bb79](https://github.com/mabubu0203/github-projects-starter-kit/commit/e46bb79de65b5a9a31681bb9a9abf3253d8e9053))
+* scripts のコメント・echo 出力の「プロジェクト」を「Project」に統一 ([7e16a7a](https://github.com/mabubu0203/github-projects-starter-kit/commit/7e16a7abd41105b416ce821af45f6efdf225757f)), closes [#338](https://github.com/mabubu0203/github-projects-starter-kit/issues/338)
+* scripts のコメント・echo 出力の「リポジトリ」を「Repository」に統一 ([0493d99](https://github.com/mabubu0203/github-projects-starter-kit/commit/0493d99ce0521e17600963ef796b4d123443a8e5))
+* TOC Generatorワークフローの説明コメントを最新化する ([9a6d8d6](https://github.com/mabubu0203/github-projects-starter-kit/commit/9a6d8d6fa758651c5842ede079ea00750ae454dd))
+* Workflow ⑥・スクリプトの参照を既存ドキュメントに追加 ([740c75d](https://github.com/mabubu0203/github-projects-starter-kit/commit/740c75dcb7b27ef2a06ed1b0d73161a5702e4725))
+* Workflow name の「プロジェクト」を「Project」に統一 ([210dffb](https://github.com/mabubu0203/github-projects-starter-kit/commit/210dffb3da4ffca8ce0569e3496a630713890d36)), closes [#336](https://github.com/mabubu0203/github-projects-starter-kit/issues/336)
+* Workflow YAML・scripts のコメントの「ワークフロー」を「Workflow」に統一 ([69a6bd5](https://github.com/mabubu0203/github-projects-starter-kit/commit/69a6bd59d1e0a79b3d6be68d62997681f5e3653d))
+* Workflow YAML・scripts のコメントの「ワークフロー」を「Workflow」に統一 ([0b1c675](https://github.com/mabubu0203/github-projects-starter-kit/commit/0b1c6758601ac00f85fa55296a4478428eadd9c7))
+* Workflow ドキュメントの書式・表記を統一 ([8db27b3](https://github.com/mabubu0203/github-projects-starter-kit/commit/8db27b309fcd26274c2ce3362d163667351820e6))
+* Workflow の name を docs の見出しと一致させる ([690bed3](https://github.com/mabubu0203/github-projects-starter-kit/commit/690bed37c713bf12561da3fab25135e36a37a693)), closes [#336](https://github.com/mabubu0203/github-projects-starter-kit/issues/336)
+* workflow-summary.md に ⑥ 統合 Project 分析の使用例を追加 ([514a2a1](https://github.com/mabubu0203/github-projects-starter-kit/commit/514a2a1b08c8cc9723bf5758bd18bc44e03b5fbc))
+* workflow-summary.md に ⑥ 統合 Project 分析の使用例を追加 ([2869c8a](https://github.com/mabubu0203/github-projects-starter-kit/commit/2869c8a119b87d645b035daa121e4c717ef50c02)), closes [#354](https://github.com/mabubu0203/github-projects-starter-kit/issues/354)
+* スクリプトドキュメントをリファクタリング後の実装に合わせて更新 ([40530cc](https://github.com/mabubu0203/github-projects-starter-kit/commit/40530ccd578766b88342c3736ae11365e70a9eb5))
+* ドキュメントを実装に合わせて更新 ([b939a35](https://github.com/mabubu0203/github-projects-starter-kit/commit/b939a35c2e103850441ade308d6cbf489c46e59b))
+* マークダウンファイルの表記揺れを統一する ([0a16649](https://github.com/mabubu0203/github-projects-starter-kit/commit/0a16649b9cc4d3bc69b8b0968255d4b3a7bdeed8))
+* マークダウンファイルの表記揺れを統一する ([2a92553](https://github.com/mabubu0203/github-projects-starter-kit/commit/2a925530d4ec1a9a8b30068149a9c4a5e16f0b3f)), closes [#315](https://github.com/mabubu0203/github-projects-starter-kit/issues/315)
+* ラベル→Label, アイテム→Item, ステータス→Status, フィールド→Field の表記ゆれを是正 ([59a7a3d](https://github.com/mabubu0203/github-projects-starter-kit/commit/59a7a3d93797717f32c72e35097bbded52d174c1))
+* リファクタリング後の実装に合わせてドキュメントを更新 ([a710318](https://github.com/mabubu0203/github-projects-starter-kit/commit/a710318ac38685e7aec62d9f6dda2bd9bc14009e))
+* ワークフロードキュメントから不要な権限セクションを削除 ([4b31462](https://github.com/mabubu0203/github-projects-starter-kit/commit/4b314622c9d0cf0d74c38069d3689bd28966ba9f))
+* ワークフロードキュメントに「ワークフロー仕様」「関連スクリプト」セクションを追加 ([4497bd6](https://github.com/mabubu0203/github-projects-starter-kit/commit/4497bd616549d5305307316625629339119c079e))
+* ワークフロードキュメントにPAT検証の説明を追加 ([73e5a28](https://github.com/mabubu0203/github-projects-starter-kit/commit/73e5a2816b0a3515dfce6edac7b5ade806d23810))
+* ワークフロードキュメントの見出し構成を統一 ([f1966e9](https://github.com/mabubu0203/github-projects-starter-kit/commit/f1966e92d22441b991ffe4e5cc0d272140619011))
+* 実装のソースコメント・論理名を用語基準に統一 ([82ccbe0](https://github.com/mabubu0203/github-projects-starter-kit/commit/82ccbe0c8cac712b814c5f3ef29231d8472ae0e0))
+* 日本語とアルファベット・数字の間に半角スペースを挿入 ([c1ca215](https://github.com/mabubu0203/github-projects-starter-kit/commit/c1ca215b3da44f63d976932d69a90a66c20bdf3a)), closes [#336](https://github.com/mabubu0203/github-projects-starter-kit/issues/336)
+* 日本語とアルファベット表記の間に半角スペースを挿入 ([57b7cb2](https://github.com/mabubu0203/github-projects-starter-kit/commit/57b7cb2820adfac824844c243131279af3e84e0a))
+* 日本語とアルファベット表記の間に半角スペースを挿入 ([e6540d2](https://github.com/mabubu0203/github-projects-starter-kit/commit/e6540d255a48a53c0467b5de66fd705b339651d9)), closes [#334](https://github.com/mabubu0203/github-projects-starter-kit/issues/334)
+* 用語集にGH_TOKEN,DraftIssue,GitHub Release,Upstream Repository,Reusable Workflowを追加 ([c38361f](https://github.com/mabubu0203/github-projects-starter-kit/commit/c38361ff8c8c76aae4126260e0a41e27d2082169))
+* 用語集の整備とREADMEの表記統一 ([416211d](https://github.com/mabubu0203/github-projects-starter-kit/commit/416211d2915233c09154810783b2f3927fd2fdfe))
+* 用語集の空欄だった説明を追加 ([07e60e3](https://github.com/mabubu0203/github-projects-starter-kit/commit/07e60e3b4ca32063273a8709ed66d026db006182))
+* 用語集の表記統一と構成改善 ([1cfe0a4](https://github.com/mabubu0203/github-projects-starter-kit/commit/1cfe0a419b579dd5e8ac897ccf19d573299de852))
+* 用語集の読み（括弧部分）を太字から通常フォントに変更する ([ad184c9](https://github.com/mabubu0203/github-projects-starter-kit/commit/ad184c916193a52d6ed67874282abdbbc3a26b16))
+* 用語集の読み（括弧部分）を太字から通常フォントに変更する ([7b3adb3](https://github.com/mabubu0203/github-projects-starter-kit/commit/7b3adb3defd594dbdcd8b5850ad628511a80029b)), closes [#318](https://github.com/mabubu0203/github-projects-starter-kit/issues/318)
+* 用語集の読みをセル内改行に変更し、略語を説明欄に移動する ([ed60aee](https://github.com/mabubu0203/github-projects-starter-kit/commit/ed60aeef69d337559d05eb93ea194d0b4557d145))
+* 目次（TOC）の内容を削除して自動生成を再実行 ([df5dcaf](https://github.com/mabubu0203/github-projects-starter-kit/commit/df5dcafce3ea909bc4e6cd170360b61b05d7208f))
+* 目次（TOC）の内容を削除して自動生成を再実行するための準備 ([37128c7](https://github.com/mabubu0203/github-projects-starter-kit/commit/37128c75a2bacd467347f175c67e2062c1428e74)), closes [#326](https://github.com/mabubu0203/github-projects-starter-kit/issues/326)
+* 表記ゆれの追加修正とDefaultBranchの用語説明を追加 ([89810d9](https://github.com/mabubu0203/github-projects-starter-kit/commit/89810d953bb275b5e8f399229039cdc6cc43ae8d))
+* 表記揺れ修正・フォーマット統一 ([160d40f](https://github.com/mabubu0203/github-projects-starter-kit/commit/160d40f38eb6908b7567cb1cfcc7b4eec837b4aa))
+
+
+### スタイル
+
+* details/summaryアコーディオンのカスタムCSSを追加 ([f4dbd32](https://github.com/mabubu0203/github-projects-starter-kit/commit/f4dbd329e22a3bfe6d3828ba30213ee39d4cca2b))
+* 目次(TOC)アコーディオンの見栄えを改善する ([c742460](https://github.com/mabubu0203/github-projects-starter-kit/commit/c74246018cfba881d1f02d96b69c1976c3d796ad))
+
+
+### その他の変更
+
+* .claude/settings.local.jsonを追跡対象から除外 ([264d151](https://github.com/mabubu0203/github-projects-starter-kit/commit/264d1517b3cfe2ed35cab2cb53b00548d1d85ec3))
+* **docs:** update TOC ([cafbcf3](https://github.com/mabubu0203/github-projects-starter-kit/commit/cafbcf3ac3d929d844344ba7d285000077bec01e))
+* **docs:** update TOC ([7684aaf](https://github.com/mabubu0203/github-projects-starter-kit/commit/7684aaf7e8c3c8074c8cf54ec2fe9797773cd1bb))
+* **docs:** update TOC ([20b75eb](https://github.com/mabubu0203/github-projects-starter-kit/commit/20b75eb5e03634cab838c0bfdb63650db3b68277))
+* **docs:** update TOC ([d38db26](https://github.com/mabubu0203/github-projects-starter-kit/commit/d38db26a6b70cbe3ea1eca6d2fc75690264e8c8e))
+* **docs:** update TOC ([616f43c](https://github.com/mabubu0203/github-projects-starter-kit/commit/616f43cc8853926e085d1625ec8f2f870a77d7f7))
+* **docs:** update TOC ([028f091](https://github.com/mabubu0203/github-projects-starter-kit/commit/028f091befc733523e284d2bd37fc821dd9da551))
+* 誤ってコミットされた不要ファイルを除外 ([3cbc59d](https://github.com/mabubu0203/github-projects-starter-kit/commit/3cbc59de3246e17d4b52256ec533dc03e2c71157))
+
+
+### リファクタリング
+
+* docs/imagesをdocs/assets/imagesにリネーム ([0a40f9b](https://github.com/mabubu0203/github-projects-starter-kit/commit/0a40f9b1b85169485579aec09400392a8e0e8d49))
+* scripts・docs のリファクタリングとドキュメント整合性修正 ([8bd71e0](https://github.com/mabubu0203/github-projects-starter-kit/commit/8bd71e081f16b5e158bf16ee6ffefd9924f27c1b))
+* カスタムCSSを外部ファイルに分離 ([34e3a12](https://github.com/mabubu0203/github-projects-starter-kit/commit/34e3a129137e9195181708c6e905c2ad58c8f05a))
+* スクリプトの共通化リファクタリング ([9dc8c9f](https://github.com/mabubu0203/github-projects-starter-kit/commit/9dc8c9f851406c01f86944806a85cc3e55862de1))
+* スクリプトの共通化リファクタリングとドキュメント更新 ([c9319ba](https://github.com/mabubu0203/github-projects-starter-kit/commit/c9319ba889360447d34af60bf3417c015d13d71e))
+* スクリプトの重複コード削減と jq 呼び出し統合 ([e961ead](https://github.com/mabubu0203/github-projects-starter-kit/commit/e961ead918b214e8caa29cad5aacc79b6ead4ccb))
+* スクリプト実装のリファクタリングとドキュメント更新 ([539d075](https://github.com/mabubu0203/github-projects-starter-kit/commit/539d0756e44f633de9807ab9563830346b973c23))
+* リポジトリ定義 JSON を個人用・Org 用に分割 ([9aa269f](https://github.com/mabubu0203/github-projects-starter-kit/commit/9aa269f03ad6ec47aadafb2eb5b9e508a0431ef7))
+* ワークフローから不要な chmod +x を削除 ([eaad05e](https://github.com/mabubu0203/github-projects-starter-kit/commit/eaad05e2fc30d12dc26541b885838ae1db37d677))
+* ワークフロー番号の採番しなおし（⑥→③、③→④、④→⑤、⑤→⑥） ([abc3ef0](https://github.com/mabubu0203/github-projects-starter-kit/commit/abc3ef04ccf9ca6711d5fefab9fda6d068a48d4e))
+* ワークフロー番号の採番しなおし（⑥→③、③→④、④→⑤、⑤→⑥） ([bd166f3](https://github.com/mabubu0203/github-projects-starter-kit/commit/bd166f39259863cf85623d7080d07f7fe80db547)), closes [#349](https://github.com/mabubu0203/github-projects-starter-kit/issues/349)
+* 共通処理の関数化・重複排除・効率改善 ([d4847cc](https://github.com/mabubu0203/github-projects-starter-kit/commit/d4847ccd576cbb96e6b04c6d521cdf44bb51b93a))
+
+
+### CI/CD
+
+* PATの文字列パターン検証をジョブ実行条件に追加する ([e68b5e0](https://github.com/mabubu0203/github-projects-starter-kit/commit/e68b5e01946b48bd1f6fb14dec8b9046cffc493c))
+* PATの検証をenv経由のステップ条件に変更する ([63d99df](https://github.com/mabubu0203/github-projects-starter-kit/commit/63d99df93f8b98d93c915c89f44127641e19e0b8))
+* TOC Generatorの見出しレベルをH2に制限し、折りたたみを有効化する ([2a558a7](https://github.com/mabubu0203/github-projects-starter-kit/commit/2a558a7835b4677f520763044cf7e1ce637877b1))
+* TOC Generatorの見出しレベルをH2に制限し、折りたたみを有効化する ([20e460e](https://github.com/mabubu0203/github-projects-starter-kit/commit/20e460e60eea0f9ea404e2aace54dcb4dec3b563)), closes [#319](https://github.com/mabubu0203/github-projects-starter-kit/issues/319)
+* TOC出力をHTML形式に変更してGitHub Pagesでの表示崩れを修正 ([70ef521](https://github.com/mabubu0203/github-projects-starter-kit/commit/70ef521a10febb44d63d3647e4a7762f11374647))
+* Workflow description の「アイテム」を「Item」に統一 ([b28563b](https://github.com/mabubu0203/github-projects-starter-kit/commit/b28563bd58adbe94eda4aaf8bed3767b21b9fba5))
+* Workflow description の「リポジトリ」を「Repository」に統一 ([2d56e3a](https://github.com/mabubu0203/github-projects-starter-kit/commit/2d56e3af3cbae46c573c37a004ce92b0c7ccbfcf))
+* 全ワークフローにPATの文字列パターン検証を適用 ([698c220](https://github.com/mabubu0203/github-projects-starter-kit/commit/698c2207a91a2cebb4ac215c7c60bf8b88211395))
+* 全ワークフローにPATの文字列パターン検証を適用 ([045d0ae](https://github.com/mabubu0203/github-projects-starter-kit/commit/045d0ae0333d3756ffa71b2fb002fe13878d5360)), closes [#322](https://github.com/mabubu0203/github-projects-starter-kit/issues/322)
+
 ## 1.0.0 (2026-03-17)
 
 
