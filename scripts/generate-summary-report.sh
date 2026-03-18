@@ -220,8 +220,7 @@ echo "  期日超過: ${OVERDUE_COUNT} 件"
 TOTAL_ESTIMATED=0
 TOTAL_ACTUAL=0
 if [[ "${HAS_EFFORT}" == "true" ]]; then
-  TOTAL_ESTIMATED=$(echo "${EFFORT_SUMMARY}" | jq '[.[].estimated_hours] | add')
-  TOTAL_ACTUAL=$(echo "${EFFORT_SUMMARY}" | jq '[.[].actual_hours] | add')
+  read -r TOTAL_ESTIMATED TOTAL_ACTUAL < <(echo "${EFFORT_SUMMARY}" | jq -r '[([.[].estimated_hours] | add), ([.[].actual_hours] | add)] | @tsv')
 fi
 
 # --- フォーマッター関数 ---
@@ -315,8 +314,7 @@ format_summary_tsv() {
 echo ""
 echo "レポートを生成しています..."
 
-FILE_EXT=$(get_file_extension "${OUTPUT_FORMAT}")
-OUTPUT_FILE="report-${PROJECT_NUMBER}-summary.${FILE_EXT}"
+OUTPUT_FILE=$(build_output_filename "report" "summary")
 
 case "${OUTPUT_FORMAT}" in
   json)
@@ -392,13 +390,7 @@ echo "  出力: ${OUTPUT_FILE}（形式: ${OUTPUT_FORMAT}）"
 
 # --- Workflow Summary 出力 ---
 
-if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
-  if [[ "${OUTPUT_FORMAT}" == "markdown" ]]; then
-    cat "${OUTPUT_FILE}" >> "${GITHUB_STEP_SUMMARY}"
-  else
-    format_summary_markdown >> "${GITHUB_STEP_SUMMARY}"
-  fi
-fi
+append_to_workflow_summary "${OUTPUT_FILE}" format_summary_markdown
 
 # --- コンソールサマリー ---
 

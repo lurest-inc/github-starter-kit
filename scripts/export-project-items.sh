@@ -167,9 +167,7 @@ fi
 echo ""
 echo "出力形式: ${OUTPUT_FORMAT}"
 
-FILE_EXT=$(get_file_extension "${OUTPUT_FORMAT}")
-
-OUTPUT_FILE="export-${PROJECT_NUMBER}-items.${FILE_EXT}"
+OUTPUT_FILE=$(build_output_filename "export" "items")
 
 case "${OUTPUT_FORMAT}" in
   markdown) format_markdown "${ITEMS}" > "${OUTPUT_FILE}" ;;

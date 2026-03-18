@@ -95,9 +95,9 @@ echo "Repository ${TARGET_REPO} にラベルを作成します..."
 # ループ前にラベル定義を 1 回の jq で事前解析する
 PARSED_LABELS=$(echo "${LABEL_DEFINITIONS}" | jq -r '.[] | [.name, .color, .description] | @tsv')
 
-CREATED=0
-SKIPPED=0
-FAILED=0
+CREATED_COUNT=0
+SKIPPED_COUNT=0
+FAILED_COUNT=0
 LABEL_INDEX=0
 
 while IFS=$'\t' read -r LABEL_NAME LABEL_COLOR LABEL_DESCRIPTION; do
@@ -109,7 +109,7 @@ while IFS=$'\t' read -r LABEL_NAME LABEL_COLOR LABEL_DESCRIPTION; do
   # 既存ラベルの重複チェック（ラベル名は固定文字列として比較）
   if [[ -n "${EXISTING_LABELS}" ]] && echo "${EXISTING_LABELS}" | grep -Fqx "${LABEL_NAME}"; then
     echo "    → 既存ラベルのためスキップしました。"
-    SKIPPED=$((SKIPPED + 1))
+    SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
     continue
   fi
 
@@ -118,12 +118,12 @@ while IFS=$'\t' read -r LABEL_NAME LABEL_COLOR LABEL_DESCRIPTION; do
     --color "${LABEL_COLOR}" \
     --description "${LABEL_DESCRIPTION}" 2>/dev/null; then
     echo "    → 作成しました。"
-    CREATED=$((CREATED + 1))
+    CREATED_COUNT=$((CREATED_COUNT + 1))
   else
     echo "    → 作成に失敗しました。"
     SAFE_LABEL_NAME=$(sanitize_for_workflow_command "${LABEL_NAME}")
     echo "::error::ラベル '${SAFE_LABEL_NAME}' の作成に失敗しました。"
-    FAILED=$((FAILED + 1))
+    FAILED_COUNT=$((FAILED_COUNT + 1))
   fi
 done <<< "${PARSED_LABELS}"
 
@@ -135,17 +135,17 @@ if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
     echo ""
     echo "| 項目 | 件数 |"
     echo "|------|------|"
-    echo "| 作成 | ${CREATED} |"
-    echo "| スキップ | ${SKIPPED} |"
-    echo "| 失敗 | ${FAILED} |"
+    echo "| 作成 | ${CREATED_COUNT} |"
+    echo "| スキップ | ${SKIPPED_COUNT} |"
+    echo "| 失敗 | ${FAILED_COUNT} |"
   } >> "${GITHUB_STEP_SUMMARY}"
 fi
 
-print_summary "Repository" "${TARGET_REPO}" "作成" "${CREATED} 件" "スキップ" "${SKIPPED} 件" "失敗" "${FAILED} 件"
+print_summary "Repository" "${TARGET_REPO}" "作成" "${CREATED_COUNT} 件" "スキップ" "${SKIPPED_COUNT} 件" "失敗" "${FAILED_COUNT} 件"
 
-if [[ "${FAILED}" -gt 0 ]]; then
+if [[ "${FAILED_COUNT}" -gt 0 ]]; then
   echo ""
-  echo "::error::${FAILED} 件のラベル作成に失敗しました。"
+  echo "::error::${FAILED_COUNT} 件のラベル作成に失敗しました。"
   exit 1
 fi
 
