@@ -88,7 +88,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: サマリーレポート生成
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
@@ -119,7 +118,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: 工数集計レポート生成
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
@@ -150,7 +148,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: 滞留アイテム検知
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
@@ -181,7 +178,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: ベロシティレポート生成
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
@@ -212,7 +208,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: Project アイテムをエクスポート
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}

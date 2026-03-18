@@ -38,7 +38,6 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6.0.2
-        if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
 
       - name: Project を作成
         if: ${{ startsWith(env.PROJECT_PAT, 'ghp_') || startsWith(env.PROJECT_PAT, 'github_pat_') }}
