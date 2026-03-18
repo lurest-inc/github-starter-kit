@@ -1,9 +1,9 @@
 # ---------------------------------------------------------
 # secrets.PROJECT_PAT には GitHub の Personal Access Token を設定します。
-# PATの形式（ghp_ または github_pat_ で始まる）を検証し、
+# PAT の形式（ghp_ または github_pat_ で始まる）を検証し、
 # 無効な値の場合はステップをスキップします。
 # ---------------------------------------------------------
-name: "⑤ 統合プロジェクト分析"
+name: "⑤ 統合 Project 分析"
 
 on:
   workflow_dispatch:
