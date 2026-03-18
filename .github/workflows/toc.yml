@@ -15,6 +15,8 @@
 #
 # secrets.PROJECT_PAT には GitHub の Personal Access Token を設定します。
 # 他のワークフローと同じトークンを使用しています。
+# PATの形式（ghp_ または github_pat_ で始まる）を検証し、
+# 無効な値の場合はジョブをスキップします。
 # ---------------------------------------------------------
 on:
   push:
@@ -30,7 +32,7 @@ name: TOC Generator
 jobs:
   generateTOC:
     name: TOC Generator
-    if: ${{ secrets.PROJECT_PAT != '' }}
+    if: ${{ startsWith(secrets.PROJECT_PAT, 'ghp_') || startsWith(secrets.PROJECT_PAT, 'github_pat_') }}
     runs-on: ubuntu-latest
     steps:
       - uses: technote-space/toc-generator@v4.3.1
