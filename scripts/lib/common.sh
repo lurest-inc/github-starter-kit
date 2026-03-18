@@ -461,17 +461,18 @@ validate_repo_definitions() {
   echo ""
   echo "Repository 定義ファイルを検証しています..."
 
-  # jq 用の IN 条件を組み立てる（例: "public", "private", "internal"）
-  local jq_in_values
-  jq_in_values=$(echo "${allowed_visibilities}" | sed 's|/|", "|g')
-  jq_in_values="\"${jq_in_values}\""
+  # 許可される visibility を JSON 配列に変換（例: "public/private/internal" → '["public","private","internal"]'）
+  local allowed_json
+  allowed_json=$(echo "${allowed_visibilities}" | jq -R 'split("/")')
 
   # 許可値の表示用文字列（例: public / private / internal）
   local allowed_display
   allowed_display=$(echo "${allowed_visibilities}" | sed 's|/| / |g')
 
   local validation_errors
-  validation_errors=$(echo "${definitions_json}" | jq -r --arg allowed_display "${allowed_display}" '
+  if ! validation_errors=$(echo "${definitions_json}" | jq -r \
+    --argjson allowed "${allowed_json}" \
+    --arg allowed_display "${allowed_display}" '
     if type != "array" then
       "Repository 定義ファイルが JSON 配列ではありません。"
     else
@@ -481,12 +482,15 @@ validate_repo_definitions() {
         (if .name_template == null or .name_template == "" then "[\($i)]: name_template が未定義または空です。" else empty end),
         (if .description == null then "[\($i)]: description が未定義です。" else empty end),
         (if .visibility == null or .visibility == "" then "[\($i)]: visibility が未定義または空です。" else empty end),
-        (if .visibility != null and .visibility != "" and (.visibility | IN('"${jq_in_values}"') | not) then "[\($i)]: visibility の値が不正です: \(.visibility)（\($allowed_display) を指定してください）" else empty end),
+        (if .visibility != null and .visibility != "" and (.visibility as $v | $allowed | any(. == $v) | not) then "[\($i)]: visibility の値が不正です: \(.visibility)（\($allowed_display) を指定してください）" else empty end),
         (if .auto_init == null then "[\($i)]: auto_init が未定義です。" else empty end),
         (if .auto_init != null and (.auto_init | type) != "boolean" then "[\($i)]: auto_init は boolean で指定してください。" else empty end)
       ] | join("\n")
     end
-  ')
+  ' 2>&1); then
+    echo "::error::Repository 定義ファイルの解析に失敗しました: $(sanitize_for_workflow_command "${validation_errors}")"
+    return 1
+  fi
 
   if [[ -n "${validation_errors}" ]]; then
     echo "::error::Repository 定義ファイルのバリデーションに失敗しました:"
@@ -514,7 +518,7 @@ create_repos_batch() {
 
   local repo_count
   repo_count=$(echo "${definitions_json}" | jq 'length')
-  echo "  ${repo_count} 件のRepository 定義を読み込みました。"
+  echo "  ${repo_count} 件の Repository 定義を読み込みました。"
 
   # オーナータイプに応じたラベルを設定
   local type_label_ja
