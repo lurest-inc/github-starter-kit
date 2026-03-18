@@ -43,7 +43,7 @@ A. PAT の権限設定が不足している可能性があります。
 
 ## 💡 Q3. 既存の Project に対して Workflow ① を実行してしまいました
 
-A. Workflow ① は新規 Project を作成するものです。既存 Project にFieldやStatusを追加したい場合は、Workflow ②（[GitHub Project 拡張](workflows/02-extend-project)）を使用してください。
+A. Workflow ① は新規 Project を作成するものです。既存 Project に Field や Status を追加したい場合は、Workflow ②（[GitHub Project 拡張](workflows/02-extend-project)）を使用してください。
 
 > **Note:** Workflow ① を実行した場合、新しい Project が別途作成されます。不要な場合は GitHub 上で手動削除してください。
 
@@ -67,4 +67,4 @@ A. Workflow ⑤（[統合プロジェクト分析](workflows/05-analyze-project)
 
 ## 💡 Q6. 同じ Issue/PR を複数回追加してしまいませんか？
 
-A. Workflow ④（[Issue/PR 一括紐付け](workflows/04-add-items-to-project)）は既に Project に追加済みのItemを自動的にスキップします。同じ Workflow を何度実行しても重複追加は発生しません。
+A. Workflow ④（[Issue/PR 一括紐付け](workflows/04-add-items-to-project)）は既に Project に追加済みの Item を自動的にスキップします。同じ Workflow を何度実行しても重複追加は発生しません。

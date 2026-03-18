@@ -46,7 +46,7 @@ Repository ページ右上の「Fork」ボタンをクリックします。
 
 ## 2. 🔑 PAT を作成する
 
-GitHub の [Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens) から `PAT` を作成します。
+GitHub の [Settings > Developer settings > Personal access tokens](https://github.com/settings/tokens) から PAT を作成します。
 
 <details>
 <summary>（ここをクリック）PAT 作成画面のスクリーンショットを表示</summary>
@@ -115,5 +115,5 @@ Fork 先 Repository の `Actions` タブから Workflow を選択し、`Run work
 
 - [① GitHub Project 新規作成](workflows/01-create-project)
 - [② GitHub Project 拡張](workflows/02-extend-project)
-- [③ Issue Label一括追加](workflows/03-setup-repository-labels)
+- [③ Issue Label 一括追加](workflows/03-setup-repository-labels)
 - [④ Issue/PR 一括紐付け](workflows/04-add-items-to-project)

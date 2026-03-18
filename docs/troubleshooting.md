@@ -35,7 +35,7 @@ gh api repos/<owner>/github-projects-starter-kit/actions/permissions \
   --field allowed_actions="all"
 ```
 
-> **Note:** この操作は Repository ごとに 1 回だけ必要です。有効化後は Workflow を通常通り実行できます。
+> **Note:** この操作は Repository ごとに**1**回だけ必要です。有効化後は Workflow を通常通り実行できます。
 
 ---
 
