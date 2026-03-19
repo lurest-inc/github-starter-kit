@@ -6,15 +6,15 @@
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
 <details><summary>（ここをクリック）目次</summary><ul>
-<li><a href="#ロール">ロール</a></li>
+<li><a href="#%E3%83%AD%E3%83%BC%E3%83%AB">ロール</a></li>
 
-<li><a href="#意思決定プロセス">意思決定プロセス</a></li>
+<li><a href="#%E6%84%8F%E6%80%9D%E6%B1%BA%E5%AE%9A%E3%83%97%E3%83%AD%E3%82%BB%E3%82%B9">意思決定プロセス</a></li>
 
-<li><a href="#レビューとマージ">レビューとマージ</a></li>
+<li><a href="#%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%81%A8%E3%83%9E%E3%83%BC%E3%82%B8">レビューとマージ</a></li>
 
-<li><a href="#リリース">リリース</a></li>
+<li><a href="#%E3%83%AA%E3%83%AA%E3%83%BC%E3%82%B9">リリース</a></li>
 
-<li><a href="#ポリシーの変更">ポリシーの変更</a></li>
+<li><a href="#%E3%83%9D%E3%83%AA%E3%82%B7%E3%83%BC%E3%81%AE%E5%A4%89%E6%9B%B4">ポリシーの変更</a></li>
 </ul></details>
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->

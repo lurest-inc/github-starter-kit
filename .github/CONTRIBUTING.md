@@ -10,6 +10,8 @@
 
 <li><a href="#pull-request-%E3%81%AE%E4%BD%9C%E6%88%90">Pull Request の作成</a></li>
 
+<li><a href="#%E3%83%AC%E3%83%93%E3%83%A5%E3%83%BC%E3%81%A8%E3%83%9E%E3%83%BC%E3%82%B8">レビューとマージ</a></li>
+
 <li><a href="#%E8%A1%8C%E5%8B%95%E8%A6%8F%E7%AF%84">行動規範</a></li>
 </ul></details>
 
