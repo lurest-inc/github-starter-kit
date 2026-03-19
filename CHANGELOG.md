@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.1.2](https://github.com/lurest-inc/github-starter-kit/compare/v1.1.1...v1.1.2) (2026-03-19)
+
+
+### バグ修正
+
+* .github/ 配下のコミュニティヘルスファイルの旧リポジトリ URL を置換する ([98873e9](https://github.com/lurest-inc/github-starter-kit/commit/98873e900afa63b90612cd98250183b99f0eb676)), closes [#373](https://github.com/lurest-inc/github-starter-kit/issues/373)
+* docs/ 配下のドキュメントの旧リポジトリ URL・名称を置換する ([4ebc532](https://github.com/lurest-inc/github-starter-kit/commit/4ebc532fdd59f8a7d4150d492c05590189fafe9a))
+* docs/・README.md・LICENSE の旧リポジトリ URL・名称を置換する ([97f7e99](https://github.com/lurest-inc/github-starter-kit/commit/97f7e99b65f10b039b600ca33b36dd76c8cf8422))
+* LICENSE の著作権者表記を更新する ([cb50a52](https://github.com/lurest-inc/github-starter-kit/commit/cb50a52182e0e688104f2409f5e0028960e63232))
+* README.md のバッジ・リンクの旧リポジトリ URL を置換する ([1d93a79](https://github.com/lurest-inc/github-starter-kit/commit/1d93a79f338edc544e7974b893d97e08b3e6a4c7))
+* scripts/ 配下の旧リポジトリ URL を lurest-inc/github-starter-kit に置換する ([3db7e41](https://github.com/lurest-inc/github-starter-kit/commit/3db7e4101c067eb862c7f3f6613249deb168d258)), closes [#372](https://github.com/lurest-inc/github-starter-kit/issues/372)
+* 旧リポジトリ URL を lurest-inc/github-starter-kit に置換する ([7f82510](https://github.com/lurest-inc/github-starter-kit/commit/7f825107c549bff40444bc46d7c9a3975fcf202d))
+
+
+### ドキュメント
+
+* AGENTS.md を追加し AI コーディングアシスタント向けガイダンスを整備する ([4d472c3](https://github.com/lurest-inc/github-starter-kit/commit/4d472c324a87295bee84fd0c46a19bfd66cb032b))
+* AGENTS.md を追加し AI コーディングアシスタント向けガイダンスを整備する ([e3155e0](https://github.com/lurest-inc/github-starter-kit/commit/e3155e00c0c90695b83efb3810cc76bb94bbbf0c))
+
 ## [1.1.1](https://github.com/mabubu0203/github-projects-starter-kit/compare/v1.1.0...v1.1.1) (2026-03-19)
 
 
