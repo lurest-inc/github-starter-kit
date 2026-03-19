@@ -59,13 +59,14 @@ GitHub の特殊命名規則 Repository（プロフィール README、`GitHub Pa
 
 ```mermaid
 flowchart TD
-    A["workflow_dispatch"] --> B["create-special-repos Job\nオーナータイプを自動判定"]
-    B --> C{"User or\nOrganization?"}
-    C -- "User" --> D["create-special-repos-user.sh\n個人アカウント用 Repository を作成"]
-    C -- "Organization" --> E["create-special-repos-org.sh\nOrganization 用 Repository を作成"]
-    D & E --> F{"結果判定"}
-    F -- "成功" --> G["workflow-summary-success Job\n成功サマリーを出力"]
-    F -- "失敗" --> H["workflow-summary-failure Job\n失敗サマリーを出力"]
+    A["workflow_dispatch"] --> B["create-special-repos Job"]
+    B --> C["create-special-repos.sh\ndetect_owner_type() で\nオーナータイプを自動判定"]
+    C --> D{"User or\nOrganization?"}
+    D -- "User" --> E["個人アカウント用 Repository を作成\n（POST /user/repos）"]
+    D -- "Organization" --> F["Organization 用 Repository を作成\n（POST /orgs/{org}/repos）"]
+    E & F --> G{"結果判定"}
+    G -- "成功" --> H["workflow-summary-success Job\n成功サマリーを出力"]
+    G -- "失敗" --> I["workflow-summary-failure Job\n失敗サマリーを出力"]
 ```
 
 ## 🔧 Workflow 仕様
@@ -93,9 +94,7 @@ flowchart TD
 ```
 .github/workflows/03-create-special-repos.yml
   ├── create-special-repos Job
-  │   ├── オーナータイプ判定（User / Organization）
-  │   ├── scripts/create-special-repos-user.sh    # 個人アカウント用
-  │   └── scripts/create-special-repos-org.sh     # Organization 用
+  │   └── scripts/create-special-repos.sh         # オーナータイプ自動判定 → 一括作成
   ├── workflow-summary-failure Job（失敗時）
   │   └── .github/actions/workflow-summary        # 失敗サマリー出力
   └── workflow-summary-success Job（成功時）
@@ -104,5 +103,4 @@ flowchart TD
 
 ## 📜 関連スクリプト
 
-- [create-special-repos-user.sh](../scripts/create-special-repos-user) — 個人アカウント用特殊 Repository 一括作成スクリプト
-- [create-special-repos-org.sh](../scripts/create-special-repos-org) — Organization 用特殊 Repository 一括作成スクリプト
+- [create-special-repos.sh](../scripts/create-special-repos) — 特殊 Repository 一括作成スクリプト
