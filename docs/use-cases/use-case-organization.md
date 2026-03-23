@@ -9,7 +9,7 @@
 <details><summary>（ここをクリック）目次</summary><ul>
 <li><a href="#-github-projects-%E3%81%8C-organization-%E3%81%AB%E5%90%91%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E7%90%86%E7%94%B1">🏗️ GitHub Projects が Organization に向いている理由</a></li>
 
-<li><a href="#-beforeafter--%E6%89%8B%E4%BD%9C%E6%A5%AD-vs-starter-kit">⚡ Before/After — 手作業 vs Ops Kit</a></li>
+<li><a href="#-beforeafter--%E6%89%8B%E4%BD%9C%E6%A5%AD-vs-ops-kit">⚡ Before/After — 手作業 vs Ops Kit</a></li>
 
 <li><a href="#-%E3%81%93%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%8C%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E8%AA%B2%E9%A1%8C">🛠️ このリポジトリが解決する課題</a></li>
 
@@ -64,7 +64,7 @@ Organization 配下の複数リポジトリにまたがる Issue や PR を、1 
 
 メンバーごとに Project の構成がバラバラだと、進捗の把握やレポート作成が困難になります。
 
-**GitHub Ops Kit なら:** JSON 定義ファイルで Field・Status・View を標準化できます。チーム共通の構成をコードとして管理し、誰が作っても同じ構成の Project を構築できます。
+**GitHub Projects Ops Kit なら:** JSON 定義ファイルで Field・Status・View を標準化できます。チーム共通の構成をコードとして管理し、誰が作っても同じ構成の Project を構築できます。
 
 → [Workflow ① GitHub Project 新規作成](../workflows/01-create-project)
 
@@ -72,7 +72,7 @@ Organization 配下の複数リポジトリにまたがる Issue や PR を、1 
 
 新しいプロジェクトを立ち上げるたびに、Project の作成・Field 定義・View 設定・Label 追加を手作業で行うのは非効率です。
 
-**GitHub Ops Kit なら:** Workflow を実行するだけで、Project の作成から構成の適用まで自動化できます。セットアップ工数を大幅に削減し、プロジェクトの立ち上げを即座に完了できます。
+**GitHub Projects Ops Kit なら:** Workflow を実行するだけで、Project の作成から構成の適用まで自動化できます。セットアップ工数を大幅に削減し、プロジェクトの立ち上げを即座に完了できます。
 
 → [Workflow ② GitHub Project 拡張](../workflows/02-extend-project)
 
@@ -80,7 +80,7 @@ Organization 配下の複数リポジトリにまたがる Issue や PR を、1 
 
 チームの生産性を可視化するには、定期的なデータ集計とレポート作成が欠かせません。手作業での集計は時間がかかり、継続が難しくなります。
 
-**GitHub Ops Kit なら:** 分析 Workflow で滞留タスクの自動検知、サマリーレポート・工数レポート・ベロシティレポートの生成を一括で実行できます。定期チェックの仕組みとして活用できます。
+**GitHub Projects Ops Kit なら:** 分析 Workflow で滞留タスクの自動検知、サマリーレポート・工数レポート・ベロシティレポートの生成を一括で実行できます。定期チェックの仕組みとして活用できます。
 
 → [Workflow ⑥ 統合 Project 分析](../workflows/06-analyze-project)
 
