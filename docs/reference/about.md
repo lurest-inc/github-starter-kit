@@ -1,3 +1,12 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<details><summary>（ここをクリック）目次</summary><ul>
+<li><a href="#-about">🏢 About</a></li>
+</ul></details>
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 🏢 About
 
 GitHub Projects Ops Kit の運営元と開発者をご紹介します。
