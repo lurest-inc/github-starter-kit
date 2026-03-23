@@ -6,6 +6,20 @@
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+<details><summary>（ここをクリック）目次</summary><ul>
+<li><a href="#-github-projects-%E3%81%8C-oss%E3%83%BB%E5%B0%8F%E8%A6%8F%E6%A8%A1%E3%83%81%E3%83%BC%E3%83%A0%E3%81%AB%E5%90%91%E3%81%84%E3%81%A6%E3%81%84%E3%82%8B%E7%90%86%E7%94%B1">🏗️ GitHub Projects が OSS・小規模チームに向いている理由</a></li>
+
+<li><a href="#-beforeafter--%E6%89%8B%E4%BD%9C%E6%A5%AD-vs-ops-kit">⚡ Before/After — 手作業 vs Ops Kit</a></li>
+
+<li><a href="#-%E3%81%93%E3%81%AE%E3%83%AA%E3%83%9D%E3%82%B8%E3%83%88%E3%83%AA%E3%81%8C%E8%A7%A3%E6%B1%BA%E3%81%99%E3%82%8B%E8%AA%B2%E9%A1%8C">🛠️ このリポジトリが解決する課題</a></li>
+
+<li><a href="#-%E5%85%B7%E4%BD%93%E7%9A%84%E3%81%AA%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9%E3%82%B7%E3%83%8A%E3%83%AA%E3%82%AA">📖 具体的なユースケースシナリオ</a></li>
+
+<li><a href="#-%E3%81%93%E3%82%93%E3%81%AA%E3%83%81%E3%83%BC%E3%83%A0%E3%83%BB%E3%83%97%E3%83%AD%E3%82%B8%E3%82%A7%E3%82%AF%E3%83%88%E3%81%AB%E3%81%8A%E3%81%99%E3%81%99%E3%82%81">🎯 こんなチーム・プロジェクトにおすすめ</a></li>
+
+<li><a href="#-%E3%81%AF%E3%81%98%E3%82%81%E6%96%B9">🚀 はじめ方</a></li>
+</ul></details>
+
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 ---
