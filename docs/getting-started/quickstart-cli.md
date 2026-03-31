@@ -131,7 +131,7 @@ gh workflow run 06-analyze-project.yml \
   --field report_types="all"
 ```
 
-## 👀 Workflow 実行状況の確認
+### 👀 Workflow 実行状況の確認
 
 ```bash
 # 実行一覧を表示
@@ -140,6 +140,8 @@ gh run list
 # 最新の実行をリアルタイムで監視
 gh run watch
 ```
+
+### 📖 各 Workflow の詳細
 
 各 Workflow の詳細は個別ページをご参照ください。
 
