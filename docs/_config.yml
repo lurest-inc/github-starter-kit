@@ -8,3 +8,9 @@ plugins:
   - jekyll-feed
   - jemoji
   - jekyll-mentions
+  - jekyll-relative-links
+  - jekyll-optional-front-matter
+  - jekyll-default-layout
+  - jekyll-titles-from-headings
+  - jekyll-github-metadata
+  - jekyll-seo-tag
