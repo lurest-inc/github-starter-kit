@@ -1,3 +1,12 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<details><summary>（ここをクリック）目次</summary><ul>
+<li><a href="#-%E9%81%8B%E7%94%A8%E3%82%AC%E3%82%A4%E3%83%89">📏 運用ガイド</a></li>
+</ul></details>
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 📏 運用ガイド
 
 GitHub Projects Ops Kit を導入した後の運用に役立つガイドです。カンバンルール・Label 運用・認証設定などを解説しています。
