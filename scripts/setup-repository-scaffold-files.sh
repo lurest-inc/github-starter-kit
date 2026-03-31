@@ -30,7 +30,7 @@ require_command "jq" "JSON の解析に必要です。"
 # --- 対象ファイル定義（JSON から読み込み） ---
 
 CONFIG_DIR="${SCRIPT_DIR}/config"
-SCAFFOLD_FILE_DEFINITIONS="${CONFIG_DIR}/repository-scaffold-definitions.json"
+SCAFFOLD_FILE_DEFINITIONS="${CONFIG_DIR}/repo-scaffold-definitions.json"
 
 if [[ ! -f "${SCAFFOLD_FILE_DEFINITIONS}" ]]; then
   echo "::error::設定ファイルが見つかりません: ${SCAFFOLD_FILE_DEFINITIONS}"

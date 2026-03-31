@@ -46,7 +46,7 @@
 
 ### 対象ファイル（Community Health Files）
 
-対象ファイルは [`scripts/config/health-file-definitions.json`](../../scripts/config/health-file-definitions.json) で定義されています。
+対象ファイルは [`scripts/config/repo-health-file-definitions.json`](../../scripts/config/repo-health-file-definitions.json) で定義されています。
 JSON ファイルを編集することで、スクリプトを変更せずに登録対象をカスタマイズできます。
 
 | ファイル | パス |
@@ -61,7 +61,7 @@ JSON ファイルを編集することで、スクリプトを変更せずに登
 
 ### 対象ファイル（Scaffold Files）
 
-対象ファイルは [`scripts/config/repository-scaffold-definitions.json`](../../scripts/config/repository-scaffold-definitions.json) で定義されています。
+対象ファイルは [`scripts/config/repo-scaffold-definitions.json`](../../scripts/config/repo-scaffold-definitions.json) で定義されています。
 JSON ファイルを編集することで、スクリプトを変更せずに登録対象をカスタマイズできます。
 
 | ファイル | パス |

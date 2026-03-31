@@ -66,7 +66,7 @@ scripts/
   │   ├── project-status-options.json          # カスタム Status 定義
   │   ├── project-field-definitions.json       # カスタム Field 定義
   │   ├── project-view-definitions.json        # View 定義
-  │   ├── repository-label-definitions.json    # Issue Label 定義
+  │   ├── repo-label-definitions.json    # Issue Label 定義
   │   ├── special-repo-definitions-user.json   # 個人アカウント用特殊 Repository定義
   │   └── special-repo-definitions-org.json    # Organization 用特殊 Repository定義
   ├── lib/

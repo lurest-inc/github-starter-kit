@@ -33,7 +33,7 @@
 ## 📋 対象ファイル
 
 以下の Community Health Files を空ファイルとして登録します。
-対象ファイルは `scripts/config/health-file-definitions.json` で定義されており、ユーザーがスクリプトを直接編集せずにカスタマイズできます。
+対象ファイルは `scripts/config/repo-health-file-definitions.json` で定義されており、ユーザーがスクリプトを直接編集せずにカスタマイズできます。
 
 | ファイル | パス | 説明 |
 |----------|------|------|
@@ -49,7 +49,7 @@
 
 ### 設定ファイルのカスタマイズ
 
-`scripts/config/health-file-definitions.json` を編集することで、登録対象のファイルを追加・削除できます。
+`scripts/config/repo-health-file-definitions.json` を編集することで、登録対象のファイルを追加・削除できます。
 
 ```json
 [

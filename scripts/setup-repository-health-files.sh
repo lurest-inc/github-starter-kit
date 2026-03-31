@@ -30,7 +30,7 @@ require_command "jq" "JSON の解析に必要です。"
 # --- 対象ファイル定義（JSON から読み込み） ---
 
 CONFIG_DIR="${SCRIPT_DIR}/config"
-HEALTH_FILE_DEFINITIONS="${CONFIG_DIR}/health-file-definitions.json"
+HEALTH_FILE_DEFINITIONS="${CONFIG_DIR}/repo-health-file-definitions.json"
 
 if [[ ! -f "${HEALTH_FILE_DEFINITIONS}" ]]; then
   echo "::error::設定ファイルが見つかりません: ${HEALTH_FILE_DEFINITIONS}"

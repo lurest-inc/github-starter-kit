@@ -33,7 +33,7 @@
 ## 📋 対象ファイル
 
 以下の Scaffold ファイルを空ファイルとして登録します。
-対象ファイルは `scripts/config/repository-scaffold-definitions.json` で定義されており、ユーザーがスクリプトを直接編集せずにカスタマイズできます。
+対象ファイルは `scripts/config/repo-scaffold-definitions.json` で定義されており、ユーザーがスクリプトを直接編集せずにカスタマイズできます。
 
 | ファイル | パス | 説明 |
 |----------|------|------|
@@ -43,7 +43,7 @@
 
 ### 設定ファイルのカスタマイズ
 
-`scripts/config/repository-scaffold-definitions.json` を編集することで、登録対象のファイルを追加・削除できます。
+`scripts/config/repo-scaffold-definitions.json` を編集することで、登録対象のファイルを追加・削除できます。
 
 ```json
 [
