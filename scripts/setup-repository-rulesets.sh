@@ -68,15 +68,46 @@ echo ""
 echo "Repository ${TARGET_REPO} の既存 Ruleset を取得しています..."
 
 EXISTING_RULESETS=""
+PLAN_RESTRICTED=false
 if existing_output=$(gh api "repos/${TARGET_REPO}/rulesets" \
   -H "X-GitHub-Api-Version: ${REST_API_VERSION}" \
   --jq ".[].name" 2>&1); then
   EXISTING_RULESETS="${existing_output}"
   EXISTING_RULESET_COUNT=$(echo "${EXISTING_RULESETS}" | grep -c . || true)
   echo "  既存 Ruleset 数: ${EXISTING_RULESET_COUNT}"
+elif echo "${existing_output}" | grep -q "Upgrade to GitHub Pro"; then
+  echo "  ⚠️  プランの制約により Rulesets API を利用できません。"
+  echo "     Free プランの Private リポジトリでは Rulesets がサポートされていません。"
+  echo "     リポジトリを Public にするか、GitHub Pro 以上にアップグレードしてください。"
+  PLAN_RESTRICTED=true
 else
   echo "::error::既存 Ruleset の取得に失敗しました: ${existing_output}"
   exit 1
+fi
+
+# --- プラン制約による早期終了 ---
+
+CREATED_COUNT=0
+SKIPPED_COUNT=0
+FAILED_COUNT=0
+EVALUATE_COUNT=0
+
+if [[ "${PLAN_RESTRICTED}" == true ]]; then
+  echo ""
+
+  if [[ -n "${GITHUB_STEP_SUMMARY:-}" ]]; then
+    {
+      echo "## Ruleset 一括作成"
+      echo ""
+      echo "> **⚠️ プラン制約:** Free プランの Private リポジトリでは Rulesets API を利用できません。"
+      echo "> リポジトリを Public にするか、GitHub Pro 以上にアップグレードしてください。"
+    } >> "${GITHUB_STEP_SUMMARY}"
+  fi
+
+  print_summary "Repository" "${TARGET_REPO}" "状態" "プラン制約によりスキップ"
+  echo ""
+  echo "⚠️  プランの制約により Ruleset の作成をスキップしました。"
+  exit 0
 fi
 
 # --- Ruleset の一括作成 ---
@@ -84,10 +115,6 @@ fi
 echo ""
 echo "Repository ${TARGET_REPO} に Ruleset を作成します..."
 
-CREATED_COUNT=0
-SKIPPED_COUNT=0
-FAILED_COUNT=0
-EVALUATE_COUNT=0
 RULESET_INDEX=0
 
 # ループ前に Ruleset 名を事前解析する
