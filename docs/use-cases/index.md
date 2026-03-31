@@ -1,3 +1,12 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<details><summary>（ここをクリック）目次</summary><ul>
+<li><a href="#-%E3%83%A6%E3%83%BC%E3%82%B9%E3%82%B1%E3%83%BC%E3%82%B9">🧭 ユースケース</a></li>
+</ul></details>
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # 🧭 ユースケース
 
 あなたの立場やチーム規模に合わせた活用ガイドです。導入を検討している方は、自分に近いケースを参考にしてください。

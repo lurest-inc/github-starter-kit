@@ -1,3 +1,12 @@
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+
+<details><summary>（ここをクリック）目次</summary><ul>
+<li><a href="#-workflow-%E3%83%AA%E3%83%95%E3%82%A1%E3%83%AC%E3%83%B3%E3%82%B9">⚙️ Workflow リファレンス</a></li>
+</ul></details>
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 # ⚙️ Workflow リファレンス
 
 GitHub Actions の `workflow_dispatch` で実行する各 Workflow の詳細ドキュメントです。番号順に実行することを推奨します。
