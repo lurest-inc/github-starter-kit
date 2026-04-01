@@ -166,6 +166,7 @@ Docs サイトは以下のカテゴリで構成されています。目的に応
 | [📝 入力値ガイド](guide/input-values.md) | `project_number`・`target_repo` などの確認方法 |
 | [📏 カンバン運用ルール](guide/kanban-rules.md) | カンバンフロー、カスタム Field、View 構成 |
 | [🏷️ Label 運用ルール](guide/label-rules.md) | Issue Label のカテゴリ分類、用途、付与タイミング |
+| [🌿 ブランチ運用ルール](guide/branch-rules.md) | ブランチ戦略、Ruleset の定義内容、GitHub プランによる制限事項 |
 | [🗑️ Artifact の手動削除](guide/delete-artifacts.md) | Workflow で生成された Artifact の削除手順（GUI / CLI） |
 | [📖 用語集](reference/glossary.md) | GitHub 関連の専門用語の解説 |
 
