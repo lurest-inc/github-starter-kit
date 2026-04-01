@@ -14,6 +14,8 @@
 
 <li><a href="#-github-repositories-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E">📦 GitHub Repositories 関連用語</a></li>
 
+<li><a href="#-repository-ruleset-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E">🔐 Repository Ruleset 関連用語</a></li>
+
 <li><a href="#-github-actions-%E9%96%A2%E9%80%A3%E7%94%A8%E8%AA%9E">⚡ GitHub Actions 関連用語</a></li>
 
 <li><a href="#-git-%E5%9F%BA%E6%9C%AC%E7%94%A8%E8%AA%9E">🔀 Git 基本用語</a></li>
@@ -85,6 +87,23 @@
 | **`GitHub Pages`** | Repository から直接静的な Web サイトを公開できる GitHub のホスティングサービス。ドキュメントやプロジェクトサイトの公開に使用する。 |
 | **`GitHub Codespaces`** | GitHub が提供するクラウドベースの開発環境。Repository からワンクリックで起動でき、ブラウザ上または `VS Code` から即座にコーディングを開始できる。開発環境のセットアップを不要にし、チーム間で統一された環境を提供する |
 | **Community Health Files**<br>（コミュニティヘルスファイル） | `CODE_OF_CONDUCT.md`・`CONTRIBUTING.md`・`SECURITY.md` など、オープンソースプロジェクトの運営に必要なガイドラインファイルの総称。Organization の `.github` Repository に配置すると、個別の Repository にファイルがなくてもデフォルトとして適用される |
+| **Scaffold Files**<br>（スキャフォールドファイル） | リポジトリに自動生成する初期ファイル群（IDE 設定・AI ツール設定等のディレクトリ初期化用） |
+
+---
+
+## 🔐 Repository Ruleset 関連用語
+
+| 用語 | 説明 |
+|------|------|
+| **Repository Ruleset**<br>（リポジトリルールセット） | Repository に対するルール（制約）を一括定義・管理する GitHub の機能 |
+| **Branch Ruleset**<br>（ブランチルールセット） | ブランチに対して適用される Ruleset |
+| **Enforcement**<br>（エンフォースメント） | Ruleset の適用モード（`active` / `disabled` / `evaluate`） |
+| **Evaluate Mode**<br>（評価モード） | ルールを強制せず違反時に警告のみ表示する試験モード |
+| **Target**<br>（ターゲット） | Ruleset の適用対象の種類（`branch` / `tag`） |
+| **Conditions**<br>（コンディション） | Ruleset を適用するフィルタ条件（`ref_name` の `include`/`exclude` パターン） |
+| **Pull Request Rule**<br>（プルリクエストルール） | PR のレビュー要件を強制するルールタイプ |
+| **Non-fast-forward Rule**<br>（ノンファストフォワードルール） | Force Push を禁止するルールタイプ |
+| **Deletion Rule**<br>（デリーションルール） | ブランチ/タグの削除を禁止するルールタイプ |
 
 ---
 
@@ -125,6 +144,7 @@
 | **CLI** | `Command Line Interface` の略。ターミナル（コマンドライン）から操作するインターフェース |
 | **`GitHub CLI` (`gh`)** | GitHub 公式のコマンドラインツール。ターミナルから GitHub の操作を実行できる |
 | **`GraphQL API`** | GitHub が提供する高度なデータ取得 API。`GitHub Projects` の操作に使用される |
+| **`REST API`** | GitHub が提供する REST ベースの API。`gh api` コマンドで呼び出す |
 
 ---
 
