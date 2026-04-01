@@ -59,7 +59,7 @@ flowchart TD
       ├── 03-create-special-repos.yml        # ③ 特殊 Repository 一括作成 Workflow
       ├── 04-setup-repository-labels.yml     # ④ Issue Label 一括作成 Workflow
       ├── 05-setup-repository-files.yml      # ⑤ 初期ファイル一括作成 Workflow
-      ├── 06-setup-repository-rulesets.yml    # ⑥ Repository Ruleset 一括作成 Workflow
+      ├── 06-setup-repository-rulesets.yml    # ⑥ Ruleset 一括作成 Workflow
       ├── 07-add-items-to-project.yml        # ⑦ Issue/PR 一括紐付け Workflow
       └── 08-analyze-project.yml             # ⑧ 統合 Project 分析 Workflow
 scripts/
@@ -160,16 +160,16 @@ scripts/
       └── .github/actions/workflow-summary           # 成功サマリー出力
 ```
 
-### ⑥ Repository Ruleset 一括作成
+### ⑥ Ruleset 一括作成
 
 ```
 06-setup-repository-rulesets.yml
   ├── setup-repository-rulesets Job
   │   └── scripts/setup-repository-rulesets.sh     # Ruleset 一括作成
   ├── workflow-summary-failure Job（失敗時）
-  │   └── .github/actions/workflow-summary       # 失敗サマリー出力
+  │   └── .github/actions/workflow-summary         # 失敗サマリー出力
   └── workflow-summary-success Job（成功時）
-      └── .github/actions/workflow-summary       # 成功サマリー出力
+      └── .github/actions/workflow-summary         # 成功サマリー出力
 ```
 
 ### ⑦ Issue/PR 一括紐付け
